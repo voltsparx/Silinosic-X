@@ -32,7 +32,7 @@ _SOURCE_OPTION_LABELS: dict[str, str] = {
     "yes": "Skip interactive scan confirmation",
 }
 
-_RECIPE_TO_silica_x: dict[str, dict[str, Any]] = {
+_RECIPE_TO_silinosic_x: dict[str, dict[str, Any]] = {
     "subdomain-enum": {
         "surface_preset": "deep",
         "recon_mode": "passive",
@@ -124,7 +124,7 @@ _NATIVE_CAPABILITIES: dict[str, str] = {
 _PARTIAL_CAPABILITIES: dict[str, str] = {
     "tech-detect": "Technology hints are inferred through HTTP behavior and headers, not a full fingerprint stack",
     "spider": "Recursive web discovery is represented as follow-up guidance, not crawler parity",
-    "web-screenshots": "Silica-X validates web targets but does not capture screenshots natively",
+    "web-screenshots": "Silinosic-X validates web targets but does not capture screenshots natively",
     "baddns": "DNS takeover review is represented as prioritization hints, not dedicated takeover modules",
     "portscan": "Packet-crafting engines exist for ARP, SYN, TCP connect, UDP, FIN, NULL, XMAS, and OS fingerprint research, but live execution parity is still being integrated",
     "service-enum": "Read-only packet crafting and banner-intelligence controls exist, but full protocol fingerprint execution remains an incremental buildout",
@@ -522,7 +522,7 @@ def build_surface_recipe_plan(
         }
     )
 
-    recipe_defaults = dict(_RECIPE_TO_silica_x.get(recipe_name, {}))
+    recipe_defaults = dict(_RECIPE_TO_silinosic_x.get(recipe_name, {}))
     resolved_recon_mode = normalize_recon_mode(recon_mode or str(recipe_defaults.get("recon_mode", "hybrid")))
     surface_preset = str(recipe_defaults.get("surface_preset", "balanced"))
     include_ct = bool(recipe_defaults.get("include_ct", True))
@@ -542,7 +542,7 @@ def build_surface_recipe_plan(
     command_preview = shlex.join(
         [
             "python",
-            "silica-x.py",
+            "silinosic-x.py",
             "surface",
             normalized_domain,
             "--preset",
@@ -570,7 +570,7 @@ def build_surface_recipe_plan(
         "partial_capabilities": partial_capabilities,
         "unsupported_capabilities": unsupported_capabilities,
         "unsupported_modules_preview": unsupported_modules[:20],
-        "silica_x_mapping": {
+        "silinosic_x_mapping": {
             "surface_preset": surface_preset,
             "recon_mode": resolved_recon_mode,
             "include_ct": include_ct,
@@ -579,9 +579,9 @@ def build_surface_recipe_plan(
         },
         "execution_preview": command_preview,
         "notes": [
-            "This is a native Silica-X translation of source-derived recipe intent, not a foreign engine port.",
-            "Supported coverage maps into Silica-X passive, active, and hybrid surface collection lanes.",
-            "Unsupported module families remain analyst follow-up areas until dedicated Silica-X engines are added.",
+            "This is a native Silinosic-X translation of source-derived recipe intent, not a foreign engine port.",
+            "Supported coverage maps into Silinosic-X passive, active, and hybrid surface collection lanes.",
+            "Unsupported module families remain analyst follow-up areas until dedicated Silinosic-X engines are added.",
         ],
     }
 
