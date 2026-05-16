@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Proprietary
 # ------------------------------------------------------------------------------
 
-"""Portable PDF report generation for Silica-X payloads."""
+"""Portable PDF report generation for Silinosic-X payloads."""
 
 from __future__ import annotations
 
@@ -60,7 +60,7 @@ def generate_pdf_report(path: Path, payload: dict[str, Any]) -> str:
     styles["Heading2"].textColor = colors.HexColor("#b45519")
 
     story: list[Any] = []
-    story.append(Paragraph("Silica-X Reporter", styles["Title"]))
+    story.append(Paragraph("Silinosic-X Reporter", styles["Title"]))
     story.append(
         Paragraph(
             f"Target: {payload.get('target', '-')}<br/>"
