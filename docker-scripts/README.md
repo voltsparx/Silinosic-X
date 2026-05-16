@@ -1,4 +1,4 @@
-﻿# Docker Runner Scripts
+# Docker Runner Scripts
 
 Release: v10.0 (Theme: Ember)
 
@@ -8,8 +8,8 @@ These scripts wrap `docker/docker-compose.yml` and provide guided setup for:
 - Docker daemon startup checks
 - Docker Compose availability checks
 - Basic host resource checks (RAM + disk)
-- Prompt-safe argument forwarding to Silica-X
-- Clean shutdown of silica_x containers (and optional Docker host stop)
+- Prompt-safe argument forwarding to Silinosic-X
+- Clean shutdown of silinosic_x containers (and optional Docker host stop)
 - Runtime upgrade controls (`--runner-upgrade`, `--runner-pull`, `--runner-no-cache`)
 - Host Docker/Desktop upgrade control (`--runner-upgrade-host`)
 - Docker context support (`--runner-show-contexts`, `--runner-context <name>`)
@@ -43,10 +43,10 @@ Examples:
 # force tor service image
 ./docker-scripts/run-docker-linux.sh --runner-use-tor-service profile alice --tor --html
 
-# stop silica_x containers
+# stop silinosic_x containers
 ./docker-scripts/run-docker-linux.sh --runner-stop
 
-# stop silica_x containers + Docker daemon/desktop
+# stop silinosic_x containers + Docker daemon/desktop
 ./docker-scripts/run-docker-linux.sh --runner-stop-docker
 
 # force runtime upgrade build (pull latest base layers, no cache)
@@ -65,7 +65,7 @@ Examples:
 # pin Docker build Python runtime
 ./docker-scripts/run-docker-linux.sh --runner-build --runner-python-version 3.13 profile alice --html
 
-# pass --help directly to silica_x
+# pass --help directly to silinosic_x
 ./docker-scripts/run-docker-linux.sh -- --help
 ```
 
@@ -98,13 +98,13 @@ Script-only flags are namespaced with `--runner-`:
 - `--runner-no-install`
 - `--runner-prompt`
 
-All non-`--runner-*` args are forwarded to `silica-x.py`.
-No forwarded args starts silica_x prompt mode.
+All non-`--runner-*` args are forwarded to `silinosic-x.py`.
+No forwarded args starts silinosic_x prompt mode.
 
 ## Shutdown Behavior
 
 - `--runner-stop`:
-  Stops/removes silica_x compose services using `down --remove-orphans` for default and `tor` profiles.
+  Stops/removes silinosic_x compose services using `down --remove-orphans` for default and `tor` profiles.
 - `--runner-stop-docker`:
   Runs `--runner-stop` behavior, then attempts to stop Docker on the host.
 - Termux note:
