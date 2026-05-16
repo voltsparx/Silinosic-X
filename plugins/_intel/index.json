@@ -1,6 +1,6 @@
 {
-  "silica_x": {
-    "project": "Silica-X",
+  "silinosic_x": {
+    "project": "Silinosic-X",
     "version": "10.0",
     "theme": "Ember",
     "component": "intel_pack"
@@ -20,7 +20,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "recovery_exposure",
         "contact_surface",
@@ -39,7 +39,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "contact_mesh",
         "contacts",
@@ -58,7 +58,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "activity_timeline",
         "timeline",
@@ -78,7 +78,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "aes_plugin",
         "aes_crypto",
@@ -98,7 +98,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "rot13_plugin",
         "rot13_crypto",
@@ -118,7 +118,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "xor_plugin",
         "xor_crypto",
@@ -138,7 +138,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "darkweb",
         "darknet",
@@ -157,7 +157,7 @@
         "surface"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "takeover_probe",
         "dangling_dns",
@@ -175,7 +175,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "email_pattern",
         "mail_pattern",
@@ -194,7 +194,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "link_intel",
         "bio_links",
@@ -213,7 +213,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "surface_header_audit",
         "headers",
@@ -232,7 +232,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "persona_signal_fusion",
         "persona",
@@ -251,7 +251,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "link_risk",
         "outbound_links",
@@ -270,7 +270,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "media_intel",
         "ocr_media",
@@ -289,7 +289,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "media_recon",
         "image_recon",
@@ -309,7 +309,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [],
       "plugin_group": "core",
       "crypto_kind": null
@@ -325,7 +325,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "module_matrix",
         "catalog_matrix",
@@ -343,7 +343,7 @@
         "ocr"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "ocr_batch",
         "ocr_pipeline",
@@ -361,7 +361,7 @@
         "ocr"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "ocr",
         "image_ocr",
@@ -379,7 +379,7 @@
         "ocr"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "ocr_regex",
         "ocr_structured",
@@ -398,7 +398,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "account_link_graph",
         "linkgraph",
@@ -417,7 +417,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "post_intel",
         "text_intel",
@@ -436,7 +436,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "rdap_inspector",
         "domain_lifecycle",
@@ -454,7 +454,7 @@
         "surface"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "securitytxt",
         "disclosure_policy",
@@ -467,14 +467,14 @@
       "module_name": "signal_fusion_core",
       "id": "signal_fusion_core",
       "title": "Signal Fusion Core",
-      "description": "Runs internal connector lanes and merges normalized signals into silica_x workflows.",
+      "description": "Runs internal connector lanes and merges normalized signals into silinosic_x workflows.",
       "scopes": [
         "profile",
         "surface",
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "fusion_core",
         "signal_core",
@@ -493,7 +493,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "stego_probe",
         "stago_probe",
@@ -512,7 +512,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "subdomain_exposure_map",
         "subdomainmap",
@@ -531,7 +531,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "transport_stability",
         "http_https_probe",
@@ -551,7 +551,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "risk_orchestrator",
         "risk",
@@ -570,7 +570,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "impersonation_probe",
         "lookalike_usernames",
