@@ -171,7 +171,7 @@ def write_sqlite_report(path: Path, payload: dict[str, Any]) -> str:
 
 
 class KnowledgeBase:
-    """Cross-session persistent knowledge base for Silica-X.
+    """Cross-session persistent knowledge base for Silinosic-X.
 
     Stores findings from every scan so future scans of the same or related
     targets can be enriched with historical context.
@@ -188,9 +188,9 @@ class KnowledgeBase:
 
                 settings = get_output_settings()
                 root = settings.output_root or Path("output")
-                db_path = str(Path(root) / "silica_x_kb.db")
+                db_path = str(Path(root) / "silinosic_x_kb.db")
             except Exception:
-                db_path = "output/silica_x_kb.db"
+                db_path = "output/silinosic_x_kb.db"
         self._db_path = db_path
         Path(db_path).parent.mkdir(parents=True, exist_ok=True)
         self._init_schema()
