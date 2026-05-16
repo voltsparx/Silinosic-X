@@ -1,6 +1,6 @@
 ﻿# Tor Wrappers
 
-Release: v10.0 (Theme: Ember)
+Release: v11.2.0 (Theme: Ember)
 
 This folder now contains Tor wrapper scripts for container and host OS usage.
 

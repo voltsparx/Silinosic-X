@@ -4,7 +4,7 @@ The repository is intended to be maintainable, not only feature-rich.
 
 ## Stability posture
 
-- package metadata is aligned on `v10.0`
+- package metadata is aligned on `v11.2.0`
 - HTML reporting is centralized through Reporter
 - docs and website now describe the current runtime instead of old release notes
 - media and OCR lanes are wired into the main project surface

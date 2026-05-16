@@ -12,7 +12,7 @@ const DocsData = (() => {
   };
 
   const entries = [
-    { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v10.0 snapshot.", group: "Start Here" },
+    { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v11.2.0 snapshot.", group: "Start Here" },
     { id: "core-idea", title: "What Silinosic-X Is", page: "index.html", hint: "The actual problem the framework is solving.", group: "Start Here" },
     { id: "how-it-works", title: "How It Works", page: "index.html", hint: "Execution flow from commands to outputs.", group: "Start Here" },
     { id: "quickstart-30", title: "Quick Start", page: "index.html", hint: "Five-line path from clone to prompt mode.", group: "Start Here" },

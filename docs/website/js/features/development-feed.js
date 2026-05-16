@@ -89,7 +89,7 @@ async function initDevelopmentFeed() {
 
     if (rawViewerGrid) {
       const files = [
-        { title: "README", path: "README.md", copy: "Current v10.0 release statement, package naming, and workflow summary." },
+        { title: "README", path: "README.md", copy: "Current v11.2.0 release statement, package naming, and workflow summary." },
         { title: "Docs Index", path: "docs/README.md", copy: "The new docs tree for architecture, Reporter, media, and development." },
         { title: "Reporter", path: "docs/reporter.md", copy: "Reporter structure, goals, and artifact framing." },
         { title: "Media Intelligence", path: "docs/media-intelligence.md", copy: "Public-media and OCR lane overview." },
