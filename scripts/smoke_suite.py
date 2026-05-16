@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Offline-friendly smoke suite for core Silica-X command surfaces."""
+"""Offline-friendly smoke suite for core Silinosic-X command surfaces."""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ def _make_ocr_fixture(path: Path) -> None:
 
     image = Image.new("RGB", (860, 260), "white")
     draw = ImageDraw.Draw(image)
-    draw.text((30, 50), "Silica-X Smoke", fill="black")
+    draw.text((30, 50), "Silinosic-X Smoke", fill="black")
     draw.text((30, 110), "mail: smoke@example.com", fill="black")
     draw.text((30, 170), "url: https://example.com", fill="black")
     image.save(path)
@@ -56,23 +56,23 @@ def _assert_any_files(root: Path, pattern: str, label: str) -> None:
 
 
 def main() -> int:
-    smoke_root = Path(tempfile.mkdtemp(prefix="silica-x-smoke-"))
+    smoke_root = Path(tempfile.mkdtemp(prefix="silinosic-x-smoke-"))
     try:
         artifact_root = smoke_root / "artifacts"
         ocr_fixture = smoke_root / "ocr-smoke.png"
         _make_ocr_fixture(ocr_fixture)
 
         basic_commands = [
-            ("about", [PYTHON, "silica-x.py", "--about"], 0),
-            ("doctor", [PYTHON, "silica-x.py", "doctor", "--json"], 0),
-            ("module-entrypoint-about", [PYTHON, "-m", "silica_x", "--about"], 0),
-            ("plugin-inventory", [PYTHON, "silica-x.py", "plugins", "--scope", "ocr"], 0),
-            ("filter-inventory", [PYTHON, "silica-x.py", "filters", "--scope", "fusion"], 0),
-            ("module-inventory", [PYTHON, "silica-x.py", "modules", "--scope", "surface", "--limit", "2"], 0),
-            ("framework-inventory", [PYTHON, "silica-x.py", "frameworks", "--framework", "recursive-modules", "--limit", "2"], 0),
-            ("surface-kit-dry-run", [PYTHON, "silica-x.py", "surface-kit", "example.com", "--preset", "subdomain-enum", "--dry-run"], 0),
-            ("invalid-command", [PYTHON, "silica-x.py", "bogus"], 2),
-            ("ocr-no-source", [PYTHON, "silica-x.py", "ocr"], 2),
+            ("about", [PYTHON, "silinosic-x.py", "--about"], 0),
+            ("doctor", [PYTHON, "silinosic-x.py", "doctor", "--json"], 0),
+            ("module-entrypoint-about", [PYTHON, "-m", "silinosic_x", "--about"], 0),
+            ("plugin-inventory", [PYTHON, "silinosic-x.py", "plugins", "--scope", "ocr"], 0),
+            ("filter-inventory", [PYTHON, "silinosic-x.py", "filters", "--scope", "fusion"], 0),
+            ("module-inventory", [PYTHON, "silinosic-x.py", "modules", "--scope", "surface", "--limit", "2"], 0),
+            ("framework-inventory", [PYTHON, "silinosic-x.py", "frameworks", "--framework", "recursive-modules", "--limit", "2"], 0),
+            ("surface-kit-dry-run", [PYTHON, "silinosic-x.py", "surface-kit", "example.com", "--preset", "subdomain-enum", "--dry-run"], 0),
+            ("invalid-command", [PYTHON, "silinosic-x.py", "bogus"], 2),
+            ("ocr-no-source", [PYTHON, "silinosic-x.py", "ocr"], 2),
         ]
         for label, args, code in basic_commands:
             _run(label, args, expect=code)
@@ -83,7 +83,7 @@ def main() -> int:
             "quicktest-rich-artifacts",
             [
                 PYTHON,
-                "silica-x.py",
+                "silinosic-x.py",
                 "quicktest",
                 "--template",
                 "atlas-mercier",
@@ -107,7 +107,7 @@ def main() -> int:
             "ocr-rich-artifacts",
             [
                 PYTHON,
-                "silica-x.py",
+                "silinosic-x.py",
                 "ocr",
                 str(ocr_fixture),
                 "--plugin",
@@ -130,11 +130,11 @@ def main() -> int:
         _assert_any_files(ocr_output_root, "*.docx", "ocr docx")
         _assert_any_files(ocr_output_root, "*.pdf", "ocr pdf")
 
-        cli_entrypoint = shutil.which("silica-x")
+        cli_entrypoint = shutil.which("silinosic-x")
         if cli_entrypoint:
             _run("installed-entrypoint-about", [cli_entrypoint, "--about"], expect=0)
         else:
-            print("[smoke] installed-entrypoint-about: skipped (silica-x not on PATH)")
+            print("[smoke] installed-entrypoint-about: skipped (silinosic-x not on PATH)")
 
         print(f"[smoke] success: artifacts written under {artifact_root}")
         return 0
