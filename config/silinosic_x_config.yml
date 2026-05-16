@@ -1,6 +1,6 @@
-silica_x:
+silinosic_x:
   version: "10.1"
-  description: "Silica-X operator configuration"
+  description: "Silinosic-X operator configuration"
 
 surface_probe:
   enabled: true
