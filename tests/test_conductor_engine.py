@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -32,7 +32,7 @@ def test_conductor_routes_tagged_sync_task():
     def task():
         return "sync"
 
-    task._silica_x_engine = "sync"
+    task._silinosic_x_engine = "sync"
     result = asyncio.run(ConductorEngine().run([task]))
     assert result == ["sync"]
 
@@ -41,7 +41,7 @@ def test_conductor_routes_tagged_crypto_task():
     def task():
         return "crypto"
 
-    task._silica_x_engine = "crypto"
+    task._silinosic_x_engine = "crypto"
     result = asyncio.run(ConductorEngine().run([task]))
     assert result == ["crypto"]
 
