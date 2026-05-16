@@ -24,14 +24,14 @@ $RunnerStop = $false
 $RunnerStopDocker = $false
 $RunnerShowContexts = $false
 $RunnerDiagnose = $false
-$RunnerService = 'silica-x'
+$RunnerService = 'silinosic-x'
 $RunnerProfile = ''
 $RunnerPythonVersion = ''
 $RunnerContext = ''
 $RunnerServiceSet = $false
 $RunnerProfileSet = $false
 $UseLegacyCompose = $false
-$silica_xArgs = [System.Collections.Generic.List[string]]::new()
+$silinosic_xArgs = [System.Collections.Generic.List[string]]::new()
 
 function Write-InfoLine {
   param([string]$Message)
@@ -51,8 +51,8 @@ function Write-ErrorLine {
 function Show-Help {
   $help = @"
 Usage:
-  .\docker-scripts\$ScriptName [runner-options] [silica_x-args...]
-  .\docker-scripts\$ScriptName [runner-options] -- [silica_x-args...]
+  .\docker-scripts\$ScriptName [runner-options] [silinosic_x-args...]
+  .\docker-scripts\$ScriptName [runner-options] -- [silinosic_x-args...]
 
 Runner options (reserved for this script):
   --runner-help              Show this help message.
@@ -61,23 +61,23 @@ Runner options (reserved for this script):
   --runner-no-cache          Build with --no-cache.
   --runner-upgrade           Upgrade container runtime (implies --runner-build --runner-pull --runner-no-cache).
   --runner-upgrade-host      Upgrade host Docker Desktop/components.
-  --runner-stop              Stop/remove silica_x containers.
-  --runner-stop-docker       Stop/remove silica_x containers and stop Docker Desktop.
+  --runner-stop              Stop/remove silinosic_x containers.
+  --runner-stop-docker       Stop/remove silinosic_x containers and stop Docker Desktop.
   --runner-show-contexts     List Docker contexts and exit.
   --runner-diagnose          Run non-interactive environment diagnostics and exit.
   --runner-context <name>    Use a specific Docker context.
-  --runner-use-tor-service   Force Tor service container (silica-x-tor).
-  --runner-service <name>    Override compose service (default: silica-x).
+  --runner-use-tor-service   Force Tor service container (silinosic-x-tor).
+  --runner-service <name>    Override compose service (default: silinosic-x).
   --runner-profile <name>    Override compose profile (default: auto).
   --runner-python-version <v>  Override Docker build arg PYTHON_VERSION (e.g., 3.13).
   --runner-no-install        Never install missing Docker components.
-  --runner-prompt            Force silica_x prompt mode (ignore silica_x-args).
+  --runner-prompt            Force silinosic_x prompt mode (ignore silinosic_x-args).
 
-silica_x args:
-  Any argument not prefixed with --runner- is passed to silica-x.
-  If no silica_x args are passed, silica-x starts in prompt mode.
-  If silica_x args include --tor (without --no-tor), this script auto-selects
-  service 'silica-x-tor' and profile 'tor' unless you override it.
+silinosic_x args:
+  Any argument not prefixed with --runner- is passed to silinosic-x.
+  If no silinosic_x args are passed, silinosic-x starts in prompt mode.
+  If silinosic_x args include --tor (without --no-tor), this script auto-selects
+  service 'silinosic-x-tor' and profile 'tor' unless you override it.
 
 Examples:
   .\docker-scripts\$ScriptName
@@ -194,13 +194,13 @@ function Parse-RunnerArgs {
       '--' {
         $i++
         while ($i -lt $InputArgs.Count) {
-          $script:silica_xArgs.Add($InputArgs[$i])
+          $script:silinosic_xArgs.Add($InputArgs[$i])
           $i++
         }
         break
       }
       default {
-        $script:silica_xArgs.Add($token)
+        $script:silinosic_xArgs.Add($token)
       }
     }
     $i++
@@ -209,24 +209,24 @@ function Parse-RunnerArgs {
 
 function Configure-ModeAndService {
   if ($RunnerPrompt) {
-    $silica_xArgs.Clear()
+    $silinosic_xArgs.Clear()
   }
 
   if ($RunnerForceTorService) {
-    $script:RunnerService = 'silica-x-tor'
+    $script:RunnerService = 'silinosic-x-tor'
     if (-not $RunnerProfileSet) {
       $script:RunnerProfile = 'tor'
     }
   }
 
-  if ($RunnerService -eq 'silica-x-tor' -and -not $RunnerProfileSet -and [string]::IsNullOrWhiteSpace($RunnerProfile)) {
+  if ($RunnerService -eq 'silinosic-x-tor' -and -not $RunnerProfileSet -and [string]::IsNullOrWhiteSpace($RunnerProfile)) {
     $script:RunnerProfile = 'tor'
   }
 
   if (-not $RunnerServiceSet -and -not $RunnerForceTorService) {
     $wantsTor = $false
     $disablesTor = $false
-    foreach ($arg in $silica_xArgs) {
+    foreach ($arg in $silinosic_xArgs) {
       if ($arg -eq '--tor') {
         $wantsTor = $true
       } elseif ($arg -eq '--no-tor') {
@@ -234,7 +234,7 @@ function Configure-ModeAndService {
       }
     }
     if ($wantsTor -and -not $disablesTor) {
-      $script:RunnerService = 'silica-x-tor'
+      $script:RunnerService = 'silinosic-x-tor'
       if (-not $RunnerProfileSet) {
         $script:RunnerProfile = 'tor'
       }
@@ -698,7 +698,7 @@ function Invoke-ComposeWithProfile {
   }
 }
 
-function Stop-silica_xComposeStack {
+function Stop-silinosic_xComposeStack {
   if (-not (Get-Command docker -ErrorAction SilentlyContinue) -and -not (Get-Command docker-compose -ErrorAction SilentlyContinue)) {
     Write-WarnLine 'Docker CLI is not available. Nothing to stop.'
     return
@@ -714,7 +714,7 @@ function Stop-silica_xComposeStack {
     return
   }
 
-  Write-InfoLine 'Stopping silica_x compose services...'
+  Write-InfoLine 'Stopping silinosic_x compose services...'
   try {
     Invoke-ComposeWithProfile -Profile '' -ComposeArgs @('down', '--remove-orphans')
   } catch {
@@ -746,20 +746,20 @@ function Stop-DockerHost {
 }
 
 function Perform-Shutdown {
-  if ($silica_xArgs.Count -gt 0) {
-    Write-WarnLine 'Ignoring forwarded silica_x args during shutdown.'
+  if ($silinosic_xArgs.Count -gt 0) {
+    Write-WarnLine 'Ignoring forwarded silinosic_x args during shutdown.'
   }
 
-  Stop-silica_xComposeStack
+  Stop-silinosic_xComposeStack
 
   if ($RunnerStopDocker) {
     Stop-DockerHost
   } else {
-    Write-InfoLine 'silica_x containers stopped. Docker daemon left running.'
+    Write-InfoLine 'silinosic_x containers stopped. Docker daemon left running.'
   }
 }
 
-function Run-silica_x {
+function Run-silinosic_x {
   if ($RunnerUpgrade) {
     $script:RunnerBuild = $true
     $script:RunnerPull = $true
@@ -793,11 +793,11 @@ function Run-silica_x {
   $runArgs.Add('--rm')
   $runArgs.Add($RunnerService)
 
-  if ($silica_xArgs.Count -eq 0) {
-    Write-InfoLine "Starting Silica-X in prompt mode via Docker service: $RunnerService"
+  if ($silinosic_xArgs.Count -eq 0) {
+    Write-InfoLine "Starting Silinosic-X in prompt mode via Docker service: $RunnerService"
   } else {
-    Write-InfoLine "Running Silica-X via Docker service: $RunnerService"
-    foreach ($arg in $silica_xArgs) {
+    Write-InfoLine "Running Silinosic-X via Docker service: $RunnerService"
+    foreach ($arg in $silinosic_xArgs) {
       $runArgs.Add($arg)
     }
   }
@@ -837,7 +837,7 @@ try {
   Ensure-DockerDaemon
   Ensure-ComposeAvailable
   Ensure-OutputDirs
-  Run-silica_x
+  Run-silinosic_x
 } catch {
   Write-ErrorLine $_.Exception.Message
   exit 1
