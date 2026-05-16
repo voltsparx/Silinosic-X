@@ -1,19 +1,19 @@
 # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-"""Main runner orchestration for Silica-X."""
+"""Main runner orchestration for Silinosic-X."""
 
 from __future__ import annotations
 
@@ -1061,7 +1061,7 @@ def _print_framework_inventory(
 
 def _print_surface_recipe_plan(plan: dict[str, Any]) -> None:
     preset = plan.get("recipe", {}) if isinstance(plan.get("recipe"), dict) else {}
-    mapping = plan.get("silica_x_mapping", {}) if isinstance(plan.get("silica_x_mapping"), dict) else {}
+    mapping = plan.get("silinosic_x_mapping", {}) if isinstance(plan.get("silinosic_x_mapping"), dict) else {}
 
     print(c(f"\n{symbol('major')} Surface Kit Plan", Colors.BLUE))
     print(c("-" * 36, Colors.BLUE))
@@ -1099,7 +1099,7 @@ def _print_surface_recipe_plan(plan: dict[str, Any]) -> None:
     unsupported_modules = plan.get("unsupported_modules_preview", [])
     if isinstance(unsupported_modules, list) and unsupported_modules:
         print(c(f"  unsupported_modules_preview: {', '.join(unsupported_modules)}", Colors.WHITE))
-    print(c(f"  silica_x_command: {plan.get('execution_preview', '-')}", Colors.CYAN))
+    print(c(f"  silinosic_x_command: {plan.get('execution_preview', '-')}", Colors.CYAN))
     print()
 
 
@@ -1226,7 +1226,7 @@ def _collect_runtime_inventory() -> RuntimeInventorySummary:
             hybrid_architecture=build_hybrid_architecture_snapshot(),
         )
 
-    return run_with_spinner("[*] Loading Silica-X runtime inventory... ", _build)
+    return run_with_spinner("[*] Loading Silinosic-X runtime inventory... ", _build)
 
 
 def _module_available(module_name: str) -> bool:
@@ -1395,7 +1395,7 @@ def _build_doctor_snapshot() -> dict[str, Any]:
             )
 
     return {
-        "silica_x": {
+        "silinosic_x": {
             "name": PROJECT_NAME,
             "version": VERSION,
             "signature": framework_signature(),
@@ -1510,7 +1510,7 @@ def _print_doctor_report(snapshot: dict[str, Any]) -> None:
     status_text = "OK" if str(summary.get("status") or "issues") == "ok" else "ISSUES"
     status_color = Colors.GREEN if status_text == "OK" else Colors.RED
 
-    print(c(f"\n{symbol('major')} Silica-X Doctor", Colors.BLUE))
+    print(c(f"\n{symbol('major')} Silinosic-X Doctor", Colors.BLUE))
     print(c("-" * 36, Colors.BLUE))
     print(c(f"{symbol('action')} status={status_text} warnings={summary.get('warning_count', 0)} errors={summary.get('error_count', 0)}", status_color))
     print(c(f"{symbol('bullet')} generated_at={snapshot.get('generated_at_utc', '-')}", Colors.CYAN))
@@ -1566,7 +1566,7 @@ def _print_doctor_report(snapshot: dict[str, Any]) -> None:
         print(c(f"  image_built={docker_data.get('image_built', False)}", Colors.CYAN))
         print(c(f"  image={docker_data.get('image_name', '-')}", Colors.CYAN))
         if not docker_data.get("binary_found"):
-            print(c("  tip: run silica-x --docker to auto-install Docker", Colors.EMBER))
+            print(c("  tip: run silinosic-x --docker to auto-install Docker", Colors.EMBER))
 
     if warnings:
         print(c("\nwarnings:", Colors.EMBER))
@@ -3281,7 +3281,7 @@ async def _handle_ocr_command(args: argparse.Namespace, state: RunnerState, prom
         return EXIT_SUCCESS
     if not list(getattr(args, "paths", []) or []) and not list(getattr(args, "url", []) or []):
         print(c(f"{symbol('warn')} OCR scan requires at least one local image path or remote image URL.", Colors.RED))
-        print(c(f"{symbol('tip')} Example: silica-x ocr ./capture.png --out-type json,html", Colors.EMBER))
+        print(c(f"{symbol('tip')} Example: silinosic-x ocr ./capture.png --out-type json,html", Colors.EMBER))
         return EXIT_USAGE
 
     plugin_ids, filter_ids, _, ok_plan = _resolve_extension_plan_or_fail(
@@ -4761,7 +4761,7 @@ async def _handle_surface_kit_command(args: argparse.Namespace, state: RunnerSta
     if bool(getattr(args, "dry_run", False)):
         return EXIT_SUCCESS
 
-    mapping = plan.get("silica_x_mapping", {}) if isinstance(plan.get("silica_x_mapping"), dict) else {}
+    mapping = plan.get("silinosic_x_mapping", {}) if isinstance(plan.get("silinosic_x_mapping"), dict) else {}
     resolved_preset = str(mapping.get("surface_preset", "balanced"))
     resolved_recon_mode = str(mapping.get("recon_mode", "hybrid"))
     timeout_seconds, max_subdomains, _ = _resolve_surface_runtime(
@@ -5591,7 +5591,7 @@ async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
     session = PromptSessionState()
     clear_screen()
     show_banner(get_anonymity_status(state))
-    if os.environ.get("SILICA_X_DOCKER") == "1":
+    if os.environ.get("SILINOSIC_X_DOCKER") == "1":
         print(
             c(
                 f"{symbol('ok')} Running inside Docker container. "
@@ -5599,7 +5599,7 @@ async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
                 Colors.GREEN,
             )
         )
-        if os.environ.get("SILICA_X_TOR") == "1":
+        if os.environ.get("SILINOSIC_X_TOR") == "1":
             print(c(f"{symbol('ok')} Tor routing is active inside container.", Colors.GREEN))
     _print_runtime_loaded_inventory()
     prompt_parser = build_prompt_parser()
@@ -5642,7 +5642,7 @@ async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
         lowered = " ".join(raw_tokens).lower()
         keyword_match = _keyword_to_command(lowered)
         if lowered in PROMPT_KEYWORDS["exit"]:
-            print(c("\nExiting Silica-X.", Colors.RED))
+            print(c("\nExiting Silinosic-X.", Colors.RED))
             return EXIT_SUCCESS
         if lowered in PROMPT_KEYWORDS["help"]:
             show_prompt_help()
@@ -5802,24 +5802,24 @@ async def run(argv: Sequence[str] | None = None) -> int:
             launch_container,
         )
 
-        print(c("[Silica-X] Docker mode requested.", Colors.CYAN))
+        print(c("[Silinosic-X] Docker mode requested.", Colors.CYAN))
         docker_runtime_status = docker_status()
-        print(c(f"[Silica-X] Docker binary: {'found' if docker_runtime_status['binary_found'] else 'not found'}", Colors.CYAN))
-        print(c(f"[Silica-X] Daemon running: {docker_runtime_status['daemon_running']}", Colors.CYAN))
-        print(c(f"[Silica-X] Image built: {docker_runtime_status['image_built']}", Colors.CYAN))
+        print(c(f"[Silinosic-X] Docker binary: {'found' if docker_runtime_status['binary_found'] else 'not found'}", Colors.CYAN))
+        print(c(f"[Silinosic-X] Daemon running: {docker_runtime_status['daemon_running']}", Colors.CYAN))
+        print(c(f"[Silinosic-X] Image built: {docker_runtime_status['image_built']}", Colors.CYAN))
         force_rebuild = bool(getattr(args, "docker_rebuild", False))
         ready, message = ensure_docker_ready(prompt_user=_can_prompt_user())
         if not ready:
-            print(c(f"[Silica-X] Docker setup failed: {message}", Colors.RED))
-            print(c("[Silica-X] Install Docker manually from https://docs.docker.com/get-docker/", Colors.EMBER))
+            print(c(f"[Silinosic-X] Docker setup failed: {message}", Colors.RED))
+            print(c("[Silinosic-X] Install Docker manually from https://docs.docker.com/get-docker/", Colors.EMBER))
             return EXIT_FAILURE
         if force_rebuild:
             ok, msg = build_image(force_rebuild=True)
             if not ok:
-                print(c(f"[Silica-X] Image rebuild failed: {msg}", Colors.RED))
+                print(c(f"[Silinosic-X] Image rebuild failed: {msg}", Colors.RED))
                 return EXIT_FAILURE
-            print(c(f"[Silica-X] {msg}", Colors.GREEN))
-        print(c("[Silica-X] Docker is ready. Launching container...", Colors.GREEN))
+            print(c(f"[Silinosic-X] {msg}", Colors.GREEN))
+        print(c("[Silinosic-X] Docker is ready. Launching container...", Colors.GREEN))
         container_argv = [
             token for token in argv_tokens if token not in {"--docker", "--docker-rebuild"}
         ]
@@ -5849,7 +5849,7 @@ async def run(argv: Sequence[str] | None = None) -> int:
         print(
             c(
                 "Global flags --about/--explain cannot be combined with a command. "
-                "Run them alone (example: silica-x --about).",
+                "Run them alone (example: silinosic-x --about).",
                 Colors.RED,
             )
         )
