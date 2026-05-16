@@ -1,4 +1,4 @@
-"""Silica-X package facade."""
+"""Silinosic-X package facade."""
 
 from core.foundation.metadata import VERSION as __version__
 
