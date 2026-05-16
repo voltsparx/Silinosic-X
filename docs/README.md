@@ -1,4 +1,4 @@
-# Silica-X Docs v10.0
+# Silinosic-X Docs v10.0
 
 This directory contains the current documentation set for the v10.0 Ember release line.
 
