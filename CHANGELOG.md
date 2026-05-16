@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Silica-X are documented in this file.
+All notable changes to Silinosic-X are documented in this file.
 
 ## Unreleased
 
@@ -8,7 +8,7 @@ All notable changes to Silica-X are documented in this file.
 
 ### Changed
 
-- Aligned the Python package version and runtime metadata with the current Silica-X release state.
+- Aligned the Python package version and runtime metadata with the current Silinosic-X release state.
 - Updated root README package/install guidance and cleaned the top section layout for better rendering.
 - Replaced stale hardcoded runtime version strings in user-facing report and HTTP user-agent paths.
 
@@ -24,8 +24,8 @@ All notable changes to Silica-X are documented in this file.
 
 ### Changed
 
-- `docker/Dockerfile` now builds a full Silica-X runtime image with Tesseract, Tor, nmap, and package installation through the project entrypoint.
-- `docker/docker-compose.yml` now exposes `silica-x`, `silica-x-tor`, and `silica-x-full` services for prompt-mode container workflows.
+- `docker/Dockerfile` now builds a full Silinosic-X runtime image with Tesseract, Tor, nmap, and package installation through the project entrypoint.
+- `docker/docker-compose.yml` now exposes `silinosic-x`, `silinosic-x-tor`, and `silinosic-x-full` services for prompt-mode container workflows.
 
 ## v11.1-stable
 
@@ -35,7 +35,7 @@ All notable changes to Silica-X are documented in this file.
 - Expanded platform manifest coverage with `91` validated platform definitions.
 - Live pipeline-driven enrichment for profile scans through `PipelineEngine`.
 - `LiveEnrichmentSubscriber` for real-time contact and credential signal enrichment during profile scans.
-- Persistent cross-session knowledge base in `output/silica_x_kb.db`.
+- Persistent cross-session knowledge base in `output/silinosic_x_kb.db`.
 - Doctor snapshot visibility for engine health and knowledge-base status.
 - New platform manifest, live enrichment, Docker, and Tor runtime tests.
 
