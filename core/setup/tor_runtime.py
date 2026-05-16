@@ -1,19 +1,19 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
-"""Tor runtime manager for Silica-X.
+"""Tor runtime manager for Silinosic-X.
 
 Provides OS-aware Tor installation, configuration deployment,
 and service lifecycle management. Wraps core/collect/anonymity.py
@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 
-TOR_CONFIG_RELATIVE = "docker/torrc.silica_x"
+TOR_CONFIG_RELATIVE = "docker/torrc.silinosic_x"
 TOR_SOCKS_HOST = "127.0.0.1"
 TOR_SOCKS_PORT = 9050
 
@@ -62,7 +62,7 @@ def find_torrc() -> Path | None:
 def deploy_torrc(destination: str | None = None) -> tuple[bool, str]:
     torrc = find_torrc()
     if torrc is None:
-        return False, f"Silica-X torrc not found at {TOR_CONFIG_RELATIVE}."
+        return False, f"Silinosic-X torrc not found at {TOR_CONFIG_RELATIVE}."
     if destination is None:
         os_name = detect_os()
         if os_name == "linux":
@@ -91,7 +91,7 @@ def install_tor(*, prompt_user: bool = True) -> tuple[bool, str]:
 
     if prompt_user:
         try:
-            answer = input("[Silica-X] Tor is not installed. Install Tor automatically? (y/n): ").strip().lower()
+            answer = input("[Silinosic-X] Tor is not installed. Install Tor automatically? (y/n): ").strip().lower()
         except (EOFError, KeyboardInterrupt):
             return False, "Tor installation declined."
         if answer not in {"y", "yes"}:
@@ -112,7 +112,7 @@ def tor_full_status() -> dict[str, Any]:
         "socks_port": TOR_SOCKS_PORT,
         "install_supported": status.install_supported,
         "os_name": status.os_name,
-        "silica_x_torrc": str(torrc) if torrc else None,
+        "silinosic_x_torrc": str(torrc) if torrc else None,
         "notes": list(status.notes),
     }
 
@@ -130,7 +130,7 @@ def ensure_tor_ready(*, prompt_user: bool = True) -> tuple[bool, str]:
             return False, "Tor installed but binary still not found. Restart terminal."
     if status.socks_reachable:
         return True, "Tor is already running."
-    print("[Silica-X] Starting Tor...")
+    print("[Silinosic-X] Starting Tor...")
     ok, msg = start_tor(status.binary_path)
     if not ok:
         return False, f"Failed to start Tor: {msg}"
