@@ -19,9 +19,9 @@ class TestHybridArchitecture(unittest.TestCase):
         self.assertIn("Tor only", text)
         self.assertIn("Authorized research only.", text)
 
-    def test_hybrid_architecture_snapshot_is_native_to_silica_x(self):
+    def test_hybrid_architecture_snapshot_is_native_to_silinosic_x(self):
         snapshot = build_hybrid_architecture_snapshot()
-        self.assertEqual(snapshot["identity"], "silica-x-hybrid")
+        self.assertEqual(snapshot["identity"], "silinosic-x-hybrid")
         self.assertEqual(len(snapshot["lanes"]), 4)
         self.assertEqual(len(snapshot["engines"]), 5)
         inspiration_ids = {row["id"] for row in snapshot["inspiration"]}
@@ -42,7 +42,7 @@ class TestHybridArchitecture(unittest.TestCase):
             filter_scope_counts={"profile": 1, "surface": 1, "fusion": 2},
             hybrid_architecture=hybrid,
         )
-        self.assertEqual(snapshot["hybrid_architecture"]["identity"], "silica-x-hybrid")
+        self.assertEqual(snapshot["hybrid_architecture"]["identity"], "silinosic-x-hybrid")
         self.assertEqual(snapshot["inventory"]["modules"], 11)
 
     def test_spinner_frames_match_console_cycle(self):
