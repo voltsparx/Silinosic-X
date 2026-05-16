@@ -1,6 +1,6 @@
 # Architecture
 
-Silica-X is a policy-driven OSINT runtime rather than a single collector.
+Silinosic-X is a policy-driven OSINT runtime rather than a single collector.
 
 ## Execution shape
 
