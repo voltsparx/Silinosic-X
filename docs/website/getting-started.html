@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Getting Started | Silica-X</title>
-<meta name="description" content="Install Silica-X as a package, verify the environment, and run the first profile, surface, and fusion workflows.">
-<link rel="canonical" href="https://voltsparx.github.io/Silica-X/getting-started.html">
+<title>Getting Started | Silinosic-X</title>
+<meta name="description" content="Install Silinosic-X as a package, verify the environment, and run the first profile, surface, and fusion workflows.">
+<link rel="canonical" href="https://voltsparx.github.io/Silinosic-X/getting-started.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,14 +17,14 @@
 <link rel="stylesheet" href="css/components/modules.css">
 <link rel="stylesheet" href="css/components/development.css">
 <link rel="stylesheet" href="css/layout/responsive.css">
-<link rel="icon" href="web_assets/media/silica-x-favicon.ico" sizes="any">
+<link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
 </head>
 <body data-page="getting-started.html" data-default-section="install">
 <header id="topbar">
-  <button id="topbar-brand" type="button" aria-label="Silica-X brand console trigger">
-    <img src="web_assets/media/silica-x-web.png" alt="Silica-X logo">
+  <button id="topbar-brand" type="button" aria-label="Silinosic-X brand console trigger">
+    <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X logo">
     <span id="topbar-brand-text">
-      <span id="topbar-name">Silica-X</span>
+      <span id="topbar-name">Silinosic-X</span>
       <span id="topbar-tagline">OSINT orchestration and correlation framework</span>
     </span>
   </button>
@@ -37,7 +37,7 @@
     <a href="index.html">Overview</a>
     <a href="download.html#download-home">Docker</a>
     <a href="development.html#development-home">Development</a>
-    <a href="https://github.com/voltsparx/Silica-X" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub</a>
     <div class="contact-wrap">
       <button id="contact-toggle" class="contact-toggle" type="button" aria-expanded="false">Contact</button>
       <div id="contact-popover" class="contact-popover" hidden>
@@ -63,8 +63,8 @@
 <main id="main">
   <header class="page-intro">
     <div class="eyebrow">Setup</div>
-    <h1 class="page-title">Install, verify, and run your first Silica-X workflows</h1>
-    <p class="page-copy">Silica-X is packaged for <span class="mono">pip install silica-x</span>. Use the installed CLI as <span class="mono">silica-x</span>, and import it inside Python code as <span class="mono">silica_x</span>. A source checkout still makes sense for contributors.</p>
+    <h1 class="page-title">Install, verify, and run your first Silinosic-X workflows</h1>
+    <p class="page-copy">Silinosic-X is packaged for <span class="mono">pip install silinosic-x</span>. Use the installed CLI as <span class="mono">silinosic-x</span>, and import it inside Python code as <span class="mono">silinosic_x</span>. A source checkout still makes sense for contributors.</p>
   </header>
 
   <section id="install" class="page-section section-anchor">
@@ -82,11 +82,11 @@
           <span class="code-dot"></span>
           <span class="code-lang">shell</span>
         </div>
-        <pre class="code-body"><span class="cmd">pip install</span> <span class="arg">silica-x</span>
-<span class="cmd">silica-x</span> <span class="arg">--about</span>
-<span class="cmd">silica-x</span> <span class="arg">doctor</span>
-<span class="cmd">python -m</span> <span class="arg">silica_x --about</span>
-<span class="cmd">python -c</span> <span class="arg">"import silica_x"</span></pre>
+        <pre class="code-body"><span class="cmd">pip install</span> <span class="arg">silinosic-x</span>
+<span class="cmd">silinosic-x</span> <span class="arg">--about</span>
+<span class="cmd">silinosic-x</span> <span class="arg">doctor</span>
+<span class="cmd">python -m</span> <span class="arg">silinosic_x --about</span>
+<span class="cmd">python -c</span> <span class="arg">"import silinosic_x"</span></pre>
       </article>
       <article class="panel">
         <h3 class="panel-title">What gets installed</h3>
@@ -95,16 +95,16 @@
           <div class="pill-row">
             <span class="pill">requires Python &gt;= 3.11</span>
             <span class="pill">supports 3.11, 3.12, 3.13 in CI</span>
-            <span class="pill">package: silica-x</span>
-            <span class="pill">entrypoint: silica-x</span>
-            <span class="pill">import: silica_x</span>
+            <span class="pill">package: silinosic-x</span>
+            <span class="pill">entrypoint: silinosic-x</span>
+            <span class="pill">import: silinosic_x</span>
           </div>
         </div>
       </article>
     </div>
     <div class="callout callout-info section-block">
       <div class="callout-title">Source checkout is still useful</div>
-      Clone the repository when you want to contribute, inspect internals, or run local development tooling. For normal operator use, the docs now treat <span class="mono">silica-x</span> as the default command.
+      Clone the repository when you want to contribute, inspect internals, or run local development tooling. For normal operator use, the docs now treat <span class="mono">silinosic-x</span> as the default command.
     </div>
     <article class="panel section-block">
       <h3 class="panel-title">Optional developer tooling</h3>
@@ -171,7 +171,7 @@
             <span class="code-dot"></span>
             <span class="code-lang">shell</span>
           </div>
-          <pre class="code-body"><span class="cmd">silica-x</span></pre>
+          <pre class="code-body"><span class="cmd">silinosic-x</span></pre>
         </div>
         <ul class="simple-list">
           <li><span class="list-label">First commands to try</span><span class="mono">help</span>, <span class="mono">show plugins</span>, <span class="mono">show filters</span>, <span class="mono">enable plugin threat_conductor</span>, <span class="mono">config</span>, <span class="mono">profile alice</span>.</li>
@@ -187,9 +187,9 @@
             <span class="code-dot"></span>
             <span class="code-lang">shell</span>
           </div>
-          <pre class="code-body"><span class="cmd">silica-x</span> <span class="arg">profile alice --html --plugin threat_conductor</span>
-<span class="cmd">silica-x</span> <span class="arg">surface example.com --html --module source-pack-01-module-1</span>
-<span class="cmd">silica-x</span> <span class="arg">fusion alice example.com --out-type json,html,sql,docx,pdf</span></pre>
+          <pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">profile alice --html --plugin threat_conductor</span>
+<span class="cmd">silinosic-x</span> <span class="arg">surface example.com --html --module source-pack-01-module-1</span>
+<span class="cmd">silinosic-x</span> <span class="arg">fusion alice example.com --out-type json,html,sql,docx,pdf</span></pre>
         </div>
         <ul class="simple-list">
           <li><span class="list-label">Direct mode</span>Better for automation and repeatable scripts.</li>
@@ -199,14 +199,14 @@
     </div>
     <div class="callout callout-info section-block">
       <div class="callout-title">Two smoke checks worth keeping</div>
-      Use <span class="mono">silica-x --about</span> to verify the installed CLI, <span class="mono">silica-x doctor</span> to inspect local dependencies and OCR/Tor readiness, and <span class="mono">silica-x quicktest</span> if you want an offline sanity run against a bundled template.
+      Use <span class="mono">silinosic-x --about</span> to verify the installed CLI, <span class="mono">silinosic-x doctor</span> to inspect local dependencies and OCR/Tor readiness, and <span class="mono">silinosic-x quicktest</span> if you want an offline sanity run against a bundled template.
     </div>
   </section>
 </main>
 
 <footer class="footer shell">
   <div class="footer-grid">
-    <div><div class="footer-title">Silica-X</div><div>Package-first installation and docs.</div></div>
+    <div><div class="footer-title">Silinosic-X</div><div>Package-first installation and docs.</div></div>
     <div><div class="footer-title">Next</div><a class="footer-link" href="workflow.html#how">Workflow</a><a class="footer-link" href="download.html#download-home">Docker</a></div>
     <div><div class="footer-title">Reference</div><a class="footer-link" href="cli-reference.html#commands">Commands</a><a class="footer-link" href="reporting.html#testing">Verification</a></div>
     <div><div class="footer-title">Project</div><a class="footer-link" href="project.html#author">Project context</a></div>
