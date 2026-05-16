@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Silica-X is maintained as a proprietary security project. Participation in this
+Silinosic-X is maintained as a proprietary security project. Participation in this
 repository is expected to stay respectful, lawful, and aligned with the
 project's stated license and authorized-use boundaries.
 
@@ -45,7 +45,7 @@ including:
 - removing comments, issues, or pull requests
 - temporarily or permanently restricting participation
 
-Because Silica-X is proprietary software, maintainers also reserve the right to
+Because Silinosic-X is proprietary software, maintainers also reserve the right to
 deny participation or contributions that conflict with the project's license,
 security posture, or authorized-use requirements.
 
@@ -63,6 +63,6 @@ confidentially as practical.
 ## 6. Relationship to the license
 
 This Code of Conduct does not replace the project license. The license controls
-how Silica-X may be used, copied, or redistributed. This policy governs how
+how Silinosic-X may be used, copied, or redistributed. This policy governs how
 people are expected to behave while participating in the project and its public
 spaces.
