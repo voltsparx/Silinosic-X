@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -107,7 +107,7 @@ def render_html_report(target: str, mode: str, fused_data: dict[str, Any], advis
 <html lang=\"en\">
 <head>
   <meta charset=\"utf-8\" />
-  <title>Silica-X Orchestrator Report</title>
+  <title>Silinosic-X Orchestrator Report</title>
   <style>
     body {{ font-family: \"Segoe UI\", sans-serif; margin: 24px; background: #fff6ee; color: #2c1608; }}
     .card {{ border: 1px solid #f0bf97; background: #fffdfb; border-radius: 10px; padding: 14px; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(168, 88, 21, 0.08); }}
@@ -118,7 +118,7 @@ def render_html_report(target: str, mode: str, fused_data: dict[str, Any], advis
   </style>
 </head>
 <body>
-  <h1>Silica-X Orchestrator Report</h1>
+  <h1>Silinosic-X Orchestrator Report</h1>
   <div class=\"card\"><strong>Target:</strong> {html.escape(target)}</div>
   <div class=\"card\"><strong>Mode:</strong> {html.escape(mode)}</div>
   <div class=\"card\"><strong>Entity Count:</strong> {int(fused_data.get('entity_count', 0))}</div>
