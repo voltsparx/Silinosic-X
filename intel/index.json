@@ -1,6 +1,6 @@
 {
-  "silica_x": {
-    "project": "Silica-X",
+  "silinosic_x": {
+    "project": "Silinosic-X",
     "version": "10.0",
     "theme": "Ember",
     "component": "intel_pack"
@@ -12,8 +12,8 @@
   "files_scanned": 0,
   "features": {
     "async_engine": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -34,8 +34,8 @@
       "action": "Increase non-blocking collectors and connector reuse."
     },
     "retry_backoff": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -56,8 +56,8 @@
       "action": "Tune retry windows, jitter, and transient-error handling."
     },
     "rate_limit": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -78,8 +78,8 @@
       "action": "Calibrate concurrency with adaptive workload backpressure."
     },
     "caching": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -100,8 +100,8 @@
       "action": "Extend TTL-aware cache layers for expensive enrichment calls."
     },
     "workspace_db": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -122,8 +122,8 @@
       "action": "Improve indexed storage for historical correlation replay."
     },
     "plugin_module_system": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -144,8 +144,8 @@
       "action": "Strengthen module contracts and discovery validation."
     },
     "parallel_workers": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -165,8 +165,8 @@
       "action": "Balance async/thread/process lanes by workload shape."
     },
     "exports_reporting": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -187,8 +187,8 @@
       "action": "Expand analyst outputs with richer graph/report artifacts."
     },
     "tor_proxy_ops": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -209,15 +209,15 @@
       "action": "Harden routing controls and privacy-aware collection profiles."
     },
     "signal_fusion_lane": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
       },
       "schema_version": "1.0",
       "feature": "signal_fusion_lane",
-      "description": "Unified connector lanes for integrating multi-source intelligence into silica_x workflows.",
+      "description": "Unified connector lanes for integrating multi-source intelligence into silinosic_x workflows.",
       "target_modules": [
         "core/collect/source_fusion.py",
         "plugins/signal_fusion_core.py",
@@ -231,8 +231,8 @@
       "action": "Expand connector orchestration to leverage high-value multi-source collectors safely."
     },
     "test_coverage": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -253,8 +253,8 @@
   },
   "workflows": {
     "profile": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -327,8 +327,8 @@
       ]
     },
     "surface": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
@@ -402,8 +402,8 @@
       ]
     },
     "fusion": {
-      "silica_x": {
-        "project": "Silica-X",
+      "silinosic_x": {
+        "project": "Silinosic-X",
         "version": "10.0",
         "theme": "Ember",
         "component": "intel_pack"
