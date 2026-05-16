@@ -1,6 +1,6 @@
 {
-  "silica_x": {
-    "project": "Silica-X",
+  "silinosic_x": {
+    "project": "Silinosic-X",
     "version": "10.0",
     "theme": "Ember",
     "component": "intel_pack"
@@ -19,7 +19,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "anomaly",
         "identity_anomaly",
@@ -35,7 +35,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "contact_normalizer",
         "contacts",
@@ -51,7 +51,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "contact_quality",
         "contact_ranker",
@@ -67,7 +67,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "disclosure_readiness",
         "vdp_readiness",
@@ -83,7 +83,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "name_entity_filter",
         "names",
@@ -100,7 +100,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "consistency_filter",
         "evidence_quality",
@@ -117,7 +117,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "exposure_tier_filter",
         "tier",
@@ -133,7 +133,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "link_hygiene",
         "url_hygiene",
@@ -149,7 +149,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "free_provider_filter",
         "mailbox",
@@ -166,7 +166,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "filter_router",
         "module_router",
@@ -183,7 +183,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "noise_filter",
         "suppress_noise",
@@ -198,7 +198,7 @@
         "ocr"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "ocr_classifier",
         "ocr_triage"
@@ -213,7 +213,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "personal_data_classifier",
         "pii",
@@ -229,7 +229,7 @@
         "fusion"
       ],
       "version": "1.1",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "sensitive_keyword_filter",
         "sensitive",
@@ -246,7 +246,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "lane_fusion",
         "signal_router",
@@ -262,7 +262,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "attack_path_filter",
         "subdomain_priority",
@@ -278,7 +278,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "takeover_priority",
         "subtakeover",
@@ -295,7 +295,7 @@
         "fusion"
       ],
       "version": "1.0",
-      "author": "Silica-X",
+      "author": "Silinosic-X",
       "aliases": [
         "triage_priority",
         "priority_filter",
