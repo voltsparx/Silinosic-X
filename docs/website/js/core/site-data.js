@@ -13,10 +13,10 @@ const DocsData = (() => {
 
   const entries = [
     { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v10.0 snapshot.", group: "Start Here" },
-    { id: "core-idea", title: "What Silica-X Is", page: "index.html", hint: "The actual problem the framework is solving.", group: "Start Here" },
+    { id: "core-idea", title: "What Silinosic-X Is", page: "index.html", hint: "The actual problem the framework is solving.", group: "Start Here" },
     { id: "how-it-works", title: "How It Works", page: "index.html", hint: "Execution flow from commands to outputs.", group: "Start Here" },
     { id: "quickstart-30", title: "Quick Start", page: "index.html", hint: "Five-line path from clone to prompt mode.", group: "Start Here" },
-    { id: "fit-check", title: "Use It / Skip It", page: "index.html", hint: "When Silica-X is the right fit and when it is not.", group: "Start Here" },
+    { id: "fit-check", title: "Use It / Skip It", page: "index.html", hint: "When Silinosic-X is the right fit and when it is not.", group: "Start Here" },
     { id: "install", title: "Installation", page: "getting-started.html", hint: "Source setup, Python support, and dependencies.", group: "Start Here" },
     { id: "quickstart", title: "First Run", page: "getting-started.html", hint: "Prompt mode, help flow, and common first commands.", group: "Start Here" },
     { id: "prereqs", title: "Prerequisites", page: "getting-started.html", hint: "System requirements, optional dev tooling, and safe-use expectations.", group: "Start Here" },
@@ -53,11 +53,11 @@ const DocsData = (() => {
 
   const github = {
     owner: "voltsparx",
-    repo: "Silica-X",
+    repo: "Silinosic-X",
     branch: "main",
-    repoUrl: "https://github.com/voltsparx/Silica-X",
+    repoUrl: "https://github.com/voltsparx/Silinosic-X",
     profileUrl: "https://github.com/voltsparx",
-    rawBase: "https://raw.githubusercontent.com/voltsparx/Silica-X/main"
+    rawBase: "https://raw.githubusercontent.com/voltsparx/Silinosic-X/main"
   };
 
   const workflowStages = [
@@ -66,7 +66,7 @@ const DocsData = (() => {
       label: "Stage 01",
       title: "Operator Input",
       summary: "Flag mode, prompt mode, and the wizard all end up producing a normalized command intent.",
-      detail: "Silica-X starts with a CLI command or an interactive prompt command. The parser layer normalizes aliases like profile/scan/persona, applies prompt defaults, and resolves session output settings before any intelligence work begins.",
+      detail: "Silinosic-X starts with a CLI command or an interactive prompt command. The parser layer normalizes aliases like profile/scan/persona, applies prompt defaults, and resolves session output settings before any intelligence work begins.",
       pills: ["flag mode", "prompt mode", "wizard", "keywords"]
     },
     {
@@ -90,7 +90,7 @@ const DocsData = (() => {
       label: "Stage 04",
       title: "Plugins + Filters",
       summary: "Scope-aware plugins enrich signals and filters suppress noise or prioritize risk.",
-      detail: "Silica-X auto-discovers plugins and filters, checks scope compatibility, and applies them as part of a policy-driven refinement layer. This is where identity enrichment, transport stability, threat scoring, contact quality, takeover prioritization, and other operator-focused behaviors are applied.",
+      detail: "Silinosic-X auto-discovers plugins and filters, checks scope compatibility, and applies them as part of a policy-driven refinement layer. This is where identity enrichment, transport stability, threat scoring, contact quality, takeover prioritization, and other operator-focused behaviors are applied.",
       pills: ["20 plugins", "17 filters", "scope-aware", "auto discovery"]
     },
     {
