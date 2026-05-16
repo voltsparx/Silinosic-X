@@ -1,6 +1,6 @@
 # Operator Guide
 
-Silica-X is centered around a small set of operator workflows that share the same reporting and extension system.
+Silinosic-X is centered around a small set of operator workflows that share the same reporting and extension system.
 
 ## Main commands
 
@@ -13,19 +13,19 @@ Silica-X is centered around a small set of operator workflows that share the sam
 
 ## Package naming
 
-- install with `pip install silica-x`
-- run with `silica-x`
-- import with `import silica_x`
-- diagnose local readiness with `silica-x doctor`
+- install with `pip install silinosic-x`
+- run with `silinosic-x`
+- import with `import silinosic_x`
+- diagnose local readiness with `silinosic-x doctor`
 
 ## Output strategy
 
-Silica-X can emit CLI, JSON, CSV, HTML, SQL, DOCX, PDF, and log outputs in the same run. The HTML output is now the Reporter case view, designed for quick triage and visual review, while DOCX/PDF/SQL provide richer handoff and persistence options.
+Silinosic-X can emit CLI, JSON, CSV, HTML, SQL, DOCX, PDF, and log outputs in the same run. The HTML output is now the Reporter case view, designed for quick triage and visual review, while DOCX/PDF/SQL provide richer handoff and persistence options.
 
 Use `out-type` when you want to persist a run in a different artifact mix:
 
 ```bash
-silica-x out-type cli,json,html,sql,docx,pdf
+silinosic-x out-type cli,json,html,sql,docx,pdf
 ```
 
 ## Attachables and config
@@ -45,7 +45,7 @@ Direct CLI runs keep the explicit flags:
 - `--filter <name>,<name>`
 - `--module <name>,<name>`
 
-Silica-X validates attachables before execution. Unknown selectors, incompatible module scopes, and extension-control conflicts are blocked before the run starts, and the CLI points back to `plugins --scope ...`, `filters --scope ...`, or `modules --scope ...` when you need a compatible selection.
+Silinosic-X validates attachables before execution. Unknown selectors, incompatible module scopes, and extension-control conflicts are blocked before the run starts, and the CLI points back to `plugins --scope ...`, `filters --scope ...`, or `modules --scope ...` when you need a compatible selection.
 
 ## Execution review
 
@@ -61,10 +61,10 @@ In direct mode, press Enter to continue or `Ctrl+C` to cancel before execution. 
 ## Example commands
 
 ```bash
-silica-x profile alice --html
-silica-x surface example.com --plugin header_hardening_probe --html
-silica-x fusion alice example.com --filter signal_lane_fusion --module source-pack-01-module-1 --html
-silica-x ocr ./images/poster.png --plugin ocr_extractor --filter ocr_signal_classifier --out-type json,html,docx,pdf
+silinosic-x profile alice --html
+silinosic-x surface example.com --plugin header_hardening_probe --html
+silinosic-x fusion alice example.com --filter signal_lane_fusion --module source-pack-01-module-1 --html
+silinosic-x ocr ./images/poster.png --plugin ocr_extractor --filter ocr_signal_classifier --out-type json,html,docx,pdf
 ```
 
 ## Recommended mental model
