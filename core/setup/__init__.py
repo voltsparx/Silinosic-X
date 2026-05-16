@@ -1,2 +1,2 @@
-"""Setup helpers for Silica-X startup dependency handling."""
+"""Setup helpers for Silinosic-X startup dependency handling."""
 
