@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -19,7 +19,7 @@ from typing import Any
 
 
 class ConductorEngine:
-    """Master engine conductor for Silica-X."""
+    """Master engine conductor for Silinosic-X."""
 
     def __init__(self) -> None:
         from core.engines.async_engine import AsyncEngine
@@ -35,7 +35,7 @@ class ConductorEngine:
         self.recon_engine = ReconEngine()
 
     async def run(self, tasks, context=None) -> list:
-        """Route tasks to the correct sub-engine based on _silica_x_engine tag."""
+        """Route tasks to the correct sub-engine based on _silinosic_x_engine tag."""
 
         task_list = list(tasks)
         buckets: dict[str, list[tuple[int, Any]]] = {
@@ -46,7 +46,7 @@ class ConductorEngine:
             "async": [],
         }
         for i, task in enumerate(task_list):
-            tag = str(getattr(task, "_silica_x_engine", "async")).lower()
+            tag = str(getattr(task, "_silinosic_x_engine", "async")).lower()
             bucket = tag if tag in buckets else "async"
             buckets[bucket].append((i, task))
 
