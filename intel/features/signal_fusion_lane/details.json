@@ -1,13 +1,13 @@
 {
-  "silica_x": {
-    "project": "Silica-X",
+  "silinosic_x": {
+    "project": "Silinosic-X",
     "version": "10.0",
     "theme": "Ember",
     "component": "intel_pack"
   },
   "schema_version": "1.0",
   "feature": "signal_fusion_lane",
-  "description": "Unified connector lanes for integrating multi-source intelligence into silica_x workflows.",
+  "description": "Unified connector lanes for integrating multi-source intelligence into silinosic_x workflows.",
   "target_modules": [
     "core/collect/source_fusion.py",
     "plugins/signal_fusion_core.py",
