@@ -1,6 +1,6 @@
 # Extensions
 
-Silica-X uses plugins and filters as scope-aware intelligence layers.
+Silinosic-X uses plugins and filters as scope-aware intelligence layers.
 
 ## Plugins
 
@@ -12,7 +12,7 @@ Filters suppress noise, rank findings, classify exposure, or reshape signals int
 
 ## Scope control
 
-Extensions are not applied blindly. Silica-X checks compatibility with the active scope, such as:
+Extensions are not applied blindly. Silinosic-X checks compatibility with the active scope, such as:
 
 - `profile`
 - `surface`
