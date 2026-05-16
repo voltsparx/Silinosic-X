@@ -1,19 +1,19 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────────────────────
 
-# Silica-X Setup
+# Silinosic-X Setup
 
 ## Requirements
 
@@ -70,7 +70,7 @@ Install the Mannheim build:
 
 ## Amass
 
-Silica-X uses Amass for subdomain harvest workflows.
+Silinosic-X uses Amass for subdomain harvest workflows.
 
 Go install:
 
@@ -123,7 +123,7 @@ For faster active port surface probing, install `masscan` if your environment al
 Run:
 
 ```bash
-silica-x doctor --json
+silinosic-x doctor --json
 ```
 
 This reports OCR backends, Tor availability, and related runtime dependencies.
@@ -133,29 +133,29 @@ This reports OCR backends, Tor availability, and related runtime dependencies.
 Profile mode:
 
 ```bash
-silica-x profile johndoe --out-type json,html
+silinosic-x profile johndoe --out-type json,html
 ```
 
 Surface mode:
 
 ```bash
-silica-x surface example.com --out-type json,html
+silinosic-x surface example.com --out-type json,html
 ```
 
 Fusion mode:
 
 ```bash
-silica-x fusion johndoe example.com --out-type json,html
+silinosic-x fusion johndoe example.com --out-type json,html
 ```
 
 OCR mode:
 
 ```bash
-silica-x ocr ./capture.png --out-type json,html
+silinosic-x ocr ./capture.png --out-type json,html
 ```
 
 Quicktest:
 
 ```bash
-silica-x quicktest --out-type json
+silinosic-x quicktest --out-type json
 ```
