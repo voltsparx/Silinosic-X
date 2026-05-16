@@ -1,11 +1,11 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 # ──────────────────────────────────────────────────────────────
@@ -20,9 +20,9 @@ from typing import Any
 
 
 _DEFAULT_OPERATOR_CONFIG: dict[str, Any] = {
-    "silica_x": {
+    "silinosic_x": {
         "version": "10.1",
-        "description": "Silica-X operator configuration",
+        "description": "Silinosic-X operator configuration",
     },
     "surface_probe": {
         "enabled": True,
@@ -77,7 +77,7 @@ def load_operator_config(config_path: str | None = None) -> dict[str, Any]:
     """Load operator configuration from YAML or return defaults."""
 
     if config_path is None:
-        candidate = Path(__file__).resolve().parent.parent.parent / "config" / "silica_x_config.yml"
+        candidate = Path(__file__).resolve().parent.parent.parent / "config" / "silinosic_x_config.yml"
     else:
         candidate = Path(config_path)
 
