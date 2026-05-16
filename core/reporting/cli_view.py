@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -43,7 +43,7 @@ def render_cli_summary(fused_data: dict[str, Any], advisory: dict[str, Any]) -> 
     issue_rows = fused_data.get("issues", []) if isinstance(fused_data.get("issues"), list) else []
 
     lines = [
-        f"{symbol('major')} Silica-X Orchestrator Summary",
+        f"{symbol('major')} Silinosic-X Orchestrator Summary",
         f"{symbol('bullet')} entities={entity_count}",
         f"{symbol('bullet')} confidence={confidence:.2f}",
         f"{symbol('bullet')} anomalies={anomaly_count}",
