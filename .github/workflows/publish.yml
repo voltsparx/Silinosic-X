@@ -1,4 +1,4 @@
-name: Silica-X Release Build
+name: Silinosic-X Release Build
 
 on:
   release:
@@ -50,12 +50,12 @@ jobs:
           source .venv-release-smoke/bin/activate
           python -m pip install --upgrade pip
           python -m pip install dist/*.whl
-          silica-x --about
-          python -m silica_x --about
+          silinosic-x --about
+          python -m silinosic_x --about
 
       - name: Upload dist artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: silica-x-release-dist
+          name: silinosic-x-release-dist
           path: dist/*
           if-no-files-found: error
