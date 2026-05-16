@@ -60,6 +60,7 @@ import silinosic_x
 
 print(silinosic_x.__version__)
 ```
+> Note: the Python-PIP package is not available right now cause changing repo name...
 
 From source:
 
