@@ -1,6 +1,6 @@
-# Silica-X Website
+# Silinosic-X Website
 
-This folder contains the static documentation website for Silica-X v10.0.
+This folder contains the static documentation website for Silinosic-X v10.0.
 
 ## Purpose
 
@@ -38,7 +38,7 @@ The site is intentionally plain HTML, CSS, and JavaScript so it can be:
 
 ### Assets
 
-- `web_assets/media/` holds the Silica-X website image and favicon
+- `web_assets/media/` holds the Silinosic-X website image and favicon
 - `web_assets/installers/` is reserved for downloadable installer assets if the site later ships mirrored copies
 
 ## Load Order
