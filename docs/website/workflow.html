@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workflow | Silica-X</title>
-<meta name="description" content="Understand the Silica-X mental model, execution pipeline, and plugin/filter/module architecture.">
-<link rel="canonical" href="https://voltsparx.github.io/Silica-X/workflow.html">
+<title>Workflow | Silinosic-X</title>
+<meta name="description" content="Understand the Silinosic-X mental model, execution pipeline, and plugin/filter/module architecture.">
+<link rel="canonical" href="https://voltsparx.github.io/Silinosic-X/workflow.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,14 +17,14 @@
 <link rel="stylesheet" href="css/components/modules.css">
 <link rel="stylesheet" href="css/components/development.css">
 <link rel="stylesheet" href="css/layout/responsive.css">
-<link rel="icon" href="web_assets/media/silica-x-favicon.ico" sizes="any">
+<link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
 </head>
 <body data-page="workflow.html" data-default-section="how">
 <header id="topbar">
-  <button id="topbar-brand" type="button" aria-label="Silica-X brand console trigger">
-    <img src="web_assets/media/silica-x-web.png" alt="Silica-X logo">
+  <button id="topbar-brand" type="button" aria-label="Silinosic-X brand console trigger">
+    <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X logo">
     <span id="topbar-brand-text">
-      <span id="topbar-name">Silica-X</span>
+      <span id="topbar-name">Silinosic-X</span>
       <span id="topbar-tagline">OSINT orchestration and correlation framework</span>
     </span>
   </button>
@@ -37,7 +37,7 @@
     <a href="index.html">Overview</a>
     <a href="cli-reference.html#commands">CLI</a>
     <a href="development.html#development-home">Development</a>
-    <a href="https://github.com/voltsparx/Silica-X" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub</a>
     <div class="contact-wrap">
       <button id="contact-toggle" class="contact-toggle" type="button" aria-expanded="false">Contact</button>
       <div id="contact-popover" class="contact-popover" hidden>
@@ -53,7 +53,7 @@
   <div class="sidebar-panel-head">
     <div class="sidebar-kicker">Architecture</div>
     <h2 class="sidebar-title">Workflow and Runtime Model</h2>
-    <p class="sidebar-note">This page turns the repo docs and entrypoints into a clearer mental model for how Silica-X actually works.</p>
+    <p class="sidebar-note">This page turns the repo docs and entrypoints into a clearer mental model for how Silinosic-X actually works.</p>
   </div>
   <div id="sidebar-tabs" class="sidebar-tabs"></div>
   <div id="sidebar-nav"></div>
@@ -64,7 +64,7 @@
   <header class="page-intro">
     <div class="eyebrow">Architecture</div>
     <h1 class="page-title">Think in workflows, policies, entities, and reporting layers</h1>
-    <p class="page-copy">Silica-X combines classic scanner behavior with a more layered runtime model. The repo's own docs describe a policy-driven orchestrator, scope-aware extensions, entity normalization, and fused reporting. This page condenses that into a simpler operator view.</p>
+    <p class="page-copy">Silinosic-X combines classic scanner behavior with a more layered runtime model. The repo's own docs describe a policy-driven orchestrator, scope-aware extensions, entity normalization, and fused reporting. This page condenses that into a simpler operator view.</p>
   </header>
 
   <section id="how" class="page-section section-anchor">
@@ -102,13 +102,13 @@
       <article class="card">
         <h3 class="card-title">Source-study layer</h3>
         <div class="card-copy">
-          <p>The <span class="mono">frameworks</span> and <span class="mono">surface-kit</span> commands expose local source-study references and translate some of that intent into native Silica-X workflows.</p>
+          <p>The <span class="mono">frameworks</span> and <span class="mono">surface-kit</span> commands expose local source-study references and translate some of that intent into native Silinosic-X workflows.</p>
         </div>
       </article>
       <article class="card">
         <h3 class="card-title">Hybrid runtime</h3>
         <div class="card-copy">
-          <p>The hybrid architecture docs describe console dispatch, registry-session behavior, event flow, and fusion graph ideas as first-class Silica-X concepts.</p>
+          <p>The hybrid architecture docs describe console dispatch, registry-session behavior, event flow, and fusion graph ideas as first-class Silinosic-X concepts.</p>
         </div>
       </article>
     </div>
@@ -189,7 +189,7 @@
       <article class="panel">
         <h3 class="panel-title">Naming note</h3>
         <div class="card-copy">
-          <p>The project is publicly named <strong>Silica-X</strong>, but some internal paths, comments, and generated artifacts still use <span class="mono">silica_x</span> spellings. The website keeps the public project name while acknowledging that internal naming is still converging.</p>
+          <p>The project is publicly named <strong>Silinosic-X</strong>, but some internal paths, comments, and generated artifacts still use <span class="mono">silinosic_x</span> spellings. The website keeps the public project name while acknowledging that internal naming is still converging.</p>
         </div>
       </article>
     </div>
@@ -198,7 +198,7 @@
 
 <footer class="footer shell">
   <div class="footer-grid">
-    <div><div class="footer-title">Silica-X</div><div>Layered runtime docs and pipeline view.</div></div>
+    <div><div class="footer-title">Silinosic-X</div><div>Layered runtime docs and pipeline view.</div></div>
     <div><div class="footer-title">Next</div><a class="footer-link" href="cli-reference.html#commands">Commands</a></div>
     <div><div class="footer-title">Reports</div><a class="footer-link" href="reporting.html#history">History and inventory</a></div>
     <div><div class="footer-title">Project</div><a class="footer-link" href="development.html#development-home">Development</a></div>
