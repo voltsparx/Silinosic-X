@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -56,9 +56,9 @@ class TestEngineRuntime(unittest.TestCase):
 
         engine = AsyncEngine()
         task_ok = lambda: _ok()
-        setattr(task_ok, "_silica_x_task_name", "ok_task")
+        setattr(task_ok, "_silinosic_x_task_name", "ok_task")
         task_slow = lambda: _slow()
-        setattr(task_slow, "_silica_x_task_name", "slow_task")
+        setattr(task_slow, "_silinosic_x_task_name", "slow_task")
 
         results = asyncio.run(
             engine.run_detailed(
