@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@
 from unittest.mock import patch
 
 from core.setup.docker_runtime import (
-    SILICA_X_IMAGE,
+    SILINOSIC_X_IMAGE,
     detect_linux_distro,
     detect_linux_package_manager,
     detect_os,
@@ -57,7 +57,7 @@ def test_docker_status_has_required_keys() -> None:
 
 def test_docker_status_image_name_is_correct() -> None:
     status = docker_status()
-    assert status["image_name"] == SILICA_X_IMAGE
+    assert status["image_name"] == SILINOSIC_X_IMAGE
 
 
 def test_docker_daemon_running_returns_bool() -> None:
