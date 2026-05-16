@@ -337,7 +337,7 @@ class MediaReconEngine(EngineBase):
                         proxy_url=proxy_url,
                     )
 
-                setattr(_task, "_silica_x_task_name", f"media-image:{asset_kind}:{media_url}")
+                setattr(_task, "_silinosic_x_task_name", f"media-image:{asset_kind}:{media_url}")
                 image_task_factories.append(_task)
 
             image_batch = await self._async_engine.run_detailed(image_task_factories, runtime)
@@ -362,7 +362,7 @@ class MediaReconEngine(EngineBase):
                         proxy_url=proxy_url,
                     )
 
-                setattr(_video_task, "_silica_x_task_name", f"media-video:{media_url}")
+                setattr(_video_task, "_silinosic_x_task_name", f"media-video:{media_url}")
                 video_task_factories.append(_video_task)
 
             video_batch = await self._async_engine.run_detailed(video_task_factories, runtime)
@@ -393,7 +393,7 @@ class MediaReconEngine(EngineBase):
                         proxy_url=proxy_url,
                     )
 
-                setattr(_frame_task, "_silica_x_task_name", f"media-frame:{origin_kind}:{media_url}")
+                setattr(_frame_task, "_silinosic_x_task_name", f"media-frame:{origin_kind}:{media_url}")
                 frame_task_factories.append(_frame_task)
 
             frame_batch = await self._async_engine.run_detailed(frame_task_factories, runtime)
