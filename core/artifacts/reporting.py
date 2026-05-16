@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -110,7 +110,7 @@ class ReportGenerator(_BaseReportGenerator):
             return f"│ {_fit(text).ljust(width - 4)} │"
 
         lines = [
-            "┌─ SILICA-X INTELLIGENCE BRIEF " + "─" * (width - 33) + "┐",
+            "┌─ SILINOSIC-X INTELLIGENCE BRIEF " + "─" * (width - 33) + "┐",
             _row(f"Target: {target}"),
             _row(f"Entity: {entity_class} | Confidence: {confidence}%"),
             _row(f"Risk Level: {risk_level}"),
