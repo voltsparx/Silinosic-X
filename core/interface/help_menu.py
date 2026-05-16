@@ -1,15 +1,15 @@
-﻿# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -66,7 +66,7 @@ def show_flag_help() -> None:
         f"{c(f'[{VERSION_THEME}]', Colors.BOLD + Colors.EMBER)}"
         f"{c(' Flag Help', Colors.BOLD + Colors.CYAN)}"
     )
-    print(c(f"{symbol('action')} Usage: silica-x <command> [flags]", Colors.GREY))
+    print(c(f"{symbol('action')} Usage: silinosic-x <command> [flags]", Colors.GREY))
 
     _section("Global Flags", icon="feature")
     _render_items(
@@ -86,7 +86,7 @@ def show_flag_help() -> None:
             ("orchestrate <mode> <target>:", "Run policy-driven layered orchestration."),
             ("wizard:", "Run guided workflow questions."),
             ("quicktest [flags]:", "Run one random built-in victim template with report outputs."),
-            ("surface-kit [domain] [flags]:", "Translate local source recipes into a native Silica-X surface run."),
+            ("surface-kit [domain] [flags]:", "Translate local source recipes into a native Silinosic-X surface run."),
         )
     )
 
@@ -148,11 +148,11 @@ def show_flag_help() -> None:
 
     _section("Quick Start", icon="tip")
     _example(
-        "silica-x profile alice --preset deep --plugin threat_conductor --html --csv:",
+        "silinosic-x profile alice --preset deep --plugin threat_conductor --html --csv:",
         "Run profile intelligence with explicit plugin selection and full artifacts.",
     )
     _example(
-        "silica-x orchestrate fusion alice --secondary-target example.com --html:",
+        "silinosic-x orchestrate fusion alice --secondary-target example.com --html:",
         "Run orchestration in fusion mode with HTML reporting.",
     )
     print()
@@ -177,7 +177,7 @@ def show_prompt_help() -> None:
             ("fusion <username> <domain>:", "Run fusion workflow with profile, web, and surface linkage summary."),
             ("ocr [paths...] [--url ...]:", "Run OCR image scanning with preprocessing and structured extraction."),
             ("orchestrate <mode> <target>:", "Run layered orchestration."),
-            ("surface-kit <domain> --preset <name>:", "Use local source recipes to drive a Silica-X surface plan."),
+            ("surface-kit <domain> --preset <name>:", "Use local source recipes to drive a Silinosic-X surface plan."),
             ("quicktest [flags]:", "Run one random built-in victim template."),
             ("wizard:", "Guided workflow with prompts."),
         )
@@ -245,7 +245,7 @@ def show_prompt_help() -> None:
     _example("show plugins:", "List plugin inventory.")
     _example("show frameworks:", "Inspect the local source-profile inventory and architecture references.")
     _example("use fusion:", "Switch prompt context to fusion workflows.")
-    _example("surface-kit example.com --preset subdomain-enum --dry-run:", "Preview the translated Silica-X plan for a source recipe.")
+    _example("surface-kit example.com --preset subdomain-enum --dry-run:", "Preview the translated Silinosic-X plan for a source recipe.")
     _example("enable plugin threat_conductor:", "Add one plugin to the current prompt session.")
     _example("quicktest --seed 7 --html --csv:", "Run deterministic synthetic smoke with reports.")
     print()
