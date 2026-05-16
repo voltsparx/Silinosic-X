@@ -15,7 +15,7 @@ The repository is intended to be maintainable, not only feature-rich.
 python -m pytest -q
 python -m ruff check .
 python -m mypy
-python -m compileall -q core filters modules plugins tests silica-x.py
+python -m compileall -q core filters modules plugins tests silinosic-x.py
 ```
 
 ## Areas that matter most in maintenance
