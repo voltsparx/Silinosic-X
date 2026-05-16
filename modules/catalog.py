@@ -1,19 +1,19 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
-"""silica_x source-intel module catalog builder and query helpers."""
+"""silinosic_x source-intel module catalog builder and query helpers."""
 
 from __future__ import annotations
 
@@ -174,7 +174,7 @@ SORTABLE_FIELDS = {
 TEXT_SORT_FIELDS = {"framework", "file", "kind"}
 
 
-def _silica_x_meta() -> dict[str, str]:
+def _silinosic_x_meta() -> dict[str, str]:
     return {
         "project": PROJECT_NAME,
         "version": VERSION,
@@ -634,7 +634,7 @@ def _kind_payload(
         avg_power = round(total_power / float(len(selected)), 2)
 
     return {
-        "silica_x": _silica_x_meta(),
+        "silinosic_x": _silinosic_x_meta(),
         "generated_at_utc": _now_utc(),
         "kind": kind,
         "source_root": source_root.as_posix(),
@@ -676,7 +676,7 @@ def build_module_catalog(
 
     module_rows: list[dict[str, Any]]
     if jobs and resolved_max_workers > 1:
-        with ThreadPoolExecutor(max_workers=resolved_max_workers, thread_name_prefix="silica_x-modcat") as executor:
+        with ThreadPoolExecutor(max_workers=resolved_max_workers, thread_name_prefix="silinosic_x-modcat") as executor:
             module_rows = list(
                 executor.map(
                     lambda job: _analyze_source_file(
@@ -790,7 +790,7 @@ def build_module_catalog(
 
     scan_duration_ms = int((time.perf_counter() - scan_started) * 1000)
     payload = {
-        "silica_x": _silica_x_meta(),
+        "silinosic_x": _silinosic_x_meta(),
         "catalog_version": DEFAULT_CATALOG_VERSION,
         "generated_at_utc": _now_utc(),
         "source_root": source.as_posix(),
@@ -842,11 +842,11 @@ def build_module_catalog(
         "- `filter-modules.json`: filter-like subset",
         "",
         "Refresh from CLI:",
-        "- `python silica-x.py modules --sync`",
+        "- `python silinosic-x.py modules --sync`",
         "",
         "Advanced query examples:",
-        "- `python silica-x.py modules --search dns --sort-by power_score --descending`",
-        "- `python silica-x.py modules --kind plugin --tag identity --min-score 55`",
+        "- `python silinosic-x.py modules --search dns --sort-by power_score --descending`",
+        "- `python silinosic-x.py modules --kind plugin --tag identity --min-score 55`",
         "",
     ]
     (out_root / "README.md").write_text("\n".join(readme_lines), encoding="utf-8")
