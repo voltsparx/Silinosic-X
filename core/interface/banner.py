@@ -1,15 +1,15 @@
 # ──────────────────────────────────────────────────────────────
 # SPDX-License-Identifier: Proprietary
 #
-# Silica-X Intelligence Framework
+# Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
 #
 # Author     : voltsparx
-# Repository : https://github.com/voltsparx/Silica-X
+# Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
 # License    : See LICENSE file in the project root 
 #
-# This file is part of Silica-X and is subject to the terms
+# This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
 # ──────────────────────────────────────────────────────────────
 
@@ -26,8 +26,8 @@ def show_banner(anonymity_status: str = "No Anonymization") -> None:
         ("db   8D   .88.   88booo.   .88.   Y8b  d8 88   88        ", " .8P  Y8."),
         ("`8888Y' Y888888P Y88888P Y888888P  `Y88P' YP   YP        ", " YP    YP"),
     )
-    for silica_block, x_block in banner_lines:
-        print(f"{c(f'       {silica_block}', Colors.GREY)}{c(x_block, Colors.EMBER)}")
+    for silinosic_block, x_block in banner_lines:
+        print(f"{c(f'       {silinosic_block}', Colors.GREY)}{c(x_block, Colors.EMBER)}")
 
     print(
         f"{c(f'                                                                          v{VERSION} ', Colors.GREY)}"
@@ -35,4 +35,5 @@ def show_banner(anonymity_status: str = "No Anonymization") -> None:
     )
     print("_" * 89)
     print(f"{c('Current anonymity:', Colors.EMBER)} {c(anonymity_status, Colors.CYAN)}")
-    
+    print(c("Hybrid console lanes: async | thread | sync | fusion", Colors.GREY))
+    print(c("Authorized research only.", Colors.GREY))
