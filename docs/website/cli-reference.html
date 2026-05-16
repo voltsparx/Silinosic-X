@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLI Reference | Silica-X</title>
-<meta name="description" content="Core command surface, aliases, and usage patterns for the Silica-X CLI.">
-<link rel="canonical" href="https://voltsparx.github.io/Silica-X/cli-reference.html">
+<title>CLI Reference | Silinosic-X</title>
+<meta name="description" content="Core command surface, aliases, and usage patterns for the Silinosic-X CLI.">
+<link rel="canonical" href="https://voltsparx.github.io/Silinosic-X/cli-reference.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,14 +17,14 @@
 <link rel="stylesheet" href="css/components/modules.css">
 <link rel="stylesheet" href="css/components/development.css">
 <link rel="stylesheet" href="css/layout/responsive.css">
-<link rel="icon" href="web_assets/media/silica-x-favicon.ico" sizes="any">
+<link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
 </head>
 <body data-page="cli-reference.html" data-default-section="commands">
 <header id="topbar">
-  <button id="topbar-brand" type="button" aria-label="Silica-X brand console trigger">
-    <img src="web_assets/media/silica-x-web.png" alt="Silica-X logo">
+  <button id="topbar-brand" type="button" aria-label="Silinosic-X brand console trigger">
+    <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X logo">
     <span id="topbar-brand-text">
-      <span id="topbar-name">Silica-X</span>
+      <span id="topbar-name">Silinosic-X</span>
       <span id="topbar-tagline">OSINT orchestration and correlation framework</span>
     </span>
   </button>
@@ -37,7 +37,7 @@
     <a href="workflow.html#pipeline">Pipeline</a>
     <a href="modes.html#prompt-mode">Modes</a>
     <a href="development.html#development-home">Development</a>
-    <a href="https://github.com/voltsparx/Silica-X" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub</a>
     <div class="contact-wrap">
       <button id="contact-toggle" class="contact-toggle" type="button" aria-expanded="false">Contact</button>
       <div id="contact-popover" class="contact-popover" hidden>
@@ -63,8 +63,8 @@
 <main id="main">
   <header class="page-intro">
     <div class="eyebrow">Command Surface</div>
-    <h1 class="page-title">The Silica-X CLI mixes scan workflows, runtime controls, and project introspection commands</h1>
-    <p class="page-copy">Install the package as <span class="mono">silica-x</span>, run it as <span class="mono">silica-x</span>, and import its Python module as <span class="mono">silica_x</span>. The CLI itself mixes scan workflows, runtime controls, and project introspection commands.</p>
+    <h1 class="page-title">The Silinosic-X CLI mixes scan workflows, runtime controls, and project introspection commands</h1>
+    <p class="page-copy">Install the package as <span class="mono">silinosic-x</span>, run it as <span class="mono">silinosic-x</span>, and import its Python module as <span class="mono">silinosic_x</span>. The CLI itself mixes scan workflows, runtime controls, and project introspection commands.</p>
   </header>
 
   <section id="commands" class="page-section section-anchor">
@@ -79,61 +79,61 @@
         <div class="command-card-head"><span class="icon-chip">P</span><div class="command-name">profile</div></div>
         <div class="command-aliases">aliases: <span class="mono">scan</span>, <span class="mono">persona</span>, <span class="mono">social</span></div>
         <div class="card-copy"><p>Run public profile and username intelligence across the platform inventory.</p></div>
-        <div class="command-snippet mono">silica-x profile alice --html</div>
+        <div class="command-snippet mono">silinosic-x profile alice --html</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">S</span><div class="command-name">surface</div></div>
         <div class="command-aliases">aliases: <span class="mono">domain</span>, <span class="mono">asset</span></div>
         <div class="card-copy"><p>Inspect domain attack surface and public exposure lanes.</p></div>
-        <div class="command-snippet mono">silica-x surface example.com --html</div>
+        <div class="command-snippet mono">silinosic-x surface example.com --html</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">F</span><div class="command-name">fusion</div></div>
         <div class="command-aliases">aliases: <span class="mono">full</span>, <span class="mono">combo</span></div>
         <div class="card-copy"><p>Combine profile and surface signals into one run for correlation.</p></div>
-        <div class="command-snippet mono">silica-x fusion alice example.com --csv --html</div>
+        <div class="command-snippet mono">silinosic-x fusion alice example.com --csv --html</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">O</span><div class="command-name">orchestrate</div></div>
         <div class="command-aliases">alias: <span class="mono">orch</span></div>
         <div class="card-copy"><p>Run the policy-driven layered orchestration pipeline directly.</p></div>
-        <div class="command-snippet mono">silica-x orchestrate surface example.com</div>
+        <div class="command-snippet mono">silinosic-x orchestrate surface example.com</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">Q</span><div class="command-name">quicktest</div></div>
         <div class="command-aliases">aliases: <span class="mono">qtest</span>, <span class="mono">smoke</span></div>
         <div class="card-copy"><p>Run an offline quicktest using a built-in victim template.</p></div>
-        <div class="command-snippet mono">silica-x quicktest</div>
+        <div class="command-snippet mono">silinosic-x quicktest</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">W</span><div class="command-name">wizard</div></div>
         <div class="command-aliases">interactive guided workflow</div>
         <div class="card-copy"><p>Guided multi-scan operator flow for onboarding and structured runs.</p></div>
-        <div class="command-snippet mono">silica-x wizard</div>
+        <div class="command-snippet mono">silinosic-x wizard</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">I</span><div class="command-name">plugins / filters</div></div>
         <div class="command-aliases">runtime introspection</div>
         <div class="card-copy"><p>Inspect extension discovery, scopes, aliases, and descriptions.</p></div>
-        <div class="command-snippet mono">silica-x plugins --scope all</div>
+        <div class="command-snippet mono">silinosic-x plugins --scope all</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">M</span><div class="command-name">modules / frameworks</div></div>
         <div class="command-aliases">catalog and source-study views</div>
         <div class="card-copy"><p>Inspect module catalogs and local source-study framework references.</p></div>
-        <div class="command-snippet mono">silica-x frameworks --framework recursive-modules --presets</div>
+        <div class="command-snippet mono">silinosic-x frameworks --framework recursive-modules --presets</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">R</span><div class="command-name">history / live</div></div>
         <div class="command-aliases">artifact inspection</div>
         <div class="card-copy"><p>List saved targets and launch a local live dashboard for stored results.</p></div>
-        <div class="command-snippet mono">silica-x history</div>
+        <div class="command-snippet mono">silinosic-x history</div>
       </article>
       <article class="card">
         <div class="command-card-head"><span class="icon-chip">D</span><div class="command-name">doctor</div></div>
         <div class="command-aliases">runtime diagnostics</div>
         <div class="card-copy"><p>Check local OCR tooling, Reporter backends, Tor reachability, output config, and runtime inventory without starting a scan.</p></div>
-        <div class="command-snippet mono">silica-x doctor</div>
+        <div class="command-snippet mono">silinosic-x doctor</div>
       </article>
     </div>
   </section>
@@ -170,18 +170,18 @@
     <div class="grid-3">
       <article class="card">
         <h3 class="card-title">Direct scan</h3>
-        <div class="command-snippet mono">silica-x profile alice --html</div>
+        <div class="command-snippet mono">silinosic-x profile alice --html</div>
         <div class="card-copy"><p>Use this for explicit automation or repeatable scripted runs.</p></div>
       </article>
       <article class="card">
         <h3 class="card-title">Prompt first</h3>
-        <div class="command-snippet mono">silica-x</div>
+        <div class="command-snippet mono">silinosic-x</div>
         <div class="card-copy"><p>Better when you want to discover commands, use aliases, inspect attachables interactively, and confirm configuration before execution.</p></div>
       </article>
       <article class="card">
         <h3 class="card-title">Source-study translation</h3>
-        <div class="command-snippet mono">silica-x surface-kit example.com --preset web-basic</div>
-        <div class="card-copy"><p>Useful when you want a native Silica-X run informed by local reference profiles under <span class="mono">temp/</span>.</p></div>
+        <div class="command-snippet mono">silinosic-x surface-kit example.com --preset web-basic</div>
+        <div class="card-copy"><p>Useful when you want a native Silinosic-X run informed by local reference profiles under <span class="mono">temp/</span>.</p></div>
       </article>
     </div>
     <article class="code-block section-block">
@@ -191,12 +191,12 @@
         <span class="code-dot"></span>
         <span class="code-lang">shell</span>
       </div>
-      <pre class="code-body"><span class="cmd">silica-x</span> <span class="arg">--help</span>
-<span class="cmd">silica-x</span> <span class="arg">profile alice --html --plugin threat_conductor --filter contact_canonicalizer</span>
-<span class="cmd">silica-x</span> <span class="arg">surface example.com --ct --rdap --module source-pack-01-module-1 --html</span>
-<span class="cmd">silica-x</span> <span class="arg">fusion alice example.com --profile-preset deep --surface-preset balanced --out-type json,html,sql,docx,pdf</span>
-<span class="cmd">silica-x</span> <span class="arg">doctor --json</span>
-<span class="cmd">silica-x</span> <span class="arg">prompt</span></pre>
+      <pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">--help</span>
+<span class="cmd">silinosic-x</span> <span class="arg">profile alice --html --plugin threat_conductor --filter contact_canonicalizer</span>
+<span class="cmd">silinosic-x</span> <span class="arg">surface example.com --ct --rdap --module source-pack-01-module-1 --html</span>
+<span class="cmd">silinosic-x</span> <span class="arg">fusion alice example.com --profile-preset deep --surface-preset balanced --out-type json,html,sql,docx,pdf</span>
+<span class="cmd">silinosic-x</span> <span class="arg">doctor --json</span>
+<span class="cmd">silinosic-x</span> <span class="arg">prompt</span></pre>
     </article>
   </section>
 
@@ -238,7 +238,7 @@ disable module source-pack-01-module-1</pre>
             <span class="code-dot"></span>
             <span class="code-lang">shell</span>
           </div>
-          <pre class="code-body"><span class="cmd">silica-x</span> <span class="arg">profile alice --plugin threat_conductor,contact_lattice --filter contact_canonicalizer --module source-pack-01-module-1</span></pre>
+          <pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">profile alice --plugin threat_conductor,contact_lattice --filter contact_canonicalizer --module source-pack-01-module-1</span></pre>
         </div>
         <ul class="simple-list">
           <li><span class="list-label">Selectors</span><span class="mono">--plugin</span>, <span class="mono">--filter</span>, and <span class="mono">--module</span> accept repeated values or comma-separated lists.</li>
@@ -249,14 +249,14 @@ disable module source-pack-01-module-1</pre>
     </div>
     <div class="callout callout-warn section-block">
       <div class="callout-title">Conflict and compatibility handling</div>
-      Silica-X validates attachables before execution. Unknown selectors, scope-incompatible modules, or extension-control conflicts are blocked before the run begins. When a selection does not fit the current scope, the CLI points you back toward <span class="mono">plugins --scope ...</span>, <span class="mono">filters --scope ...</span>, or <span class="mono">modules --scope ...</span> so you can choose compatible attachables instead of discovering the problem mid-run.
+      Silinosic-X validates attachables before execution. Unknown selectors, scope-incompatible modules, or extension-control conflicts are blocked before the run begins. When a selection does not fit the current scope, the CLI points you back toward <span class="mono">plugins --scope ...</span>, <span class="mono">filters --scope ...</span>, or <span class="mono">modules --scope ...</span> so you can choose compatible attachables instead of discovering the problem mid-run.
     </div>
   </section>
 </main>
 
 <footer class="footer shell">
   <div class="footer-grid">
-    <div><div class="footer-title">Silica-X</div><div>CLI and runtime reference.</div></div>
+    <div><div class="footer-title">Silinosic-X</div><div>CLI and runtime reference.</div></div>
     <div><div class="footer-title">Next</div><a class="footer-link" href="modes.html#prompt-mode">Modes</a></div>
     <div><div class="footer-title">Reports</div><a class="footer-link" href="reporting.html#outputs">Outputs</a></div>
     <div><div class="footer-title">Project</div><a class="footer-link" href="development.html#repo-activity">Repo activity</a></div>
