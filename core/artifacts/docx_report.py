@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Proprietary
 # ------------------------------------------------------------------------------
 
-"""Portable DOCX report generation for Silica-X payloads."""
+"""Portable DOCX report generation for Silinosic-X payloads."""
 
 from __future__ import annotations
 
@@ -53,9 +53,9 @@ def generate_docx_report(path: Path, payload: dict[str, Any]) -> str:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     document = Document()
-    document.core_properties.title = f"Silica-X Reporter - {payload.get('target', 'target')}"
+    document.core_properties.title = f"Silinosic-X Reporter - {payload.get('target', 'target')}"
 
-    title = document.add_heading("Silica-X Reporter", 0)
+    title = document.add_heading("Silinosic-X Reporter", 0)
     title.runs[0].font.size = Pt(22)
     document.add_paragraph(
         f"Target: {payload.get('target', '-')}\n"
