@@ -1,4 +1,4 @@
-name: Silica-X CI
+name: Silinosic-X CI
 
 on:
   push:
@@ -58,11 +58,11 @@ jobs:
 
       - name: Run CLI smoke
         run: |
-          python -m silica_x --about
-          python silica-x.py --about
+          python -m silinosic_x --about
+          python silinosic-x.py --about
 
       - name: Run compile smoke
-        run: python -m compileall -q core filters modules plugins platforms wordlists silica_x tests silica-x.py
+        run: python -m compileall -q core filters modules plugins platforms wordlists silinosic_x tests silinosic-x.py
 
   package:
     runs-on: ubuntu-latest
@@ -100,12 +100,12 @@ jobs:
           source .venv-package-smoke/bin/activate
           python -m pip install --upgrade pip
           python -m pip install dist/*.whl
-          silica-x --about
-          python -m silica_x --about
+          silinosic-x --about
+          python -m silinosic_x --about
 
       - name: Upload dist artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: silica-x-dist
+          name: silinosic-x-dist
           path: dist/*
           if-no-files-found: error
