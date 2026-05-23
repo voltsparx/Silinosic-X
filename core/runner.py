@@ -66,6 +66,7 @@ from core.extensions.attachables import resolve_module_attachments
 from core.interface.symbols import symbol
 from core.orchestrator import Orchestrator
 from core.foundation.metadata import PROJECT_NAME, VERSION, framework_signature, utc_timestamp
+from core.foundation.operator_config import get_profile_scan_config, load_operator_config
 from core.foundation.output_config import (
     DEFAULT_OUTPUT_TYPES,
     OutputConfigError,
@@ -110,7 +111,7 @@ from core.intel.recon_sources import (
     load_source_inventory,
 )
 from core.extensions.signal_forge import list_plugin_descriptors, list_plugin_discovery_errors
-from core.collect.platform_schema import PlatformValidationError, load_platforms
+from core.collect.platform_schema import PlatformValidationError, SCAN_RANGES, load_platforms
 from core.analyze.profile_summary import error_profile_rows, found_profile_rows, summarize_target_intel
 from core.analyze.surface_map import build_surface_map, build_surface_next_steps
 from core.analyze.digital_footprint import build_digital_footprint_map
@@ -1834,14 +1835,45 @@ def launch_live_dashboard(
         run_server()
 
 
-def _resolve_profile_runtime(args: argparse.Namespace) -> tuple[int, int, str, int | None]:
+def _resolve_scan_range(
+    *,
+    quickrange: bool,
+    fullrange: bool,
+    preset: dict[str, Any] | None,
+    source_profile: str,
+) -> str:
+    if fullrange:
+        return "fullrange"
+    if quickrange:
+        return "quickrange"
+    if str(source_profile).strip().lower() == "max":
+        return "fullrange"
+    preset_range = ""
+    if isinstance(preset, dict):
+        preset_range = str(preset.get("scan_range", "")).strip().lower()
+    if preset_range in SCAN_RANGES:
+        return preset_range
+    operator_config = load_operator_config()
+    configured = str(get_profile_scan_config(operator_config).get("scan_range", "quickrange")).strip().lower()
+    return configured if configured in SCAN_RANGES else "quickrange"
+
+
+def _resolve_profile_runtime(args: argparse.Namespace) -> tuple[int, int, str, int | None, str]:
     preset = PROFILE_PRESETS[args.preset]
     timeout_seconds = _int_from_value(args.timeout, preset["timeout"])
     max_concurrency = _int_from_value(args.max_concurrency, preset["max_concurrency"])
     source_profile = str(preset.get("source_profile", "balanced"))
     max_platforms = preset.get("max_platforms")
     max_platform_limit = int(max_platforms) if isinstance(max_platforms, int) and max_platforms > 0 else None
-    return timeout_seconds, max_concurrency, source_profile, max_platform_limit
+    scan_range = _resolve_scan_range(
+        quickrange=bool(getattr(args, "quickrange", False)),
+        fullrange=bool(getattr(args, "fullrange", False)),
+        preset=preset,
+        source_profile=source_profile,
+    )
+    if scan_range == "fullrange":
+        max_platform_limit = None
+    return timeout_seconds, max_concurrency, source_profile, max_platform_limit, scan_range
 
 
 def _resolve_surface_runtime(args: argparse.Namespace) -> tuple[int, int, SurfaceScanDirectives]:
@@ -2357,6 +2389,7 @@ async def run_profile_scan(
     max_concurrency: int,
     source_profile: str = "balanced",
     max_platforms: int | None = None,
+    scan_range: str = "quickrange",
     scan_mode: str = "balanced",
     *,
     write_csv: bool = False,
@@ -2393,7 +2426,8 @@ async def run_profile_scan(
     print(
         c(
             f"{symbol('bullet')} Source profile: "
-            f"{source_profile} | platform budget: {max_platforms if max_platforms is not None else 'all'}",
+            f"{source_profile} | scan range: {scan_range} | "
+            f"platform budget: {max_platforms if max_platforms is not None else 'all'}",
             Colors.CYAN,
         )
     )
@@ -2423,6 +2457,7 @@ async def run_profile_scan(
             max_concurrency=max_concurrency,
             source_profile=source_profile,
             max_platforms=max_platforms,
+            scan_range=scan_range,
             pipeline=_live_pipeline,
         )
     except PlatformValidationError as exc:
@@ -3276,6 +3311,7 @@ def _print_prompt_config(session: PromptSessionState, state: RunnerState) -> Non
     print(f"  {c('modules:', Colors.EMBER)} {c(session.modules_label(), Colors.CYAN)}")
     print(f"{c('profile preset:', Colors.EMBER)} {c(session.profile_preset, Colors.CYAN)}")
     print(f"{c('surface preset:', Colors.EMBER)} {c(session.surface_preset, Colors.CYAN)}")
+    print(f"{c('scan range:', Colors.EMBER)} {c(session.scan_range, Colors.CYAN)}")
     print(f"{c('profile extension control:', Colors.EMBER)} {c(session.profile_extension_control, Colors.CYAN)}")
     print(f"{c('surface extension control:', Colors.EMBER)} {c(session.surface_extension_control, Colors.CYAN)}")
     print(f"{c('fusion extension control:', Colors.EMBER)} {c(session.fusion_extension_control, Colors.CYAN)}")
@@ -3480,7 +3516,7 @@ async def _handle_profile_command(
         print(c(f"{symbol('warn')} {error}", Colors.RED))
         return EXIT_FAILURE
 
-    timeout_seconds, max_concurrency, source_profile, max_platforms = _resolve_profile_runtime(args)
+    timeout_seconds, max_concurrency, source_profile, max_platforms, scan_range = _resolve_profile_runtime(args)
     override_types, error = _parse_output_type_override(getattr(args, "out_type", None))
     if error:
         print(c(f"{symbol('warn')} {error}", Colors.RED))
@@ -3518,6 +3554,7 @@ async def _handle_profile_command(
             f"timeout seconds: {timeout_seconds}",
             f"max concurrency: {max_concurrency}",
             f"source profile: {source_profile}",
+            f"scan range: {scan_range}",
         ),
     )
     if not _confirm_execution(prompt_mode=prompt_mode):
@@ -3540,6 +3577,7 @@ async def _handle_profile_command(
                 max_concurrency=max_concurrency,
                 source_profile=source_profile,
                 max_platforms=max_platforms,
+                scan_range=scan_range,
                 scan_mode=args.preset,
                 write_csv=bool(getattr(args, "csv", False)),
                 write_html=bool(getattr(args, "html", False)),
@@ -3801,6 +3839,9 @@ async def _handle_fusion_command(
             f"profile preset: {args.profile_preset}",
             f"surface preset: {args.surface_preset}",
             f"surface recon mode: {surface_scan_directives.recon_mode}",
+            f"profile scan range: {'fullrange' if getattr(args, 'fullrange', False) else 'quickrange'}"
+            if (getattr(args, "fullrange", False) or getattr(args, "quickrange", False))
+            else f"profile scan range: {str(profile_preset.get('scan_range', 'quickrange'))}",
         ),
     )
     if not _confirm_execution(prompt_mode=prompt_mode):
@@ -3817,6 +3858,12 @@ async def _handle_fusion_command(
         filter_names=list(filter_ids),
         surface_scan_directives=surface_scan_directives,
     )
+    profile_scan_range = _resolve_scan_range(
+        quickrange=bool(getattr(args, "quickrange", False)),
+        fullrange=bool(getattr(args, "fullrange", False)),
+        preset=profile_preset,
+        source_profile=str(profile_preset.get("source_profile", "balanced")),
+    )
 
     try:
         profile_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -3828,9 +3875,12 @@ async def _handle_fusion_command(
             source_profile=str(profile_preset.get("source_profile", "balanced")),
             max_platforms=(
                 profile_preset["max_platforms"]
-                if isinstance(profile_preset.get("max_platforms"), int) and profile_preset["max_platforms"] > 0
+                if profile_scan_range != "fullrange"
+                and isinstance(profile_preset.get("max_platforms"), int)
+                and profile_preset["max_platforms"] > 0
                 else None
             ),
+            scan_range=profile_scan_range,
             scan_mode=args.profile_preset,
             write_csv=bool(getattr(args, "csv", False)),
             write_html=bool(getattr(args, "html", False)),
@@ -4197,9 +4247,17 @@ async def _handle_orchestrate_command(args: argparse.Namespace, state: RunnerSta
         if args.source_profile
         else str(profile_preset.get("source_profile", "balanced"))
     )
+    scan_range = _resolve_scan_range(
+        quickrange=bool(getattr(args, "quickrange", False)),
+        fullrange=bool(getattr(args, "fullrange", False)),
+        preset=profile_preset,
+        source_profile=source_profile,
+    )
 
     max_platforms: int | None = None
-    if args.max_platforms is not None:
+    if scan_range == "fullrange":
+        max_platforms = None
+    elif args.max_platforms is not None:
         max_platforms = _int_from_value(args.max_platforms, profile_preset["max_platforms"])
     elif isinstance(profile_preset.get("max_platforms"), int):
         preset_limit = profile_preset["max_platforms"]
@@ -4240,6 +4298,7 @@ async def _handle_orchestrate_command(args: argparse.Namespace, state: RunnerSta
         "timeout": timeout_seconds,
         "max_workers": max_workers,
         "source_profile": source_profile,
+        "scan_range": scan_range,
         "max_platforms": max_platforms,
         "max_subdomains": max_subdomains,
         "recon_mode": recon_mode,
@@ -4273,6 +4332,7 @@ async def _handle_orchestrate_command(args: argparse.Namespace, state: RunnerSta
             f"timeout seconds: {timeout_seconds}",
             f"max workers: {max_workers}",
             f"source profile: {source_profile}",
+            f"scan range: {scan_range}",
         ),
     )
     if not _confirm_execution(prompt_mode=prompt_mode):
@@ -5694,6 +5754,9 @@ async def _dispatch(args: argparse.Namespace, state: RunnerState, prompt_mode: b
 async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
     state = initial_state or RunnerState()
     session = PromptSessionState()
+    configured_scan_range = str(get_profile_scan_config(load_operator_config()).get("scan_range", "quickrange")).strip().lower()
+    if configured_scan_range in SCAN_RANGES:
+        session.scan_range = configured_scan_range
     clear_screen()
     show_banner(get_anonymity_status(state))
     if os.environ.get("SILINOSIC_X_DOCKER") == "1":

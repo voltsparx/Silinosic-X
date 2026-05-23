@@ -42,6 +42,7 @@ PROFILE_ALIASES = set(PROFILE_COMMAND_ALIASES)
 SURFACE_ALIASES = set(SURFACE_COMMAND_ALIASES)
 FUSION_ALIASES = set(FUSION_COMMAND_ALIASES)
 ORCHESTRATE_ALIASES = set(ORCHESTRATE_COMMAND_ALIASES)
+RANGE_KEYWORDS = {"quickrange": "--quickrange", "fullrange": "--fullrange"}
 
 
 def keyword_to_command(value: str) -> str | None:
@@ -55,10 +56,30 @@ def keyword_to_command(value: str) -> str | None:
 def rewrite_tokens_with_keywords(tokens: list[str]) -> list[str]:
     if not tokens:
         return tokens
+    if len(tokens) >= 2 and tokens[0].strip().lower() in RANGE_KEYWORDS:
+        range_flag = RANGE_KEYWORDS[tokens[0].strip().lower()]
+        rewritten = [tokens[1], *tokens[2:]]
+        if range_flag not in rewritten:
+            rewritten.append(range_flag)
+        mapped = keyword_to_command(rewritten[0])
+        if mapped:
+            rewritten[0] = mapped
+        return rewritten
     mapped = keyword_to_command(tokens[0])
-    if mapped:
-        return [mapped, *tokens[1:]]
-    return tokens
+    rewritten = [mapped, *tokens[1:]] if mapped else list(tokens)
+    normalized: list[str] = []
+    seen_flags: set[str] = set()
+    for token in rewritten:
+        lowered = str(token).strip().lower()
+        replacement = RANGE_KEYWORDS.get(lowered)
+        if replacement is not None:
+            if replacement in seen_flags:
+                continue
+            seen_flags.add(replacement)
+            normalized.append(replacement)
+            continue
+        normalized.append(token)
+    return normalized
 
 
 def _normalize_module(value: str) -> str:
@@ -369,6 +390,9 @@ def apply_prompt_defaults(args: argparse.Namespace, session: PromptSessionState)
     if command in PROFILE_ALIASES:
         if "--preset" not in explicit_flags:
             args.preset = session.profile_preset
+        if "--fullrange" not in explicit_flags and "--quickrange" not in explicit_flags:
+            args.fullrange = session.scan_range == "fullrange"
+            args.quickrange = session.scan_range != "fullrange"
         return args
 
     if command in SURFACE_ALIASES:
@@ -381,11 +405,17 @@ def apply_prompt_defaults(args: argparse.Namespace, session: PromptSessionState)
             args.profile_preset = session.profile_preset
         if "--surface-preset" not in explicit_flags:
             args.surface_preset = session.surface_preset
+        if "--fullrange" not in explicit_flags and "--quickrange" not in explicit_flags:
+            args.fullrange = session.scan_range == "fullrange"
+            args.quickrange = session.scan_range != "fullrange"
         return args
 
     if command in ORCHESTRATE_ALIASES:
         if "--profile" not in explicit_flags:
             args.profile = _default_orchestrate_profile(session, scope)
+        if "--fullrange" not in explicit_flags and "--quickrange" not in explicit_flags:
+            args.fullrange = session.scan_range == "fullrange"
+            args.quickrange = session.scan_range != "fullrange"
     return args
 
 
@@ -404,7 +434,7 @@ def handle_prompt_set_command(
     tokens = command_text.strip().split(maxsplit=2)
     if len(tokens) != 3:
         _emit(
-            "Usage: set <template|plugins|filters|modules|profile_preset|surface_preset|extension_control|orchestrate_extension_control> <value>",
+            "Usage: set <template|plugins|filters|modules|profile_preset|surface_preset|scan_range|extension_control|orchestrate_extension_control> <value>",
             Colors.EMBER,
         )
         return True
@@ -603,6 +633,15 @@ def handle_prompt_set_command(
             return True
         session.surface_preset = normalized_value
         _emit(f"Surface preset set to: {normalized_value}", Colors.GREEN)
+        return True
+
+    if key == "scan_range":
+        normalized_value = value.lower()
+        if normalized_value not in {"quickrange", "fullrange"}:
+            _emit(f"Invalid scan range: {value}", Colors.RED)
+            return True
+        session.scan_range = normalized_value
+        _emit(f"Scan range set to: {normalized_value}", Colors.GREEN)
         return True
 
     if key == "extension_control":

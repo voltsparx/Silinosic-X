@@ -38,9 +38,10 @@ DEFAULT_MODULES_ROOT = Path("modules")
 DEFAULT_INDEX_PATH = DEFAULT_MODULES_ROOT / "index.json"
 DEFAULT_PLUGIN_INDEX_PATH = DEFAULT_MODULES_ROOT / "plugin-modules.json"
 DEFAULT_FILTER_INDEX_PATH = DEFAULT_MODULES_ROOT / "filter-modules.json"
-DEFAULT_CATALOG_VERSION = "2.1"
+DEFAULT_CATALOG_VERSION = "2.2"
 DEFAULT_MAX_WORKERS = max(4, min(16, (os.cpu_count() or 4) * 2))
 MAX_QUERY_LIMIT = 1000
+DEFAULT_MODULE_LIMIT = 300
 
 SUPPORTED_EXTENSIONS = {
     ".py",
@@ -531,6 +532,83 @@ def _resolve_max_workers(value: int | None) -> int:
     return max(1, min(64, _safe_int(value, DEFAULT_MAX_WORKERS)))
 
 
+def _module_signature(row: dict[str, Any]) -> tuple[str, str, tuple[str, ...], tuple[str, ...]]:
+    file_stem = Path(str(row.get("file", ""))).stem.strip().lower()
+    file_stem = re.sub(r"^(?:sfp_|sfl_|sf_|plugin_|module_|collector_|filter_)+", "", file_stem)
+    file_stem = re.sub(r"[^a-z0-9]+", "-", file_stem).strip("-") or "module"
+    capabilities = tuple(
+        sorted(
+            _normalize_tag(str(value))
+            for value in (row.get("capabilities", []) or [])
+            if isinstance(value, str) and str(value).strip()
+        )[:4]
+    )
+    scopes = tuple(
+        sorted(
+            str(value).strip().lower()
+            for value in (row.get("scopes", []) or [])
+            if isinstance(value, str) and str(value).strip()
+        )
+    )
+    return str(row.get("kind", "")).strip().lower(), file_stem, capabilities, scopes
+
+
+def _module_rank_key(row: dict[str, Any]) -> tuple[int, int, str, str]:
+    metrics = row.get("metrics", {})
+    confidence = _safe_int(metrics.get("confidence_score"), 0) if isinstance(metrics, dict) else 0
+    return (
+        -_power_value(row),
+        -confidence,
+        str(row.get("framework", "")).strip().lower(),
+        str(row.get("file", "")).strip().lower(),
+    )
+
+
+def _curate_module_rows(rows: list[dict[str, Any]], *, limit: int = DEFAULT_MODULE_LIMIT) -> list[dict[str, Any]]:
+    if len(rows) <= limit:
+        return list(rows)
+
+    ranked_rows = sorted(rows, key=_module_rank_key)
+    deduped: list[dict[str, Any]] = []
+    seen_signatures: set[tuple[str, str, tuple[str, ...], tuple[str, ...]]] = set()
+    for row in ranked_rows:
+        signature = _module_signature(row)
+        if signature in seen_signatures:
+            continue
+        seen_signatures.add(signature)
+        deduped.append(row)
+
+    if len(deduped) <= limit:
+        return deduped
+
+    framework_buckets: dict[str, list[dict[str, Any]]] = {}
+    for row in deduped:
+        framework = str(row.get("framework", "")).strip().lower() or "unknown"
+        framework_buckets.setdefault(framework, []).append(row)
+
+    curated: list[dict[str, Any]] = []
+    framework_names = sorted(framework_buckets)
+    while len(curated) < limit:
+        advanced = False
+        for framework in framework_names:
+            bucket = framework_buckets.get(framework, [])
+            if not bucket:
+                continue
+            curated.append(bucket.pop(0))
+            advanced = True
+            if len(curated) >= limit:
+                break
+        if not advanced:
+            break
+
+    if len(curated) < limit:
+        selected_ids = {str(row.get("id", "")) for row in curated}
+        remainder = [row for row in deduped if str(row.get("id", "")) not in selected_ids]
+        curated.extend(remainder[: limit - len(curated)])
+
+    return curated[:limit]
+
+
 def _analyze_source_file(
     *,
     source_root: Path,
@@ -703,6 +781,9 @@ def build_module_catalog(
             for framework_name, framework_root, file_path in jobs
         ]
 
+    raw_module_count = len(module_rows)
+    module_rows = _curate_module_rows(module_rows, limit=DEFAULT_MODULE_LIMIT)
+
     kind_counts: Counter[str] = Counter()
     scope_counts: Counter[str] = Counter()
     capability_counts: Counter[str] = Counter()
@@ -796,6 +877,8 @@ def build_module_catalog(
         "source_root": source.as_posix(),
         "framework_count": len(frameworks),
         "module_count": len(module_rows),
+        "raw_module_count": raw_module_count,
+        "module_limit": DEFAULT_MODULE_LIMIT,
         "kind_counts": {
             "plugin": kind_counts.get("plugin", 0),
             "filter": kind_counts.get("filter", 0),
@@ -822,6 +905,9 @@ def build_module_catalog(
             "max_workers": resolved_max_workers,
             "source_file_count": len(jobs),
             "source_fingerprint": source_fingerprint,
+            "raw_module_count": raw_module_count,
+            "curated_module_count": len(module_rows),
+            "module_limit": DEFAULT_MODULE_LIMIT,
         },
         "frameworks": framework_stats,
         "modules": module_rows,
@@ -834,7 +920,9 @@ def build_module_catalog(
     readme_lines = [
         "# Modules Catalog",
         "",
-        "Generated index for module-like capabilities discovered under `temp/`.",
+        "Generated curated index for module-like capabilities discovered under `temp/`.",
+        "",
+        f"- Catalog cap: {DEFAULT_MODULE_LIMIT} merged/high-signal modules",
         "",
         f"- Generated by {PROJECT_NAME} v{VERSION} [{VERSION_THEME}]",
         "- `index.json`: full catalog with capability tags, scoring, and scope hints",

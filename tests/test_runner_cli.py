@@ -128,6 +128,13 @@ class TestRunnerCli(unittest.TestCase):
         self.assertEqual(args.command, "profile")
         self.assertEqual(args.preset, "max")
 
+    def test_root_profile_parser_parses_scan_range_flags(self):
+        parser = build_root_parser()
+        args = parser.parse_args(["profile", "alice", "--quickrange"])
+        self.assertEqual(args.command, "profile")
+        self.assertTrue(args.quickrange)
+        self.assertFalse(args.fullrange)
+
     def test_root_doctor_parser_parses_json_flag(self):
         parser = build_root_parser()
         args = parser.parse_args(["doctor", "--json"])
@@ -233,6 +240,13 @@ class TestRunnerCli(unittest.TestCase):
         self.assertEqual(args.plugin, ["threat_conductor"])
         self.assertEqual(args.filter, ["exposure_tier_matrix"])
         self.assertEqual(args.extension_control, "manual")
+
+    def test_root_fusion_parser_parses_fullrange_flag(self):
+        parser = build_root_parser()
+        args = parser.parse_args(["fusion", "alice", "example.com", "--fullrange"])
+        self.assertEqual(args.command, "fusion")
+        self.assertTrue(args.fullrange)
+        self.assertFalse(args.quickrange)
 
     def test_root_ocr_parser_parses_flags(self):
         parser = build_root_parser()
@@ -645,6 +659,13 @@ class TestRunnerCli(unittest.TestCase):
         self.assertEqual(args.scan_type, ["syn"])
         self.assertTrue(args.os_fingerprint)
         self.assertEqual(args.extension_control, "auto")
+
+    def test_prompt_parser_parses_profile_quickrange_flag(self):
+        parser = build_prompt_parser()
+        args = parser.parse_args(["profile", "alice", "--quickrange"])
+        self.assertEqual(args.command, "profile")
+        self.assertTrue(args.quickrange)
+        self.assertFalse(args.fullrange)
 
     def test_prompt_parser_parses_ocr_command(self):
         parser = build_prompt_parser()

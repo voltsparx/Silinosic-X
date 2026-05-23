@@ -191,6 +191,25 @@ class TestModuleCatalog(unittest.TestCase):
             self.assertEqual(rebuilt.get("framework_count"), 1)
             self.assertEqual(rebuilt.get("module_count"), 1)
 
+    def test_build_catalog_caps_and_curates_to_300_modules(self):
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir) / "temp"
+            output_root = Path(temp_dir) / "modules"
+            for framework_index in range(4):
+                framework_root = root / f"framework-{framework_index}" / "mods"
+                framework_root.mkdir(parents=True, exist_ok=True)
+                for module_index in range(120):
+                    (framework_root / f"dns_probe_{module_index}.py").write_text(
+                        "# plugin profile dns domain http surface graph report",
+                        encoding="utf-8",
+                    )
+
+            payload = build_module_catalog(root, output_root=output_root)
+
+            self.assertLessEqual(payload["module_count"], 300)
+            self.assertEqual(payload["module_limit"], 300)
+            self.assertGreater(payload["raw_module_count"], payload["module_count"])
+
 
 if __name__ == "__main__":
     unittest.main()

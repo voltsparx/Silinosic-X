@@ -19,21 +19,20 @@ from core.foundation.metadata import VERSION, VERSION_THEME
 
 def show_banner(anonymity_status: str = "No Anonymization") -> None:
     banner_lines = (
-        (".d8888. d888888b db      d888888b  .o88b.  .d8b.         ", " db    db"),
-        ("88'  YP   `88'   88        `88'   d8P  Y8 d8' `8b        ", " `8b  d8'"),
-        ("`8bo.      88    88         88    8P      88ooo88        ", "  `8bd8' "),
-        ("  `Y8b.    88    88         88    8b      88~~~88  C8888D", "  .dPYb. "),
-        ("db   8D   .88.   88booo.   .88.   Y8b  d8 88   88        ", " .8P  Y8."),
-        ("`8888Y' Y888888P Y88888P Y888888P  `Y88P' YP   YP        ", " YP    YP"),
+        (".d8888. d888888b db      d888888b d8b   db  .d88b.  .d8888. d888888b  .o88b.", "       db    db"),
+        ("88'  YP   `88'   88        `88'   888o  88 .8P  Y8. 88'  YP   `88'   d8P  Y8", "       `8b  d8'"),
+        ("`8bo.      88    88         88    88V8o 88 88    88 `8bo.      88    8P     ", "        `8bd8' "),
+        ("  `Y8b.    88    88         88    88 V8o88 88    88   `Y8b.    88    8b      C8888D", " .dPYb. "),
+        ("db   8D   .88.   88booo.   .88.   88  V888 `8b  d8' db   8D   .88.   Y8b  d8", "       .8P  Y8."),
+        ("`8888Y' Y888888P Y88888P Y888888P VP   V8P  `Y88P'  `8888Y' Y888888P  `Y88P'", "       YP    YP"),
     )
     for silinosic_block, x_block in banner_lines:
-        print(f"{c(f'       {silinosic_block}', Colors.GREY)}{c(x_block, Colors.EMBER)}")
+        print(f"{c(f'           {silinosic_block}', Colors.GREY)}{c(x_block, Colors.EMBER)}")
 
     print(
-        f"{c(f'                                                                          v{VERSION} ', Colors.GREY)}"
+        f"{c(f'                                                                                                  v{VERSION} ', Colors.GREY)}"
         f"{c(f'[{VERSION_THEME}]', Colors.EMBER)}"
     )
-    print("_" * 89)
+    print("_" * 114)
     print(f"{c('Current anonymity:', Colors.EMBER)} {c(anonymity_status, Colors.CYAN)}")
-    print(c("Hybrid console lanes: async | thread | sync | fusion", Colors.GREY))
-    print(c("Authorized research only.", Colors.GREY))
+    print(c("Authorized research only!", Colors.GREY))

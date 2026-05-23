@@ -238,12 +238,14 @@ class Orchestrator:
 
         max_platforms_value = self.config.get("max_platforms")
         max_platforms = int(max_platforms_value) if isinstance(max_platforms_value, int) else None
+        scan_range = str(self.config.get("scan_range", "quickrange")).strip().lower() or "quickrange"
 
         return {
             "mode": self.mode,
             "timeout": int(self.config.get("timeout", self.policy.timeout)),
             "max_workers": int(self.config.get("max_workers", self.policy.max_workers)),
             "source_profile": source_profile,
+            "scan_range": scan_range,
             "max_platforms": max_platforms,
             "proxy_url": proxy_url,
             "include_ct": bool(self.config.get("include_ct", True)),

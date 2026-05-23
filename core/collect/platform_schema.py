@@ -21,11 +21,126 @@ import json
 import os
 from importlib import resources as importlib_resources
 from dataclasses import dataclass
+from pathlib import Path
+import re
 from typing import Any
 
 
 ALLOWED_METHODS = {"GET", "HEAD", "POST", "PUT"}
 ALLOWED_DETECTION_METHODS = {"status_code", "message", "response_url"}
+SCAN_RANGES = {"quickrange", "fullrange"}
+DEFAULT_QUICKRANGE_FALLBACK = (
+    "facebook",
+    "instagram",
+    "x",
+    "linkedin",
+    "tiktok",
+    "threads",
+    "pinterest",
+    "tumblr",
+    "vk",
+    "ok",
+    "weibo",
+    "xiaohongshu",
+    "medium",
+    "substack",
+    "wordpress",
+    "blogger",
+    "livejournal",
+    "linktree",
+    "youtube",
+    "twitch",
+    "vimeo",
+    "soundcloud",
+    "spotify",
+    "dailymotion",
+    "rumble",
+    "kick",
+    "reddit",
+    "quora",
+    "telegram",
+    "discord",
+    "skype",
+    "whatsapp",
+    "viber",
+    "line",
+    "wechat",
+    "icq",
+    "slack",
+    "matrix",
+    "element",
+    "signal",
+    "snapchat",
+    "kik",
+    "clubhouse",
+    "zoom",
+    "github",
+    "gitlab",
+    "bitbucket",
+    "gitea",
+    "sourceforge",
+    "stackoverflow",
+    "stackexchange",
+    "hackernews",
+    "devto",
+    "hashnode",
+    "producthunt",
+    "dockerhub",
+    "npm",
+    "pypi",
+    "kaggle",
+    "steam",
+    "epicgames",
+    "psn",
+    "xboxlive",
+    "nintendo",
+    "ubisoft",
+    "ea",
+    "roblox",
+    "minecraft",
+    "chess",
+    "lichess",
+    "osu",
+    "nexusmods",
+    "speedrun",
+    "battlenet",
+    "behance",
+    "dribbble",
+    "artstation",
+    "deviantart",
+    "figma",
+    "flickr",
+    "500px",
+    "unsplash",
+    "pixabay",
+    "letterboxd",
+    "venmo",
+    "cashapp",
+    "paypal",
+    "buymeacoffee",
+    "patreon",
+    "kickstarter",
+    "ebay",
+    "etsy",
+    "tripadvisor",
+    "yelp",
+    "archiveorg",
+    "instructables",
+    "goodreads",
+    "myanimelist",
+    "lastfm",
+)
+
+PLATFORM_SELECTOR_ALIASES: dict[str, tuple[str, ...]] = {
+    "psnprofiles": ("psn",),
+    "psnprofilescom": ("psn",),
+    "xboxgamertag": ("xboxlive",),
+    "xboxgamertagcom": ("xboxlive",),
+    "nintendolife": ("nintendo",),
+    "nintendolifecom": ("nintendo",),
+    "etsycomshop": ("etsy",),
+    "etsy-com-shop": ("etsy",),
+}
 
 
 class PlatformValidationError(ValueError):
@@ -51,6 +166,10 @@ class PlatformConfig:
     body_contains: tuple[str, ...] = ()
     body_not_contains: tuple[str, ...] = ()
     timeout_seconds: int = 20
+    category: str = ""
+    nsfw: bool = False
+    source: str = ""
+    identifier: str = ""
 
 
 def _load_platforms_from_dir(platform_dir: str) -> list[PlatformConfig]:
@@ -60,7 +179,11 @@ def _load_platforms_from_dir(platform_dir: str) -> list[PlatformConfig]:
         )
 
     configs: list[PlatformConfig] = []
-    for filename in sorted(os.listdir(platform_dir)):
+    prioritized_files = sorted(
+        os.listdir(platform_dir),
+        key=lambda filename: (filename.startswith("lowhunt-import"), filename.lower()),
+    )
+    for filename in prioritized_files:
         if not filename.endswith(".json"):
             continue
         if filename.lower() == "schema.json":
@@ -75,13 +198,23 @@ def _load_platforms_from_dir(platform_dir: str) -> list[PlatformConfig]:
                     f"Invalid JSON in {path}: {exc.msg}"
                 ) from exc
 
-        configs.append(_normalize_platform(payload, source=path))
+        entries = payload if isinstance(payload, list) else [payload]
+        for entry in entries:
+            configs.append(_normalize_platform(entry, source=path))
 
     if not configs:
         raise PlatformValidationError(
             f"No platform json files found in {os.path.abspath(platform_dir)}"
         )
-    return configs
+    deduped: list[PlatformConfig] = []
+    seen_names: set[str] = set()
+    for config in configs:
+        name_key = config.name.strip().casefold()
+        if name_key in seen_names:
+            continue
+        seen_names.add(name_key)
+        deduped.append(config)
+    return deduped
 
 
 def load_platforms(platform_dir: str = "platforms") -> list[PlatformConfig]:
@@ -115,13 +248,23 @@ def _normalize_platform(raw: dict[str, Any], source: str) -> PlatformConfig:
     url = raw.get("url")
     if not isinstance(name, str) or not name.strip():
         raise PlatformValidationError(f"{source}: 'name' must be a non-empty string.")
-    if not isinstance(url, str) or "{username}" not in url:
+    if not isinstance(url, str):
+        raise PlatformValidationError(
+            f"{source}: 'url' must be a string containing '{{username}}'."
+        )
+    url = _normalize_username_placeholder(url)
+    if "{username}" not in url:
         raise PlatformValidationError(
             f"{source}: 'url' must be a string containing '{{username}}'."
         )
 
     url_probe = raw.get("url_probe", raw.get("urlProbe", url))
-    if not isinstance(url_probe, str) or "{username}" not in url_probe:
+    if not isinstance(url_probe, str):
+        raise PlatformValidationError(
+            f"{source}: 'url_probe' must contain '{{username}}' when provided."
+        )
+    url_probe = _normalize_username_placeholder(url_probe)
+    if "{username}" not in url_probe:
         raise PlatformValidationError(
             f"{source}: 'url_probe' must contain '{{username}}' when provided."
         )
@@ -144,14 +287,20 @@ def _normalize_platform(raw: dict[str, Any], source: str) -> PlatformConfig:
 
     error_url = raw.get("error_url", raw.get("errorUrl"))
     if error_url is not None:
-        if not isinstance(error_url, str) or "{username}" not in error_url:
+        if not isinstance(error_url, str):
             raise PlatformValidationError(
                 f"{source}: error_url/errorUrl must contain '{{username}}'."
             )
+        if not error_url.strip():
+            error_url = None
+        else:
+            error_url = _normalize_username_placeholder(error_url)
 
     regex_check = raw.get("regex_check", raw.get("regexCheck"))
-    if regex_check is not None and (not isinstance(regex_check, str) or not regex_check):
-        raise PlatformValidationError(f"{source}: regex_check/regexCheck must be a string.")
+    if regex_check is not None:
+        if not isinstance(regex_check, str):
+            raise PlatformValidationError(f"{source}: regex_check/regexCheck must be a string.")
+        regex_check = regex_check.strip() or None
 
     body_contains = _normalize_string_list(
         raw.get("body_contains", raw.get("bodyContains")),
@@ -199,7 +348,7 @@ def _normalize_platform(raw: dict[str, Any], source: str) -> PlatformConfig:
         confidence_weight = confidence / 100.0
     else:
         if confidence_weight_raw is None:
-            confidence_weight_raw = 0.7
+            confidence_weight_raw = 0.75 if "message" in detection_methods else 0.60
         try:
             confidence_weight = float(confidence_weight_raw)
         except (TypeError, ValueError) as exc:
@@ -224,7 +373,14 @@ def _normalize_platform(raw: dict[str, Any], source: str) -> PlatformConfig:
     if timeout_seconds <= 0:
         raise PlatformValidationError(f"{source}: timeout must be greater than zero.")
 
+    identifier = str(raw.get("identifier") or raw.get("id") or Path(source).stem).strip()
+    if not identifier:
+        identifier = name.strip()
+    category = str(raw.get("category") or "").strip().lower()
+    nsfw = bool(raw.get("isNSFW", raw.get("nsfw", False)))
+
     return PlatformConfig(
+        identifier=identifier,
         name=name.strip(),
         url=url,
         url_probe=url_probe,
@@ -242,6 +398,9 @@ def _normalize_platform(raw: dict[str, Any], source: str) -> PlatformConfig:
         body_contains=tuple(body_contains),
         body_not_contains=tuple(body_not_contains),
         timeout_seconds=timeout_seconds,
+        category=category,
+        nsfw=nsfw,
+        source=source,
     )
 
 
@@ -295,3 +454,66 @@ def _normalize_string_list(value: Any, label: str) -> list[str]:
     if isinstance(value, list) and all(isinstance(item, str) for item in value):
         return value
     raise PlatformValidationError(f"{label} must be a string or list of strings.")
+
+
+def _normalize_username_placeholder(value: str) -> str:
+    return str(value).replace("{}", "{username}")
+
+
+def _slugify_token(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", str(value).strip().lower()).strip("-")
+
+
+def _compact_token(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", str(value).strip().lower())
+
+
+def platform_selector_keys(platform: PlatformConfig) -> tuple[str, ...]:
+    values = {
+        platform.identifier,
+        platform.name,
+        platform.category,
+        Path(platform.source).stem,
+    }
+    host = ""
+    url_match = re.search(r"https?://([^/{]+)", platform.url)
+    if url_match:
+        host = url_match.group(1).strip().lower()
+        values.add(host)
+        values.add(host.removeprefix("www."))
+        values.add(host.split(".", 1)[0])
+
+    keys: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        if not value:
+            continue
+        for token in (_slugify_token(value), _compact_token(value)):
+            if token and token not in seen:
+                seen.add(token)
+                keys.append(token)
+                for alias in PLATFORM_SELECTOR_ALIASES.get(token, ()):
+                    if alias and alias not in seen:
+                        seen.add(alias)
+                        keys.append(alias)
+    return tuple(keys)
+
+
+def load_default_platform_keys(range_name: str = "quickrange") -> tuple[str, ...]:
+    normalized = str(range_name or "").strip().lower()
+    if normalized != "quickrange":
+        return ()
+
+    candidate = Path(__file__).resolve().parent.parent.parent / "self-assessment" / "top100-platforms-be-default.txt"
+    if candidate.exists():
+        try:
+            values = [
+                _compact_token(line)
+                for line in candidate.read_text(encoding="utf-8").splitlines()
+                if _compact_token(line)
+            ]
+            if values:
+                return tuple(dict.fromkeys(values))
+        except OSError:
+            pass
+    return tuple(dict.fromkeys(_compact_token(item) for item in DEFAULT_QUICKRANGE_FALLBACK if _compact_token(item)))

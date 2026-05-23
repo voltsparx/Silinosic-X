@@ -18,7 +18,7 @@ import os
 import shutil
 import unittest
 
-from core.collect.platform_schema import PlatformValidationError, load_platforms
+from core.collect.platform_schema import PlatformValidationError, load_default_platform_keys, load_platforms
 
 
 class TestPlatformSchema(unittest.TestCase):
@@ -66,6 +66,35 @@ class TestPlatformSchema(unittest.TestCase):
                 load_platforms(temp_dir)
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_array_manifest_payload_supported(self):
+        temp_root = os.path.join(os.getcwd(), ".tmp-tests")
+        os.makedirs(temp_root, exist_ok=True)
+        temp_dir = os.path.join(temp_root, "platform-schema-array")
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        os.makedirs(temp_dir, exist_ok=True)
+
+        try:
+            manifest_file = os.path.join(temp_dir, "batch.json")
+            with open(manifest_file, "w", encoding="utf-8") as handle:
+                json.dump(
+                    [
+                        {"name": "GitHub", "url": "https://github.com/{}", "errorType": "status_code", "errorCode": 404},
+                        {"name": "CustomSite", "url": "https://custom.example/{}", "errorType": "status_code", "errorCode": 404},
+                    ],
+                    handle,
+                )
+
+            platforms = load_platforms(temp_dir)
+            self.assertEqual(len(platforms), 2)
+            self.assertTrue(all("{username}" in platform.url for platform in platforms))
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_default_quickrange_keys_load(self):
+        keys = load_default_platform_keys()
+        self.assertIn("github", keys)
+        self.assertIn("instagram", keys)
 
 
 if __name__ == "__main__":

@@ -28,6 +28,7 @@ class ProfilePreset(TypedDict):
     max_concurrency: int
     source_profile: str
     max_platforms: int
+    scan_range: str
 
 
 class SurfacePreset(TypedDict):
@@ -45,18 +46,19 @@ class OCRPreset(TypedDict):
 
 
 PROFILE_PRESETS: dict[str, ProfilePreset] = {
-    "safe": {"timeout": 10, "max_concurrency": 8, "source_profile": "fast", "max_platforms": 25},
-    "fast": {"timeout": 10, "max_concurrency": 8, "source_profile": "fast", "max_platforms": 25},
-    "quick": {"timeout": 12, "max_concurrency": 10, "source_profile": "fast", "max_platforms": 25},
+    "safe": {"timeout": 10, "max_concurrency": 8, "source_profile": "fast", "max_platforms": 100, "scan_range": "quickrange"},
+    "fast": {"timeout": 10, "max_concurrency": 8, "source_profile": "fast", "max_platforms": 100, "scan_range": "quickrange"},
+    "quick": {"timeout": 12, "max_concurrency": 10, "source_profile": "fast", "max_platforms": 100, "scan_range": "quickrange"},
     "balanced": {
         "timeout": DEFAULT_TIMEOUT_SECONDS,
         "max_concurrency": DEFAULT_MAX_CONCURRENCY,
         "source_profile": "balanced",
-        "max_platforms": 45,
+        "max_platforms": 100,
+        "scan_range": "quickrange",
     },
-    "deep": {"timeout": 35, "max_concurrency": 35, "source_profile": "deep", "max_platforms": 60},
-    "aggressive": {"timeout": 50, "max_concurrency": 50, "source_profile": "max", "max_platforms": 70},
-    "max": {"timeout": 50, "max_concurrency": 50, "source_profile": "max", "max_platforms": 70},
+    "deep": {"timeout": 35, "max_concurrency": 35, "source_profile": "deep", "max_platforms": 100, "scan_range": "quickrange"},
+    "aggressive": {"timeout": 50, "max_concurrency": 50, "source_profile": "max", "max_platforms": 0, "scan_range": "fullrange"},
+    "max": {"timeout": 50, "max_concurrency": 50, "source_profile": "max", "max_platforms": 0, "scan_range": "fullrange"},
 }
 
 SURFACE_PRESETS: dict[str, SurfacePreset] = {

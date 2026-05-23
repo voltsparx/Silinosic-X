@@ -618,6 +618,18 @@ def _add_profile_args(parser: argparse.ArgumentParser, *, default_dashboard_port
         default=None,
         help="Max concurrent platform requests override.",
     )
+    parser.add_argument(
+        "--quickrange",
+        action="store_true",
+        default=False,
+        help="Use the default top-platform quick range for profile collection.",
+    )
+    parser.add_argument(
+        "--fullrange",
+        action="store_true",
+        default=False,
+        help="Scan across every platform present in the framework.",
+    )
     _add_toggle_flags(
         parser,
         "csv",
@@ -746,6 +758,18 @@ def _add_fusion_args(parser: argparse.ArgumentParser) -> None:
         choices=list(SURFACE_RECON_MODES),
         default=None,
         help="Recon lane for the fusion surface phase: passive, active, or hybrid.",
+    )
+    parser.add_argument(
+        "--quickrange",
+        action="store_true",
+        default=False,
+        help="Use the default top-platform quick range for the fusion profile phase.",
+    )
+    parser.add_argument(
+        "--fullrange",
+        action="store_true",
+        default=False,
+        help="Scan every platform present in the framework for the fusion profile phase.",
     )
     _add_surface_scan_args(parser)
     _add_toggle_flags(
@@ -883,6 +907,18 @@ def _add_orchestrate_args(parser: argparse.ArgumentParser) -> None:
         help="Maximum profile platforms for username collection.",
     )
     parser.add_argument(
+        "--quickrange",
+        action="store_true",
+        default=False,
+        help="Use the default top-platform quick range for username collection.",
+    )
+    parser.add_argument(
+        "--fullrange",
+        action="store_true",
+        default=False,
+        help="Use every platform present in the framework for username collection.",
+    )
+    parser.add_argument(
         "--max-subdomains",
         type=positive_int,
         default=None,
@@ -1010,6 +1046,18 @@ def _add_wizard_args(parser: argparse.ArgumentParser) -> None:
         choices=sorted(PROFILE_PRESETS.keys()),
         default=None,
         help="Default profile preset inside wizard workflow.",
+    )
+    parser.add_argument(
+        "--quickrange",
+        action="store_true",
+        default=False,
+        help="Use the default top-platform quick range for wizard profile/fusion phases.",
+    )
+    parser.add_argument(
+        "--fullrange",
+        action="store_true",
+        default=False,
+        help="Use every platform present in the framework for wizard profile/fusion phases.",
     )
     parser.add_argument(
         "--surface-preset",

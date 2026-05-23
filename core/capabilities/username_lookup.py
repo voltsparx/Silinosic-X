@@ -41,6 +41,7 @@ class UsernameLookupCapability(Capability):
         timeout_seconds = max(5, int(context.get("timeout", 20)))
         max_workers = max(1, int(context.get("max_workers", 20)))
         source_profile = str(context.get("source_profile", "balanced"))
+        scan_range = str(context.get("scan_range", "quickrange"))
         max_platforms_value = context.get("max_platforms")
         max_platforms = int(max_platforms_value) if isinstance(max_platforms_value, int) else None
         proxy_url = context.get("proxy_url") if isinstance(context.get("proxy_url"), str) else None
@@ -51,6 +52,7 @@ class UsernameLookupCapability(Capability):
             max_concurrency=max_workers,
             source_profile=source_profile,
             max_platforms=max_platforms,
+            scan_range=scan_range,
             proxy_url=proxy_url,
         )
         return list(entities)

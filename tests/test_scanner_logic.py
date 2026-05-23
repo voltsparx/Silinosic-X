@@ -16,7 +16,7 @@
 import unittest
 
 from core.collect.platform_schema import PlatformConfig
-from core.collect.scanner import evaluate_presence, normalize_source_profile, select_platforms_for_profile
+from core.collect.scanner import evaluate_presence, normalize_scan_range, normalize_source_profile, select_platforms_for_profile
 
 
 class TestScannerDecisionLogic(unittest.TestCase):
@@ -25,6 +25,12 @@ class TestScannerDecisionLogic(unittest.TestCase):
         self.assertEqual(normalize_source_profile("FAST"), "fast")
         self.assertEqual(normalize_source_profile("max"), "max")
         self.assertEqual(normalize_source_profile("unknown"), "balanced")
+
+    def test_scan_range_alias_normalization(self):
+        self.assertEqual(normalize_scan_range("quick"), "quickrange")
+        self.assertEqual(normalize_scan_range("top100"), "quickrange")
+        self.assertEqual(normalize_scan_range("all"), "fullrange")
+        self.assertEqual(normalize_scan_range("maximum"), "fullrange")
 
     def test_select_platforms_for_profile_respects_budget(self):
         platforms = [
@@ -82,6 +88,48 @@ class TestScannerDecisionLogic(unittest.TestCase):
         self.assertEqual(len(deep), 2)
         self.assertTrue(any(item.name == "StatusFast" for item in fast))
         self.assertTrue(any(item.name == "MessageDeep" for item in deep))
+
+    def test_select_platforms_for_profile_quickrange_filters_to_default_set(self):
+        platforms = [
+            PlatformConfig(
+                name="GitHub",
+                url="https://github.com/{username}",
+                url_probe="https://github.com/{username}",
+                detection_methods=("status_code",),
+                exists_statuses=(200,),
+                not_found_statuses=(404,),
+                error_messages=(),
+                error_url=None,
+                regex_check=None,
+                headers={},
+                request_method="HEAD",
+                request_payload=None,
+                confidence_weight=0.95,
+                identifier="github",
+            ),
+            PlatformConfig(
+                name="ObscureForge",
+                url="https://obscure.example/{username}",
+                url_probe="https://obscure.example/{username}",
+                detection_methods=("status_code",),
+                exists_statuses=(200,),
+                not_found_statuses=(404,),
+                error_messages=(),
+                error_url=None,
+                regex_check=None,
+                headers={},
+                request_method="HEAD",
+                request_payload=None,
+                confidence_weight=0.60,
+                identifier="obscureforge",
+            ),
+        ]
+
+        quickrange = select_platforms_for_profile(platforms, source_profile="balanced", max_platforms=100, scan_range="quickrange")
+        fullrange = select_platforms_for_profile(platforms, source_profile="balanced", max_platforms=None, scan_range="fullrange")
+
+        self.assertEqual([item.name for item in quickrange], ["GitHub"])
+        self.assertEqual(len(fullrange), 2)
 
     def test_status_code_found(self):
         platform = PlatformConfig(
@@ -162,4 +210,3 @@ class TestScannerDecisionLogic(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

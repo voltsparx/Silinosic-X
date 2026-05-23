@@ -68,6 +68,14 @@ class TestPromptHandlers(unittest.TestCase):
     def test_rewrite_tokens_with_keywords(self):
         self.assertEqual(rewrite_tokens_with_keywords(["social", "alice"]), ["profile", "alice"])
         self.assertEqual(rewrite_tokens_with_keywords(["surface", "example.com"]), ["surface", "example.com"])
+        self.assertEqual(
+            rewrite_tokens_with_keywords(["fullrange", "profile", "alice"]),
+            ["profile", "alice", "--fullrange"],
+        )
+        self.assertEqual(
+            rewrite_tokens_with_keywords(["profile", "alice", "quickrange"]),
+            ["profile", "alice", "--quickrange"],
+        )
 
     def test_apply_prompt_defaults_profile(self):
         session = PromptSessionState(
@@ -77,6 +85,7 @@ class TestPromptHandlers(unittest.TestCase):
             all_plugins=False,
             all_filters=False,
             profile_preset="deep",
+            scan_range="fullrange",
             surface_preset="quick",
             profile_extension_control="hybrid",
         )
@@ -94,6 +103,17 @@ class TestPromptHandlers(unittest.TestCase):
         self.assertEqual(updated.filter, ["contact_canonicalizer"])
         self.assertEqual(updated.preset, "deep")
         self.assertEqual(updated.extension_control, "hybrid")
+        self.assertTrue(updated.fullrange)
+        self.assertFalse(updated.quickrange)
+
+    def test_handle_prompt_set_command_scan_range(self):
+        session = PromptSessionState(module="profile")
+        handle_prompt_set_command(
+            "set scan_range fullrange",
+            session,
+            on_message=lambda _message, _color: None,
+        )
+        self.assertEqual(session.scan_range, "fullrange")
 
     def test_handle_prompt_set_command_plugins_and_filters(self):
         session = PromptSessionState()

@@ -33,6 +33,7 @@ from core.collect.extractor import (
     extract_username_mentions,
 )
 from core.collect.platform_schema import PlatformConfig, load_platforms
+from core.collect.platform_schema import load_default_platform_keys, platform_selector_keys
 from core.foundation.metadata import VERSION
 
 if TYPE_CHECKING:
@@ -55,8 +56,20 @@ _PROFILE_ALIASES = {
     "aggressive": "max",
     "max": "max",
 }
+_SCAN_RANGE_ALIASES = {
+    "quick": "quickrange",
+    "quickrange": "quickrange",
+    "default": "quickrange",
+    "top100": "quickrange",
+    "full": "fullrange",
+    "fullrange": "fullrange",
+    "all": "fullrange",
+    "maximum": "fullrange",
+    "max": "fullrange",
+}
 
 _PLATFORM_CACHE: tuple[float, list[PlatformConfig]] = (0.0, [])
+_QUICKRANGE_KEYS: tuple[str, ...] | None = None
 
 
 @dataclass(frozen=True)
@@ -74,6 +87,25 @@ def normalize_source_profile(raw_profile: str | None) -> str:
 
     value = str(raw_profile or "").strip().lower()
     return _PROFILE_ALIASES.get(value, "balanced")
+
+
+def normalize_scan_range(raw_range: str | None) -> str:
+    value = str(raw_range or "").strip().lower()
+    return _SCAN_RANGE_ALIASES.get(value, "quickrange")
+
+
+def _quickrange_keys() -> tuple[str, ...]:
+    global _QUICKRANGE_KEYS
+    if _QUICKRANGE_KEYS is None:
+        _QUICKRANGE_KEYS = load_default_platform_keys("quickrange")
+    return _QUICKRANGE_KEYS
+
+
+def _matches_quickrange(platform: PlatformConfig) -> bool:
+    quickrange_tokens = set(_quickrange_keys())
+    if not quickrange_tokens:
+        return True
+    return any(token in quickrange_tokens for token in platform_selector_keys(platform))
 
 
 def _load_platforms_cached() -> list[PlatformConfig]:
@@ -118,12 +150,19 @@ def select_platforms_for_profile(
     *,
     source_profile: str,
     max_platforms: int | None,
+    scan_range: str = "quickrange",
 ) -> list[PlatformConfig]:
     """Choose platforms to scan based on profile and platform budget."""
 
     profile = normalize_source_profile(source_profile)
+    range_mode = normalize_scan_range(scan_range)
+    candidate_platforms = list(platforms)
+    if range_mode == "quickrange":
+        filtered = [item for item in candidate_platforms if _matches_quickrange(item)]
+        if filtered:
+            candidate_platforms = filtered
     ranked = sorted(
-        list(platforms),
+        candidate_platforms,
         key=lambda item: (-_score_platform(item, profile), item.name.lower()),
     )
 
@@ -473,6 +512,7 @@ async def scan_username(
     max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
     source_profile: str = "balanced",
     max_platforms: int | None = None,
+    scan_range: str = "quickrange",
     pipeline: PipelineEngine | None = None,
 ) -> list[dict[str, Any]]:
     """Scan a username across platform manifests with async concurrency."""
@@ -487,6 +527,7 @@ async def scan_username(
         platforms,
         source_profile=profile,
         max_platforms=max_platforms,
+        scan_range=scan_range,
     )
 
     if not selected:

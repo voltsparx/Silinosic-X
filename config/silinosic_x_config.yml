@@ -16,6 +16,9 @@ subdomain_harvest:
   config_file: null
   wordlist_file: null
 
+profile_scan:
+  scan_range: "quickrange"
+
 domain_recon:
   enabled: true
   timeout_seconds: 30
@@ -47,4 +50,3 @@ report:
   include_surface_map_in_html: true
   include_media_intel_in_html: true
   include_domain_recon_in_html: true
-

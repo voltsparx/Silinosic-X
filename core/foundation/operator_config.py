@@ -38,6 +38,9 @@ _DEFAULT_OPERATOR_CONFIG: dict[str, Any] = {
         "config_file": None,
         "wordlist_file": None,
     },
+    "profile_scan": {
+        "scan_range": "quickrange",
+    },
     "domain_recon": {
         "enabled": True,
         "timeout_seconds": 30,
@@ -108,6 +111,11 @@ def get_subdomain_harvest_config(config: dict[str, Any] | None = None) -> dict[s
 def get_domain_recon_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
     payload = config if isinstance(config, dict) else load_operator_config()
     return dict(payload.get("domain_recon", {}))
+
+
+def get_profile_scan_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = config if isinstance(config, dict) else load_operator_config()
+    return dict(payload.get("profile_scan", {}))
 
 
 def get_ocr_pipeline_config(config: dict[str, Any] | None = None) -> dict[str, Any]:

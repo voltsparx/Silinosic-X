@@ -41,6 +41,7 @@ class PromptSessionState:
     all_filters: bool = False
     profile_preset: str = "balanced"
     surface_preset: str = "balanced"
+    scan_range: str = "quickrange"
     profile_extension_control: str = "manual"
     surface_extension_control: str = "manual"
     fusion_extension_control: str = "manual"
@@ -102,6 +103,7 @@ class PromptSessionState:
         return (
             f"module={self.module} "
             f"preset={self.active_preset_label()} "
+            f"range={self.scan_range} "
             f"ext={self.extension_control_for_module(self.module)} "
             f"plugins={len(self.plugin_names)} "
             f"filters={len(self.filter_names)} "

@@ -70,6 +70,7 @@ class ProfileScannerAdapter:
         max_concurrency: int,
         source_profile: str,
         max_platforms: int | None,
+        scan_range: str,
         proxy_url: str | None,
     ) -> list[ProfileEntity | EmailEntity | AssetEntity]:
         rows = await scan_username(
@@ -79,6 +80,7 @@ class ProfileScannerAdapter:
             max_concurrency=max_concurrency,
             source_profile=source_profile,
             max_platforms=max_platforms,
+            scan_range=scan_range,
         )
 
         timestamp = datetime.now(tz=timezone.utc)
