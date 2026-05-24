@@ -1,25 +1,28 @@
-------------------------------------------------------------------------------
-Custom-Permissive: Open-Source
+this is the license of the tool:
+"------------------------------------------------------------------------------
+SPDX-License-Identifier: Proprietary
 ------------------------------------------------------------------------------
 
 Copyright (c) 2026 voltsparx
 All rights reserved.
 
-Silinosic-X is open-source software.
+Silinosic-X is proprietary software.
 
 Permission is granted to use Silinosic-X solely for personal, educational, or
 internal security purposes on systems you own or are explicitly authorized to
 monitor.
-You can Redistribute Silinosic-X, in whole or in part, in source or binary form.
-   -Condition: Proper attribution of the original Author (voltsparx) should be there.
 
 Any other use, including modification, redistribution, commercial use,
-rebranding, sublicensing, or publication of derivative works are also allowed.
+rebranding, sublicensing, or publication of derivative works, requires prior
+written permission from the copyright holder.
 
 You may not:
 
-1. Claim authorship or ownership of Silinosic-X or its derivative works.
-2. Use Silinosic-X for unauthorized penetration testing, hacking, stalking,
+1. Remove, alter, or obscure copyright, license, or attribution notices.
+2. Claim authorship or ownership of Silinosic-X or its derivative works.
+3. Redistribute Silinosic-X, in whole or in part, in source or binary form,
+   without prior written permission.
+4. Use Silinosic-X for unauthorized penetration testing, hacking, stalking,
    harassment, or any illegal activity.
 
 Attribution must be retained in any permitted use:
@@ -38,4 +41,4 @@ For permissions beyond personal or internal use, contact:
 
 voltsparx
 Email: voltsparx@gmail.com
-Repository: https://github.com/voltsparx/Silinosic-X
+Repository: https://github.com/voltsparx/Silinosic-X"
