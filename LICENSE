@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
-SPDX-License-Identifier: Proprietary
+SPDX-License-Identifier: Semi-Proprietary
 ------------------------------------------------------------------------------
 
 Copyright (c) 2026 voltsparx
@@ -17,7 +17,7 @@ written permission from the copyright holder.
 
 You may not:
 
-1. Remove, alter, or obscure copyright, license, or attribution notices.
+1. Obscure copyright, license, or attribution notices.
 2. Claim authorship or ownership of Silinosic-X or its derivative works.
 3. Redistribute Silinosic-X, in whole or in part, in source or binary form,
    without prior written permission.
@@ -26,7 +26,7 @@ You may not:
 
 Attribution must be retained in any permitted use:
 
-    "Silinosic-X v11.2.0 © 2026 voltsparx. All rights reserved.
+    "Silinosic-X © 2026 voltsparx. All rights reserved.
     Original project: https://github.com/voltsparx/Silinosic-X"
 
 +-------------------------------------------------------------+
