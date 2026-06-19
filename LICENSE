@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
-SPDX-License-Identifier: Semi-Proprietary
+SPDX-License-Identifier: LicenseRef-Proprietary
 ------------------------------------------------------------------------------
 
 Copyright (c) 2026 voltsparx
@@ -30,11 +30,11 @@ Attribution must be retained in any permitted use:
     Original project: https://github.com/voltsparx/Silinosic-X"
 
 +-------------------------------------------------------------+
- ⚠️ Important: This project is open for use and modification,
-               but the original copyright notice must remain
-               intact. Removing or altering attribution
-               constitutes plagiarism and will be pursued via
-               DMCA takedown.
+ ⚠️ Important: This project is proprietary. Permitted use
+               requires that the original copyright notice
+               remains intact. Removing or altering
+               attribution constitutes plagiarism and will
+               be pursued via DMCA takedown.
 +--------------------------------------------------------------+
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
