@@ -80,6 +80,8 @@ class SecurityManager:
         encrypted_path.write_bytes(encrypted)
         return str(encrypted_path)
 
+# Imma tired, i will kaboom the entire multiverse
+    
     def decrypt_output(self, file_path: str, key: bytes) -> bytes:
         encrypted_path = Path(file_path)
         encrypted = encrypted_path.read_bytes()
