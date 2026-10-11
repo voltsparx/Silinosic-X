@@ -24,8 +24,9 @@ import importlib.util
 from typing import Any
 
 from core.extensions.selector_keys import selector_keys
-from core.extensions.signal_forge import list_plugin_specs
+from core.extensions.signal_forge import list_plugin_discovery_errors, list_plugin_specs
 from core.engines.thread_engine import run_blocking, run_blocking_batch
+from core.foundation.privacy import sensitive_information_enabled
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,17 @@ class PluginManager:
         self.max_concurrency = max(1, int(max_concurrency))
         self.plugins, self.discovery_errors = self.discover_plugins()
 
+    @staticmethod
+    def _chain_priority(plugin: PluginDescriptor) -> tuple[int, str]:
+        """Keep known data-producer extensions ahead of their consumers."""
+
+        priority = {
+            "media_recon_engine": 10,
+            "exif_metadata_extractor": 20,
+            "geo_location_intel": 30,
+        }.get(plugin.plugin_id, 50)
+        return priority, plugin.plugin_id
+
     def discover_plugins(self) -> tuple[list[PluginDescriptor], list[str]]:
         """Discover plugin metadata without importing plugin modules.
 
@@ -60,7 +72,7 @@ class PluginManager:
         """
 
         descriptors: list[PluginDescriptor] = []
-        errors: list[str] = []
+        errors = list_plugin_discovery_errors()
 
         for spec in list_plugin_specs():
             descriptors.append(
@@ -163,6 +175,7 @@ class PluginManager:
         base_context: dict[str, Any] = dict(target_data)
         base_context.setdefault("mode", scope)
         base_context.setdefault("target", target_data.get("target") if isinstance(target_data, dict) else None)
+        base_context.setdefault("sensitive_information", sensitive_information_enabled())
 
         prepared: list[tuple[PluginDescriptor, Callable[..., Any]]] = []
         for plugin in selected:
@@ -184,6 +197,9 @@ class PluginManager:
 
         if not prepared:
             return [], errors
+
+        if chain:
+            prepared.sort(key=lambda item: self._chain_priority(item[0]))
 
         results: list[dict[str, Any]] = []
         previous_plugin_data: dict[str, Any] = {}

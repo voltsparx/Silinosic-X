@@ -22,6 +22,7 @@ profile_scan:
 domain_recon:
   enabled: true
   timeout_seconds: 30
+  save_images_to_disk: true
   run_whois: true
   run_cert_transparency: true
   run_http_headers: true
@@ -44,7 +45,7 @@ noise_filter:
 privacy:
   sensitive_information: false
   redaction_mask: "[REDACTED]"
-  redact_fields: ["emails", "phones", "addresses", "exact_geolocation", "credential_tokens", "darkweb_identifiers"]
+  redact_fields: ["emails", "phones", "addresses", "exact_geolocation", "credential_tokens", "darkweb_identifiers", "wallet_addresses"]
 
 media_recon:
   enabled: true

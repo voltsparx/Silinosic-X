@@ -45,7 +45,14 @@ def _ocr_noise_rows(value: object, *, confidence_floor: float) -> list[str]:
 
     def _walk(item: object, path: str) -> None:
         if isinstance(item, dict):
-            text = str(item.get("text", item.get("merged_text", item.get("raw_text", ""))) or "").strip()
+            text = next(
+                (
+                    str(item.get(field) or "").strip()
+                    for field in ("text", "merged_text", "raw_text")
+                    if str(item.get(field) or "").strip()
+                ),
+                "",
+            )
             confidence = item.get("avg_confidence")
             if confidence is not None and text:
                 try:

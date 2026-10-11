@@ -1421,6 +1421,7 @@ def generate_html(
             "plugin_errors": plugin_errors or [], "filter_results": filter_results or [],
             "filter_errors": filter_errors or [], "intelligence_bundle": intelligence_bundle or {},
             "ocr_scan": ocr_scan or {}, "fused_intel": fused_intel or {}, "extra_payload": extra_payload or {},
+            "narrative": narrative or "", "target": target or "",
         },
         sensitive_information=sensitive_information,
     )
@@ -1440,6 +1441,8 @@ def generate_html(
     ocr_scan = redacted["ocr_scan"]
     fused_intel = redacted["fused_intel"]
     extra_payload = redacted["extra_payload"]
+    narrative = str(redacted["narrative"] or "")
+    target = str(redacted["target"] or "")
 
     display_target = str(target or "").strip()
     target_display = display_target or sanitize_target(target)

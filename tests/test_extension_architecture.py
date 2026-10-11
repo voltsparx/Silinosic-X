@@ -15,13 +15,21 @@
 
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import mock_open, patch
 
-from core.extensions.signal_forge import execute_plugins, list_plugin_discovery_errors
+from core.extensions.signal_forge import _read_plugin_spec, execute_plugins, list_plugin_discovery_errors
 from core.extensions.signal_sieve import execute_filters, list_filter_discovery_errors
 
 
 class TestExtensionArchitecture(unittest.TestCase):
+    def test_dynamic_plugin_spec_uses_import_fallback(self):
+        fake_spec = SimpleNamespace(origin="/tmp/dynamic_plugin.py")
+        with (
+            patch("core.extensions.signal_forge.importlib.util.find_spec", return_value=fake_spec),
+            patch("builtins.open", mock_open(read_data='PLUGIN_SPEC = dict(id="dynamic", scopes=["ocr"])')),
+        ):
+            self.assertIsNone(_read_plugin_spec("dynamic_plugin"))
+
     def test_plugin_execution_imports_by_module_name_not_public_id(self):
         fake_module = SimpleNamespace(
             PLUGIN_SPEC={
@@ -163,5 +171,4 @@ class TestExtensionArchitecture(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
 

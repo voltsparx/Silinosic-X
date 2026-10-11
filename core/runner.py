@@ -67,7 +67,7 @@ from core.interface.symbols import symbol
 from core.orchestrator import Orchestrator
 from core.foundation.metadata import PROJECT_NAME, VERSION, framework_signature, utc_timestamp
 from core.foundation.operator_config import get_privacy_config, get_profile_scan_config, load_operator_config
-from core.foundation.privacy import set_sensitive_information_mode
+from core.foundation.privacy import sensitive_information_enabled, set_sensitive_information_mode
 from core.foundation.output_config import (
     DEFAULT_OUTPUT_TYPES,
     OutputConfigError,
@@ -2554,7 +2554,7 @@ async def run_profile_scan(
         scope="profile",
         requested_plugins=plugin_names,
         include_all=include_all_plugins,
-        chain=False,
+        chain=True,
     )
     filter_results, filter_errors = execute_filters(
         scope="profile",
@@ -2872,7 +2872,7 @@ async def run_surface_scan(
         scope="surface",
         requested_plugins=plugin_names,
         include_all=include_all_plugins,
-        chain=False,
+        chain=True,
     )
     filter_results, filter_errors = execute_filters(
         scope="surface",
@@ -5752,10 +5752,18 @@ async def _dispatch(args: argparse.Namespace, state: RunnerState, prompt_mode: b
     return EXIT_USAGE
 
 
-async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
+async def run_prompt_mode(
+    initial_state: RunnerState | None = None,
+    *,
+    sensitive_information: bool | None = None,
+) -> int:
     state = initial_state or RunnerState()
     session = PromptSessionState()
-    session.sensitive_information = bool(get_privacy_config(load_operator_config()).get("sensitive_information", False))
+    session.sensitive_information = (
+        bool(get_privacy_config(load_operator_config()).get("sensitive_information", False))
+        if sensitive_information is None
+        else bool(sensitive_information)
+    )
     set_sensitive_information_mode(session.sensitive_information)
     configured_scan_range = str(get_profile_scan_config(load_operator_config()).get("scan_range", "quickrange")).strip().lower()
     if configured_scan_range in SCAN_RANGES:
@@ -6053,7 +6061,10 @@ async def run(argv: Sequence[str] | None = None) -> int:
             if not ok:
                 print(c(f"{symbol('warn')} {error}", Colors.RED))
                 return EXIT_FAILURE
-        status = await run_prompt_mode(initial_state=initial_state)
+        status = await run_prompt_mode(
+            initial_state=initial_state,
+            sensitive_information=sensitive_information_enabled(),
+        )
         append_framework_log("framework_exit", f"status={status}")
         return status
 

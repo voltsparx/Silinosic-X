@@ -16,6 +16,7 @@ from unittest.mock import Mock, patch
 
 from core.collect.ocr_pipeline import (
     _EASYOCR_READERS,
+    _EASYOCR_READER_CACHE_LIMIT,
     _get_easyocr_reader,
     extract_ocr_signals,
     merge_ocr_engine_results,
@@ -53,6 +54,14 @@ class TestOcrPipeline(unittest.TestCase):
             second = _get_easyocr_reader(["fr", "en"])
         self.assertIs(first, second)
         fake_reader.assert_called_once_with(["en", "fr"], gpu=False)
+
+    def test_easyocr_reader_cache_is_bounded(self):
+        fake_easyocr = SimpleNamespace(Reader=Mock(side_effect=lambda languages, gpu: tuple(languages)))
+        _EASYOCR_READERS.clear()
+        with patch.dict("sys.modules", {"easyocr": fake_easyocr}):
+            for index in range(_EASYOCR_READER_CACHE_LIMIT + 1):
+                _get_easyocr_reader([f"lang{index}"])
+        self.assertEqual(len(_EASYOCR_READERS), _EASYOCR_READER_CACHE_LIMIT)
 
     def test_extract_signals_email(self):
         result = extract_ocr_signals("contact me at test@example.com today")

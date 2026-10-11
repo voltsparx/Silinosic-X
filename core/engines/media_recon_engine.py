@@ -272,6 +272,7 @@ class MediaReconEngine(EngineBase):
         proxy_url: str | None = None,
         max_frame_sources: int = 6,
         max_video_frame_download_bytes: int = 12_000_000,
+        persist_to_disk: bool = True,
     ) -> MediaReconResult:
         targets = extract_media_targets(profile_results, target=target)
         text_signals = summarize_text_signals(target, targets.text_fragments)
@@ -335,6 +336,8 @@ class MediaReconEngine(EngineBase):
                         asset_kind=asset_kind,
                         timeout_seconds=timeout_seconds,
                         proxy_url=proxy_url,
+                        target=target,
+                        persist_to_disk=persist_to_disk,
                     )
 
                 setattr(_task, "_silinosic_x_task_name", f"media-image:{asset_kind}:{media_url}")

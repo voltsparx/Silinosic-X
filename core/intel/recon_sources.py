@@ -141,6 +141,29 @@ _UNSUPPORTED_CAPABILITIES: dict[str, str] = {
 }
 
 
+def _native_recipe_rows() -> list[dict[str, Any]]:
+    """Provide stable recipe names when an optional source checkout is absent.
+
+    The source checkout enriches recipes with its module inventory, but the
+    public surface-kit CLI must not become unusable merely because that
+    reference material has not been installed.
+    """
+
+    return [
+        {
+            "name": name,
+            "description": str(settings["coverage"]),
+            "include": [],
+            "flags": [str(settings["recon_mode"])],
+            "modules": [],
+            "exclude_modules": [],
+            "output_modules": [],
+            "config_hints": [],
+        }
+        for name, settings in sorted(_RECIPE_TO_silinosic_x.items())
+    ]
+
+
 def _safe_read(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8", errors="ignore")
@@ -315,6 +338,8 @@ def load_recursive_module_reference(root: str | Path | None = None) -> dict[str,
     if recipes_dir and recipes_dir.exists():
         for recipe_path in sorted(recipes_dir.glob("*.yml")):
             recipes.append(_parse_simple_recipe(recipe_path))
+    if not recipes:
+        recipes = _native_recipe_rows()
 
     commands: list[dict[str, str]] = []
     if cli_path is not None:

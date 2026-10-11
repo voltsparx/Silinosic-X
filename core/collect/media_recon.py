@@ -407,6 +407,32 @@ def _estimate_entropy(payload: bytes) -> float:
     return -sum((count / total) * math.log2(count / total) for count in counts.values())
 
 
+def _numeric_exif_value(value: Any) -> float | None:
+    """Coerce Pillow EXIF rationals without retaining non-JSON-safe objects."""
+
+    try:
+        return float(value)
+    except (TypeError, ValueError, ZeroDivisionError):
+        if isinstance(value, tuple) and len(value) == 2:
+            try:
+                return float(value[0]) / float(value[1])
+            except (TypeError, ValueError, ZeroDivisionError):
+                return None
+    return None
+
+
+def _gps_coordinate(values: Any, reference: Any) -> float | None:
+    if not isinstance(values, (list, tuple)) or len(values) < 3:
+        return None
+    degrees, minutes, seconds = (_numeric_exif_value(value) for value in values[:3])
+    if None in (degrees, minutes, seconds):
+        return None
+    coordinate = float(degrees) + float(minutes) / 60 + float(seconds) / 3600
+    if str(reference or "").upper() in {"S", "W"}:
+        coordinate *= -1
+    return round(coordinate, 7)
+
+
 def _extract_image_details(media_bytes: bytes) -> tuple[int | None, int | None, dict[str, Any]]:
     try:
         from PIL import ExifTags, Image
@@ -428,6 +454,20 @@ def _extract_image_details(media_bytes: bytes) -> tuple[int | None, int | None, 
                     tag_name = ExifTags.TAGS.get(tag_id, str(tag_id))
                     exif_items[str(tag_name)] = _clean_text(value, limit=120)
                 metadata["exif"] = exif_items
+                try:
+                    gps_ifd = exif.get_ifd(0x8825)
+                except (AttributeError, KeyError, TypeError, ValueError):
+                    gps_ifd = {}
+                if isinstance(gps_ifd, dict):
+                    latitude = _gps_coordinate(gps_ifd.get(2), gps_ifd.get(1))
+                    longitude = _gps_coordinate(gps_ifd.get(4), gps_ifd.get(3))
+                    altitude = _numeric_exif_value(gps_ifd.get(6))
+                    if latitude is not None and longitude is not None:
+                        metadata["gps"] = {
+                            "latitude": latitude,
+                            "longitude": longitude,
+                            "altitude_m": round(altitude, 2) if altitude is not None else None,
+                        }
             return width, height, metadata
     except Exception as exc:
         return None, None, {"metadata_status": f"unavailable: {exc}"}
@@ -624,6 +664,8 @@ async def _fetch_image_asset(
     asset_kind: str,
     timeout_seconds: int,
     proxy_url: str | None,
+    target: str = "",
+    persist_to_disk: bool = False,
 ) -> MediaReconAsset | None:
     request_kwargs: dict[str, Any] = {
         "timeout": aiohttp.ClientTimeout(total=max(1, int(timeout_seconds))),
@@ -648,12 +690,27 @@ async def _fetch_image_asset(
         metadata=metadata,
         content_type=content_type,
     )
+    sha256 = hashlib.sha256(media_bytes).hexdigest()
+    if persist_to_disk:
+        try:
+            from core.foundation.image_storage import persist_image_asset
+
+            metadata["storage"] = persist_image_asset(
+                target=target,
+                source_url=media_url,
+                content_type=content_type,
+                sha256=sha256,
+                media_bytes=media_bytes,
+                metadata=metadata,
+            )
+        except OSError as exc:
+            metadata["storage_error"] = str(exc)
     return MediaReconAsset(
         url=media_url,
         asset_kind=asset_kind,
         content_type=content_type,
         size_bytes=len(media_bytes),
-        sha256=hashlib.sha256(media_bytes).hexdigest(),
+        sha256=sha256,
         width=width,
         height=height,
         metadata=metadata,
@@ -750,17 +807,22 @@ async def collect_profile_media_recon(
     target: str,
     timeout_seconds: int = 12,
     proxy_url: str | None = None,
+    persist_to_disk: bool | None = None,
 ) -> MediaReconResult:
     """Run public media reconnaissance across image, thumbnail, video, and post-text inputs."""
 
     from core.engines.media_recon_engine import MediaReconEngine
 
+    from core.foundation.operator_config import get_media_recon_config
+
+    config = get_media_recon_config()
     engine = MediaReconEngine()
     return await engine.run_media_recon(
         profile_results,
         target=target,
         timeout_seconds=timeout_seconds,
         proxy_url=proxy_url,
+        persist_to_disk=bool(config.get("save_images_to_disk", True)) if persist_to_disk is None else bool(persist_to_disk),
     )
 
 
@@ -770,6 +832,7 @@ def collect_profile_media_recon_blocking(
     target: str,
     timeout_seconds: int = 12,
     proxy_url: str | None = None,
+    persist_to_disk: bool | None = None,
 ) -> MediaReconResult:
     """Blocking wrapper for plugin-oriented public media reconnaissance."""
 
@@ -779,5 +842,6 @@ def collect_profile_media_recon_blocking(
             target=target,
             timeout_seconds=timeout_seconds,
             proxy_url=proxy_url,
+            persist_to_disk=persist_to_disk,
         )
     )

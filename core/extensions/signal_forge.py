@@ -219,7 +219,7 @@ def _read_plugin_spec(module_name: str) -> dict[str, Any] | None:
             value = ast.literal_eval(statement.value)
             return value if isinstance(value, dict) else {}
     except (OSError, SyntaxError, ValueError):
-        return {}
+        return None
     return {}
 
 

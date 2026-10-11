@@ -16,12 +16,14 @@ from __future__ import annotations
 
 import importlib.util
 import io
+from collections import OrderedDict
 import re
 import threading
 from typing import Any
 
 
-_EASYOCR_READERS: dict[tuple[str, ...], Any] = {}
+_EASYOCR_READER_CACHE_LIMIT = 4
+_EASYOCR_READERS: OrderedDict[tuple[str, ...], Any] = OrderedDict()
 _EASYOCR_LOCK = threading.Lock()
 
 
@@ -43,6 +45,10 @@ def _get_easyocr_reader(languages: list[str]) -> Any:
 
             reader = easyocr.Reader(list(key), gpu=False)
             _EASYOCR_READERS[key] = reader
+            while len(_EASYOCR_READERS) > _EASYOCR_READER_CACHE_LIMIT:
+                _EASYOCR_READERS.popitem(last=False)
+        else:
+            _EASYOCR_READERS.move_to_end(key)
         return reader
 
 

@@ -47,7 +47,7 @@ from core.artifacts.storage import (
     sql_report_path,
 )
 from core.foundation.output_config import OutputConfigError, get_output_settings
-from core.foundation.privacy import redact_if_needed, sensitive_information_enabled
+from core.foundation.privacy import redact_if_needed, redact_text_if_needed, sensitive_information_enabled
 from core.artifacts.docx_report import generate_docx_report
 from core.artifacts.pdf_report import generate_pdf_report
 from core.artifacts.sql_store import write_sqlite_report
@@ -423,7 +423,7 @@ def display_results(
     filter_results = redact_if_needed(filter_results)
     intelligence_bundle = redact_if_needed(intelligence_bundle)
     _section("Scan Results", Colors.BLUE)
-    resolved_target = (target or "").strip() or "unknown"
+    resolved_target = redact_text_if_needed((target or "").strip()) or "unknown"
     print(c(f"{symbol('action')} Target: {resolved_target}", Colors.CYAN))
 
     found_rows = found_profile_rows(results)
@@ -548,7 +548,7 @@ def display_results(
     _print_filter_block(filter_results, filter_errors)
     if narrative:
         _section("Reporter Brief", Colors.CYAN)
-        print(c(narrative, Colors.CYAN))
+        print(c(redact_text_if_needed(narrative), Colors.CYAN))
 
     print(c(f"\n{framework_signature()}", Colors.GREY))
 
@@ -570,7 +570,7 @@ def display_domain_results(
     plugin_results = redact_if_needed(plugin_results)
     filter_results = redact_if_needed(filter_results)
     intelligence_bundle = redact_if_needed(intelligence_bundle)
-    target = domain_result.get("target", "unknown")
+    target = redact_text_if_needed(domain_result.get("target", "unknown"))
     _section("Domain Surface Scan", Colors.BLUE)
     print(c(f"{symbol('action')} Target: {target}", Colors.CYAN))
     addresses = domain_result.get("resolved_addresses", [])
@@ -730,7 +730,7 @@ def display_domain_results(
     _print_filter_block(filter_results, filter_errors)
     if narrative:
         _section("Reporter Brief", Colors.CYAN)
-        print(c(narrative, Colors.CYAN))
+        print(c(redact_text_if_needed(narrative), Colors.CYAN))
 
     print(c(f"\n{framework_signature()}", Colors.GREY))
 
@@ -818,7 +818,7 @@ def display_ocr_results(
     _print_filter_block(filter_results, filter_errors)
     if narrative:
         _section("Reporter Brief", Colors.CYAN)
-        print(c(narrative, Colors.CYAN))
+        print(c(redact_text_if_needed(narrative), Colors.CYAN))
     print(c(f"\n{framework_signature()}", Colors.GREY))
 
 
@@ -1138,7 +1138,7 @@ def _render_cli_report(payload: dict) -> str:
                 lines.append(f"    hint={item.get('command_hint', '-')}")
         lines.append("")
 
-    narrative = str(payload.get("narrative") or "").strip()
+    narrative = redact_text_if_needed(payload.get("narrative") or "").strip()
     lines.append("[Reporter Brief]")
     lines.append(f"- {narrative or 'No narrative generated.'}")
     lines.append("")

@@ -73,6 +73,7 @@ _DEFAULT_OPERATOR_CONFIG: dict[str, Any] = {
             "exact_geolocation",
             "credential_tokens",
             "darkweb_identifiers",
+            "wallet_addresses",
         ],
     },
     "media_recon": {
@@ -81,6 +82,7 @@ _DEFAULT_OPERATOR_CONFIG: dict[str, Any] = {
         "run_ocr_on_video_thumbnails": True,
         "max_images_per_run": 25,
         "timeout_seconds": 30,
+        "save_images_to_disk": True,
     },
     "report": {
         "save_raw_scan_xml": True,
