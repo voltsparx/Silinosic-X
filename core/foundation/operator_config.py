@@ -58,6 +58,23 @@ _DEFAULT_OPERATOR_CONFIG: dict[str, Any] = {
         "tesseract_config": "--oem 3 --psm 6",
         "easyocr_langs": ["en"],
     },
+    "noise_filter": {
+        "profile_confidence_floor": 55,
+        "severity_suppress_count": 20,
+        "ocr_confidence_floor": 35,
+    },
+    "privacy": {
+        "sensitive_information": False,
+        "redaction_mask": "[REDACTED]",
+        "redact_fields": [
+            "emails",
+            "phones",
+            "addresses",
+            "exact_geolocation",
+            "credential_tokens",
+            "darkweb_identifiers",
+        ],
+    },
     "media_recon": {
         "enabled": True,
         "run_ocr_on_images": True,
@@ -126,6 +143,16 @@ def get_ocr_pipeline_config(config: dict[str, Any] | None = None) -> dict[str, A
 def get_media_recon_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
     payload = config if isinstance(config, dict) else load_operator_config()
     return dict(payload.get("media_recon", {}))
+
+
+def get_noise_filter_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = config if isinstance(config, dict) else load_operator_config()
+    return dict(payload.get("noise_filter", {}))
+
+
+def get_privacy_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
+    payload = config if isinstance(config, dict) else load_operator_config()
+    return dict(payload.get("privacy", {}))
 
 
 def get_report_config(config: dict[str, Any] | None = None) -> dict[str, Any]:

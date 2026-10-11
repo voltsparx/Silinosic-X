@@ -115,6 +115,21 @@ class TestPromptHandlers(unittest.TestCase):
         )
         self.assertEqual(session.scan_range, "fullrange")
 
+    def test_handle_prompt_set_command_sensitive_information(self):
+        session = PromptSessionState(module="profile")
+        handle_prompt_set_command(
+            "set sensitive_information on",
+            session,
+            on_message=lambda _message, _color: None,
+        )
+        self.assertTrue(session.sensitive_information)
+        handle_prompt_set_command(
+            "set sensitive_information off",
+            session,
+            on_message=lambda _message, _color: None,
+        )
+        self.assertFalse(session.sensitive_information)
+
     def test_handle_prompt_set_command_plugins_and_filters(self):
         session = PromptSessionState()
         events: list[tuple[str, str]] = []

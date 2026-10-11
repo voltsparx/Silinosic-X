@@ -51,7 +51,13 @@ class PluginManager:
         self.plugins, self.discovery_errors = self.discover_plugins()
 
     def discover_plugins(self) -> tuple[list[PluginDescriptor], list[str]]:
-        """Discover plugins and perform lightweight dependency checks."""
+        """Discover plugin metadata without importing plugin modules.
+
+        Importing every extension during startup makes unrelated commands pay
+        for optional dependencies and turns one bad extension import into a
+        global startup problem. Requirements are checked when a selected
+        plugin is prepared for execution instead.
+        """
 
         descriptors: list[PluginDescriptor] = []
         errors: list[str] = []
@@ -70,25 +76,21 @@ class PluginManager:
                 )
             )
 
-            try:
-                module = importlib.import_module(f"plugins.{spec.module_name}")
-            except Exception as exc:  # pragma: no cover - defensive import safety
-                errors.append(f"Plugin '{spec.plugin_id}' import failed: {exc}")
-                continue
-
-            requires = getattr(module, "REQUIRES", [])
-            if not isinstance(requires, list):
-                continue
-            missing = [
-                pkg
-                for pkg in requires
-                if isinstance(pkg, str) and pkg.strip() and importlib.util.find_spec(pkg.strip()) is None
-            ]
-            if missing:
-                errors.append(f"Plugin '{spec.plugin_id}' missing dependencies: {', '.join(sorted(missing))}")
-
         descriptors.sort(key=lambda item: item.plugin_id)
         return descriptors, errors
+
+    @staticmethod
+    def _missing_requirements(module: Any) -> list[str]:
+        requires = getattr(module, "REQUIRES", [])
+        if not isinstance(requires, list):
+            return []
+        return [
+            package
+            for package in requires
+            if isinstance(package, str)
+            and package.strip()
+            and importlib.util.find_spec(package.strip()) is None
+        ]
 
     def _resolve_plugins(
         self,
@@ -166,6 +168,12 @@ class PluginManager:
         for plugin in selected:
             try:
                 module = importlib.import_module(f"plugins.{plugin.module_name}")
+                missing = self._missing_requirements(module)
+                if missing:
+                    errors.append(
+                        f"Plugin '{plugin.plugin_id}' missing dependencies: {', '.join(sorted(missing))}"
+                    )
+                    continue
                 run_fn = getattr(module, "run", None)
                 if not callable(run_fn):
                     errors.append(f"Plugin '{plugin.plugin_id}' has no callable run(context).")
@@ -237,4 +245,3 @@ class PluginManager:
             previous_plugin_data[plugin.plugin_id] = result["data"]
 
         return results, errors
-

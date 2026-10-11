@@ -66,7 +66,8 @@ from core.extensions.attachables import resolve_module_attachments
 from core.interface.symbols import symbol
 from core.orchestrator import Orchestrator
 from core.foundation.metadata import PROJECT_NAME, VERSION, framework_signature, utc_timestamp
-from core.foundation.operator_config import get_profile_scan_config, load_operator_config
+from core.foundation.operator_config import get_privacy_config, get_profile_scan_config, load_operator_config
+from core.foundation.privacy import set_sensitive_information_mode
 from core.foundation.output_config import (
     DEFAULT_OUTPUT_TYPES,
     OutputConfigError,
@@ -5754,6 +5755,8 @@ async def _dispatch(args: argparse.Namespace, state: RunnerState, prompt_mode: b
 async def run_prompt_mode(initial_state: RunnerState | None = None) -> int:
     state = initial_state or RunnerState()
     session = PromptSessionState()
+    session.sensitive_information = bool(get_privacy_config(load_operator_config()).get("sensitive_information", False))
+    set_sensitive_information_mode(session.sensitive_information)
     configured_scan_range = str(get_profile_scan_config(load_operator_config()).get("scan_range", "quickrange")).strip().lower()
     if configured_scan_range in SCAN_RANGES:
         session.scan_range = configured_scan_range
@@ -6009,6 +6012,12 @@ async def run(argv: Sequence[str] | None = None) -> int:
         append_framework_log("docker_session_done", f"exit_code={exit_code}")
         return exit_code
     setattr(args, "_explicit_flags", _extract_explicit_flags(argv_tokens))
+    configured_privacy = get_privacy_config(load_operator_config())
+    set_sensitive_information_mode(
+        getattr(args, "sensitive_information", None)
+        if getattr(args, "sensitive_information", None) is not None
+        else bool(configured_privacy.get("sensitive_information", False))
+    )
     _normalize_multi_select_args(args)
     rendered_argv = " ".join(str(item) for item in argv_tokens)
     append_framework_log("framework_start", f"argv={rendered_argv}")

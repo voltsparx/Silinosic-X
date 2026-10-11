@@ -17,7 +17,33 @@ from __future__ import annotations
 import importlib.util
 import io
 import re
+import threading
 from typing import Any
+
+
+_EASYOCR_READERS: dict[tuple[str, ...], Any] = {}
+_EASYOCR_LOCK = threading.Lock()
+
+
+def _get_easyocr_reader(languages: list[str]) -> Any:
+    """Return one EasyOCR reader per normalized language set.
+
+    Constructing a reader loads its detection and recognition models.  Keeping
+    it process-local avoids repeatedly loading those models for image batches,
+    while the lock prevents concurrent first-use races.
+    """
+
+    key = tuple(sorted({str(language).strip() for language in languages if str(language).strip()}))
+    if not key:
+        key = ("en",)
+    with _EASYOCR_LOCK:
+        reader = _EASYOCR_READERS.get(key)
+        if reader is None:
+            import easyocr
+
+            reader = easyocr.Reader(list(key), gpu=False)
+            _EASYOCR_READERS[key] = reader
+        return reader
 
 
 def preprocess_for_ocr(image_bytes: bytes, intensity: str = "balanced") -> bytes:
@@ -34,29 +60,41 @@ def preprocess_for_ocr(image_bytes: bytes, intensity: str = "balanced") -> bytes
 
         with Image.open(io.BytesIO(image_bytes)) as image_handle:
             working = image_handle.convert("L")
-            if normalized == "light":
-                buffer = io.BytesIO()
-                working.save(buffer, format="PNG")
-                return buffer.getvalue()
+            # Prefer OpenCV when available: its adaptive thresholding preserves
+            # text in unevenly lit screenshots and photographs much better than
+            # the former global 1-bit conversion.
+            try:
+                import cv2
+                import numpy as np
 
-            if normalized == "balanced":
-                working = working.filter(ImageFilter.SHARPEN)
-                working = working.resize(
-                    (working.width * 2, working.height * 2),
-                    Image.Resampling.LANCZOS,
-                )
-                buffer = io.BytesIO()
-                working.save(buffer, format="PNG")
-                return buffer.getvalue()
-
-            working = working.filter(ImageFilter.SHARPEN)
-            working = working.filter(ImageFilter.SHARPEN)
-            working = working.resize(
-                (working.width * 2, working.height * 2),
-                Image.Resampling.LANCZOS,
-            )
-            working = ImageEnhance.Contrast(working).enhance(2.0)
-            working = working.convert("1", dither=Image.Dither.NONE)
+                pixels = np.array(working)
+                denoised = cv2.fastNlMeansDenoising(pixels, h=10)
+                if normalized == "light":
+                    processed = denoised
+                elif normalized == "balanced":
+                    enlarged = cv2.resize(denoised, None, fx=2, fy=2, interpolation=cv2.INTER_LANCZOS4)
+                    processed = cv2.adaptiveThreshold(
+                        enlarged, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 10
+                    )
+                else:
+                    enlarged = cv2.resize(denoised, None, fx=3, fy=3, interpolation=cv2.INTER_LANCZOS4)
+                    smoothed = cv2.bilateralFilter(enlarged, 7, 50, 50)
+                    processed = cv2.adaptiveThreshold(
+                        smoothed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 35, 11
+                    )
+                working = Image.fromarray(processed)
+            except ImportError:
+                # Keep the OCR lane operational without OpenCV. Median filtering
+                # is genuine denoising and deliberately precedes any sharpening.
+                working = working.filter(ImageFilter.MedianFilter(size=3))
+                if normalized != "light":
+                    working = working.filter(ImageFilter.SHARPEN)
+                    working = working.resize(
+                        (working.width * 2, working.height * 2),
+                        Image.Resampling.LANCZOS,
+                    )
+                if normalized == "aggressive":
+                    working = ImageEnhance.Contrast(working).enhance(1.6)
             buffer = io.BytesIO()
             working.save(buffer, format="PNG")
             return buffer.getvalue()
@@ -143,12 +181,11 @@ def ocr_with_easyocr(
         }
 
     try:
-        import easyocr
         import numpy as np
         from PIL import Image
 
         langs = languages or ["en"]
-        reader = easyocr.Reader(langs, gpu=False)
+        reader = _get_easyocr_reader(langs)
         with Image.open(io.BytesIO(image_bytes)) as image_handle:
             np_array = np.array(image_handle)
         rows = reader.readtext(np_array, detail=1)
@@ -221,27 +258,26 @@ def merge_ocr_engine_results(tesseract_result: dict, easyocr_result: dict) -> di
     t_used = bool((tesseract_result or {}).get("available"))
     e_used = bool((easyocr_result or {}).get("available"))
 
+    def _confidence(result: dict[str, Any], *, scale: float = 1.0) -> float:
+        try:
+            return max(0.0, float(result.get("avg_confidence", 0.0) or 0.0) * scale)
+        except (TypeError, ValueError):
+            return 0.0
+
     if not t_text and not e_text:
-        merged_text = ""
-        primary_engine = "none"
+        base_text, short_text, primary_engine = "", "", "none"
     elif t_text and not e_text:
-        merged_text = t_text
-        primary_engine = "tesseract"
+        base_text, short_text, primary_engine = t_text, "", "tesseract"
     elif e_text and not t_text:
-        merged_text = e_text
-        primary_engine = "easyocr"
+        base_text, short_text, primary_engine = e_text, "", "easyocr"
+    elif _confidence(tesseract_result) >= _confidence(easyocr_result, scale=100.0):
+        base_text, short_text, primary_engine = t_text, e_text, "tesseract"
     else:
-        if len(t_text) >= len(e_text):
-            base_text = t_text
-            short_text = e_text
-            primary_engine = "tesseract"
-        else:
-            base_text = e_text
-            short_text = t_text
-            primary_engine = "easyocr"
-        base_words = {token.casefold() for token in base_text.split()}
-        addendum = [token for token in short_text.split() if token.casefold() not in base_words]
-        merged_text = base_text if not addendum else f"{base_text} | {' '.join(addendum)}"
+        base_text, short_text, primary_engine = e_text, t_text, "easyocr"
+
+    base_words = {token.casefold() for token in base_text.split()}
+    addendum = [token for token in short_text.split() if token.casefold() not in base_words]
+    merged_text = base_text if not addendum else f"{base_text} | {' '.join(addendum)}"
 
     return {
         "merged_text": merged_text,

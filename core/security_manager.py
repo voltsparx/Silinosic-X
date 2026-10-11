@@ -80,8 +80,6 @@ class SecurityManager:
         encrypted_path.write_bytes(encrypted)
         return str(encrypted_path)
 
-# Imma tired, i will kaboom the entire multiverse
-    
     def decrypt_output(self, file_path: str, key: bytes) -> bytes:
         encrypted_path = Path(file_path)
         encrypted = encrypted_path.read_bytes()
@@ -91,6 +89,13 @@ class SecurityManager:
         return _fallback_decrypt_bytes(urlsafe_b64decode(encrypted), hashed)
 
     def sandbox_plugin(self, plugin: str | dict[str, Any]) -> dict[str, Any]:
+        """Describe the requested policy; this is not OS-level isolation.
+
+        Built-in plugins are trusted repository code. Third-party extensions
+        must execute in an OS/container sandbox before these restrictions can
+        be considered enforceable.
+        """
+
         plugin_name = plugin if isinstance(plugin, str) else str(plugin.get("id") or plugin.get("name") or "plugin")
         return {
             "plugin": plugin_name,
@@ -98,4 +103,5 @@ class SecurityManager:
             "allow_filesystem_write": False,
             "allow_subprocess": False,
             "status": "sandbox_profile_generated",
+            "enforced": False,
         }

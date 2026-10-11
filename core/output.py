@@ -47,6 +47,7 @@ from core.artifacts.storage import (
     sql_report_path,
 )
 from core.foundation.output_config import OutputConfigError, get_output_settings
+from core.foundation.privacy import redact_if_needed, sensitive_information_enabled
 from core.artifacts.docx_report import generate_docx_report
 from core.artifacts.pdf_report import generate_pdf_report
 from core.artifacts.sql_store import write_sqlite_report
@@ -415,6 +416,12 @@ def display_results(
     filter_errors: list[str] | None = None,
     intelligence_bundle: dict | None = None,
 ) -> None:
+    results = redact_if_needed(results)
+    correlation = redact_if_needed(correlation)
+    issues = redact_if_needed(issues)
+    plugin_results = redact_if_needed(plugin_results)
+    filter_results = redact_if_needed(filter_results)
+    intelligence_bundle = redact_if_needed(intelligence_bundle)
     _section("Scan Results", Colors.BLUE)
     resolved_target = (target or "").strip() or "unknown"
     print(c(f"{symbol('action')} Target: {resolved_target}", Colors.CYAN))
@@ -558,6 +565,11 @@ def display_domain_results(
     filter_errors: list[str] | None = None,
     intelligence_bundle: dict | None = None,
 ) -> None:
+    domain_result = redact_if_needed(domain_result)
+    issues = redact_if_needed(issues)
+    plugin_results = redact_if_needed(plugin_results)
+    filter_results = redact_if_needed(filter_results)
+    intelligence_bundle = redact_if_needed(intelligence_bundle)
     target = domain_result.get("target", "unknown")
     _section("Domain Surface Scan", Colors.BLUE)
     print(c(f"{symbol('action')} Target: {target}", Colors.CYAN))
@@ -732,6 +744,9 @@ def display_ocr_results(
     filter_errors: list[str] | None = None,
     narrative: str | None = None,
 ) -> None:
+    ocr_scan = redact_if_needed(ocr_scan)
+    plugin_results = redact_if_needed(plugin_results)
+    filter_results = redact_if_needed(filter_results)
     summary = ocr_scan.get("summary", {}) if isinstance(ocr_scan, dict) else {}
     items = [row for row in (ocr_scan.get("items", []) or []) if isinstance(row, dict)]
     failures = [row for row in (ocr_scan.get("failures", []) or []) if isinstance(row, dict)]
@@ -1178,6 +1193,7 @@ def save_results(
     output_types: set[str] | None = None,
     output_stamp: str | None = None,
     return_payload: bool = False,
+    sensitive_information: bool | None = None,
 ) -> str | tuple[str, dict[str, Any]]:
     settings = get_output_settings()
     selected_types = {item.lower() for item in (output_types or set(settings.types)) if str(item).strip()}
@@ -1218,6 +1234,8 @@ def save_results(
     }
     if isinstance(extra_payload, dict):
         payload.update({str(key): value for key, value in extra_payload.items()})
+    payload["privacy"] = {"sensitive_information": sensitive_information_enabled(sensitive_information)}
+    payload = redact_if_needed(payload, sensitive_information=sensitive_information)
     payload["summary"] = _build_payload_summary(payload)
 
     results_count = len(payload["results"]) if isinstance(payload["results"], list) else 0
@@ -1360,4 +1378,3 @@ def save_results(
     if return_payload:
         return str(json_path or run_log or ""), payload
     return str(json_path or run_log or "")
-

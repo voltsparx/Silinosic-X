@@ -43,6 +43,7 @@ full = [
 ]
 ocr = [
   "easyocr>=1.7.1",
+  "opencv-python-headless>=4.8.0",
 ]
 reports = [
   "matplotlib>=3.8.0",

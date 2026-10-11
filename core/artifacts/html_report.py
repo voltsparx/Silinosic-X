@@ -32,6 +32,7 @@ from core.analyze.profile_summary import (
 )
 from core.artifacts.storage import ensure_output_tree, html_report_path, sanitize_target
 from core.foundation.output_config import OutputConfigError
+from core.foundation.privacy import redact_if_needed
 
 
 def _safe_dict_rows(value: object) -> list[dict]:
@@ -1409,19 +1410,36 @@ def generate_html(
     fused_intel: dict | None = None,
     extra_payload: dict | None = None,
     output_stamp: str | None = None,
+    sensitive_information: bool | None = None,
 ) -> str:
-    results = results or []
-    correlation = correlation or {}
-    issues = issues or []
-    issue_summary = issue_summary or {}
-    plugin_results = plugin_results or []
-    plugin_errors = plugin_errors or []
-    filter_results = filter_results or []
-    filter_errors = filter_errors or []
-    intelligence_bundle = intelligence_bundle or {}
-    ocr_scan = ocr_scan or {}
-    fused_intel = fused_intel or {}
-    extra_payload = extra_payload or {}
+    redacted = redact_if_needed(
+        {
+            "results": results or [], "correlation": correlation or {}, "issues": issues or [],
+            "issue_summary": issue_summary or {}, "domain_result": domain_result or {},
+            "surface_exposure": surface_exposure or {}, "domain_deep_recon": domain_deep_recon or {},
+            "media_recon": media_recon or {}, "plugin_results": plugin_results or [],
+            "plugin_errors": plugin_errors or [], "filter_results": filter_results or [],
+            "filter_errors": filter_errors or [], "intelligence_bundle": intelligence_bundle or {},
+            "ocr_scan": ocr_scan or {}, "fused_intel": fused_intel or {}, "extra_payload": extra_payload or {},
+        },
+        sensitive_information=sensitive_information,
+    )
+    results = redacted["results"]
+    correlation = redacted["correlation"]
+    issues = redacted["issues"]
+    issue_summary = redacted["issue_summary"]
+    domain_result = redacted["domain_result"]
+    surface_exposure = redacted["surface_exposure"]
+    domain_deep_recon = redacted["domain_deep_recon"]
+    media_recon = redacted["media_recon"]
+    plugin_results = redacted["plugin_results"]
+    plugin_errors = redacted["plugin_errors"]
+    filter_results = redacted["filter_results"]
+    filter_errors = redacted["filter_errors"]
+    intelligence_bundle = redacted["intelligence_bundle"]
+    ocr_scan = redacted["ocr_scan"]
+    fused_intel = redacted["fused_intel"]
+    extra_payload = redacted["extra_payload"]
 
     display_target = str(target or "").strip()
     target_display = display_target or sanitize_target(target)

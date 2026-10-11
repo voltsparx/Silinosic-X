@@ -28,10 +28,10 @@ from core.interface.command_spec import (
     SURFACE_COMMAND_ALIASES,
 )
 from core.foundation.colors import Colors, c
-from core.extensions.control_plane import merge_scan_modes, resolve_extension_control
+from core.extensions.control_plane import merge_scan_modes, resolve_extension_control, resolve_selectors
 from core.extensions.attachables import resolve_module_attachments
-from core.extensions.selector_keys import selector_keys
 from core.foundation.session_state import PromptSessionState
+from core.foundation.privacy import set_sensitive_information_mode
 from core.extensions.signal_forge import list_plugin_descriptors
 from core.extensions.signal_sieve import list_filter_descriptors
 from core.utils.info_templates import get_info_template
@@ -177,54 +177,12 @@ def _resolve_extension_combo(
     return resolved_plugins, resolved_filters, list(plan.errors), list(plan.warnings)
 
 
-def _descriptor_lookup(descriptors: list[dict[str, object]]) -> dict[str, str]:
-    lookup: dict[str, str] = {}
-    for descriptor in descriptors:
-        descriptor_id = str(descriptor.get("id", "")).strip().lower()
-        if not descriptor_id:
-            continue
-        for key in selector_keys(descriptor_id):
-            lookup.setdefault(key, descriptor_id)
-
-        title = str(descriptor.get("title", "")).strip()
-        if title:
-            for key in selector_keys(title):
-                lookup.setdefault(key, descriptor_id)
-
-        aliases = descriptor.get("aliases", [])
-        if isinstance(aliases, list):
-            for alias in aliases:
-                for key in selector_keys(str(alias)):
-                    lookup.setdefault(key, descriptor_id)
-    return lookup
-
-
 def _resolve_compatible_names(
     requested_names: list[str],
     *,
     descriptors: list[dict[str, object]],
 ) -> tuple[list[str], list[str]]:
-    by_key = _descriptor_lookup(descriptors)
-    selected: list[str] = []
-    seen: set[str] = set()
-    rejected: list[str] = []
-    for raw_name in requested_names:
-        keys = selector_keys(raw_name)
-        if not keys:
-            continue
-        matched: str | None = None
-        for key in keys:
-            matched = by_key.get(key)
-            if matched is not None:
-                break
-        if matched is None:
-            rejected.append(raw_name)
-            continue
-        if matched in seen:
-            continue
-        selected.append(matched)
-        seen.add(matched)
-    return selected, rejected
+    return resolve_selectors(requested_names, descriptors=descriptors)
 
 
 def _resolve_plugins_for_scope(names: list[str], scope: str) -> tuple[list[str], list[str]]:
@@ -434,7 +392,7 @@ def handle_prompt_set_command(
     tokens = command_text.strip().split(maxsplit=2)
     if len(tokens) != 3:
         _emit(
-            "Usage: set <template|plugins|filters|modules|profile_preset|surface_preset|scan_range|extension_control|orchestrate_extension_control> <value>",
+            "Usage: set <template|plugins|filters|modules|profile_preset|surface_preset|scan_range|sensitive_information|extension_control|orchestrate_extension_control> <value>",
             Colors.EMBER,
         )
         return True
@@ -447,6 +405,24 @@ def handle_prompt_set_command(
         key = "orchestrate_extension_control"
     value = value.strip()
     scope = _normalize_module(session.module)
+
+    if key in {"sensitive_information", "sensitive_info", "sensitive"}:
+        normalized_value = value.lower()
+        if normalized_value in {"on", "true", "1", "yes", "enable", "enabled"}:
+            session.sensitive_information = True
+            set_sensitive_information_mode(True)
+            _emit(
+                "Sensitive information mode: ON — raw sensitive values may appear in output and reports.",
+                Colors.RED,
+            )
+            return True
+        if normalized_value in {"off", "false", "0", "no", "disable", "disabled"}:
+            session.sensitive_information = False
+            set_sensitive_information_mode(False)
+            _emit("Sensitive information mode: OFF — sensitive values are masked in output and reports.", Colors.GREEN)
+            return True
+        _emit("Usage: set sensitive_information <on|off>", Colors.EMBER)
+        return True
 
     if key in {"template", "info_template"}:
         if session.extension_control_for_module(scope) == "auto":
@@ -824,4 +800,3 @@ def handle_prompt_use_command(
         _emit(item, Colors.GREY)
 
     return True
-

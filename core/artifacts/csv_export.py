@@ -28,6 +28,7 @@ from core.artifacts.storage import (
     sanitize_target,
 )
 from core.foundation.output_config import OutputConfigError
+from core.foundation.privacy import redact_if_needed
 
 
 def _safe_rows(value: object) -> list[dict]:
@@ -43,7 +44,13 @@ def _write_csv(path, header: list[str], rows: list[list[object]]) -> None:
         writer.writerows(rows)
 
 
-def export_to_csv(target: str, *, payload: dict | None = None, stamp: str | None = None) -> str | None:
+def export_to_csv(
+    target: str,
+    *,
+    payload: dict | None = None,
+    stamp: str | None = None,
+    sensitive_information: bool | None = None,
+) -> str | None:
     target_key = sanitize_target(target)
     data = payload
     if data is None:
@@ -69,6 +76,7 @@ def export_to_csv(target: str, *, payload: dict | None = None, stamp: str | None
     if not isinstance(data, dict):
         print(f"CSV export failed: unexpected JSON payload type for {target_key}.")
         return None
+    data = redact_if_needed(data, sensitive_information=sensitive_information)
 
     try:
         ensure_output_tree(types={"csv"})

@@ -11,8 +11,12 @@
 # ──────────────────────────────────────────────────────────────
 
 import unittest
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 from core.collect.ocr_pipeline import (
+    _EASYOCR_READERS,
+    _get_easyocr_reader,
     extract_ocr_signals,
     merge_ocr_engine_results,
     preprocess_for_ocr,
@@ -33,6 +37,23 @@ class TestOcrPipeline(unittest.TestCase):
         tesseract = {"text": "hello world", "engine": "tesseract", "available": True}
         self.assertEqual(merge_ocr_engine_results(tesseract, {})["merged_text"], "hello world")
 
+    def test_merge_prefers_confidence_over_text_length(self):
+        tesseract = {"text": "clean", "available": True, "avg_confidence": 91}
+        easyocr = {"text": "longer noisy uncertain output", "available": True, "avg_confidence": 0.2}
+        merged = merge_ocr_engine_results(tesseract, easyocr)
+        self.assertEqual(merged["primary_engine"], "tesseract")
+        self.assertTrue(merged["merged_text"].startswith("clean"))
+
+    def test_easyocr_readers_are_cached_by_normalized_language_set(self):
+        fake_reader = Mock()
+        fake_easyocr = SimpleNamespace(Reader=fake_reader)
+        _EASYOCR_READERS.clear()
+        with patch.dict("sys.modules", {"easyocr": fake_easyocr}):
+            first = _get_easyocr_reader(["en", "fr"])
+            second = _get_easyocr_reader(["fr", "en"])
+        self.assertIs(first, second)
+        fake_reader.assert_called_once_with(["en", "fr"], gpu=False)
+
     def test_extract_signals_email(self):
         result = extract_ocr_signals("contact me at test@example.com today")
         self.assertIn("test@example.com", result["emails"])
@@ -50,4 +71,3 @@ class TestOcrPipeline(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

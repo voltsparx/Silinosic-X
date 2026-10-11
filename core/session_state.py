@@ -46,6 +46,7 @@ class PromptSessionState:
     surface_extension_control: str = "manual"
     fusion_extension_control: str = "manual"
     orchestrate_extension_control: str = "auto"
+    sensitive_information: bool = False
 
     def has_custom_context(self) -> bool:
         return bool(
@@ -105,6 +106,7 @@ class PromptSessionState:
             f"preset={self.active_preset_label()} "
             f"range={self.scan_range} "
             f"ext={self.extension_control_for_module(self.module)} "
+            f"sensitive={'on' if self.sensitive_information else 'off'} "
             f"plugins={len(self.plugin_names)} "
             f"filters={len(self.filter_names)} "
             f"modules={len(self.attached_module_names)}"

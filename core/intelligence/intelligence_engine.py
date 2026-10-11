@@ -439,20 +439,29 @@ class IntelligenceEngine:
         snapshots: list[dict[str, Any]] = []
         evidence_rows: list[Evidence] = []
         entities_by_id: dict[str, dict[str, Any]] = {}
+        skipped_entities = 0
 
         trace_prefix = f"{mode_name}:{target_name or 'target'}"
         for entity in entities:
-            evidence = evidence_from_entity(entity, trace_prefix=trace_prefix)
+            if not isinstance(entity, BaseEntity):
+                skipped_entities += 1
+                continue
+            try:
+                evidence = evidence_from_entity(entity, trace_prefix=trace_prefix)
+                row = entity.as_dict()
+                row["attributes"] = dict(entity.attributes)
+                row["evidence_ids"] = [evidence.id]
+                row["first_seen"] = entity.timestamp.isoformat()
+                row["last_updated"] = entity.timestamp.isoformat()
+                row["risk_level"] = "LOW"
+                row["confidence_breakdown"] = {}
+                row["heuristics"] = []
+            except Exception:
+                # A malformed extension entity must not discard an otherwise
+                # valid intelligence run.
+                skipped_entities += 1
+                continue
             evidence_rows.append(evidence)
-
-            row = entity.as_dict()
-            row["attributes"] = dict(entity.attributes)
-            row["evidence_ids"] = [evidence.id]
-            row["first_seen"] = entity.timestamp.isoformat()
-            row["last_updated"] = entity.timestamp.isoformat()
-            row["risk_level"] = "LOW"
-            row["confidence_breakdown"] = {}
-            row["heuristics"] = []
             snapshots.append(row)
             entities_by_id[row["id"]] = row
 
@@ -554,6 +563,7 @@ class IntelligenceEngine:
                 "end_time": finished_at.isoformat(),
                 "entity_count": len(snapshots),
                 "evidence_count": len(evidence_rows),
+                "skipped_entity_count": skipped_entities,
             },
             "entities": snapshots,
             "scored_entities": scored_entities,

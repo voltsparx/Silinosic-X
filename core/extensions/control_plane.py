@@ -331,6 +331,21 @@ def _resolve_selector_ids(selectors: list[str], lookup: dict[str, str]) -> tuple
     return selected, unknown
 
 
+def resolve_selectors(
+    selectors: list[str],
+    *,
+    descriptors: list[dict[str, object]],
+) -> tuple[list[str], list[str]]:
+    """Resolve ids, aliases, and titles using the control-plane lookup rules.
+
+    Prompt-mode selection and CLI planning both call this helper so aliases
+    cannot drift between the two operator surfaces.
+    """
+
+    lookup, _ = _build_lookup(descriptors)
+    return _resolve_selector_ids(selectors, lookup)
+
+
 def _unique(items: list[str]) -> tuple[str, ...]:
     seen: set[str] = set()
     ordered: list[str] = []

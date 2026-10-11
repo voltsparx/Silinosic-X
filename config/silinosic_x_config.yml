@@ -36,6 +36,16 @@ ocr_pipeline:
   tesseract_config: "--oem 3 --psm 6"
   easyocr_langs: ["en"]
 
+noise_filter:
+  profile_confidence_floor: 55
+  severity_suppress_count: 20
+  ocr_confidence_floor: 35
+
+privacy:
+  sensitive_information: false
+  redaction_mask: "[REDACTED]"
+  redact_fields: ["emails", "phones", "addresses", "exact_geolocation", "credential_tokens", "darkweb_identifiers"]
+
 media_recon:
   enabled: true
   run_ocr_on_images: true

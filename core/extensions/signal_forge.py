@@ -17,8 +17,10 @@
 
 from __future__ import annotations
 
+import ast
 from collections.abc import Mapping
 import importlib
+import importlib.util
 import pkgutil
 from typing import Any
 
@@ -193,6 +195,34 @@ def _load_plugin_module(module_name: str):
     return importlib.import_module(f"{PLUGIN_PACKAGE}.{module_name}")
 
 
+def _read_plugin_spec(module_name: str) -> dict[str, Any] | None:
+    """Read a literal ``PLUGIN_SPEC`` without executing extension code.
+
+    Discovery is intentionally metadata-only: optional OCR/network imports in
+    one plugin must not prevent unrelated plugin inventory or execution.
+    ``None`` signals that callers should use the legacy import fallback, which
+    also keeps dynamically provided extension modules compatible.
+    """
+
+    module_spec = importlib.util.find_spec(f"{PLUGIN_PACKAGE}.{module_name}")
+    origin = module_spec.origin if module_spec is not None else None
+    if not origin:
+        return None
+    try:
+        with open(origin, encoding="utf-8") as handle:
+            tree = ast.parse(handle.read(), filename=origin)
+        for statement in tree.body:
+            if not isinstance(statement, ast.Assign):
+                continue
+            if not any(isinstance(target, ast.Name) and target.id == "PLUGIN_SPEC" for target in statement.targets):
+                continue
+            value = ast.literal_eval(statement.value)
+            return value if isinstance(value, dict) else {}
+    except (OSError, SyntaxError, ValueError):
+        return {}
+    return {}
+
+
 def _normalize_spec(module_name: str, raw: dict[str, Any]) -> PluginSpec:
     plugin_id = str(raw.get("id") or module_name).strip().lower()
     title = str(raw.get("title") or plugin_id).strip()
@@ -234,12 +264,14 @@ def _discover_plugin_specs(scope: str | None = None) -> tuple[list[PluginSpec], 
         return [], errors
 
     for module_name in module_names:
-        try:
-            module = _load_plugin_module(module_name)
-        except Exception as exc:  # pragma: no cover - defensive import safety
-            errors.append(f"Plugin module '{module_name}' import failed: {exc}")
-            continue
-        raw = getattr(module, "PLUGIN_SPEC", {})
+        raw = _read_plugin_spec(module_name)
+        if raw is None:
+            try:
+                module = _load_plugin_module(module_name)
+            except Exception as exc:  # pragma: no cover - defensive import safety
+                errors.append(f"Plugin module '{module_name}' import failed: {exc}")
+                continue
+            raw = getattr(module, "PLUGIN_SPEC", {})
         if not isinstance(raw, dict):
             errors.append(f"Plugin module '{module_name}' has invalid PLUGIN_SPEC (expected dict).")
             continue

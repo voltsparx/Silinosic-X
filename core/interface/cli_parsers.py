@@ -1146,6 +1146,20 @@ def build_root_parser(
         dest="docker_rebuild",
         help="Force rebuild of the Docker image before launching.",
     )
+    sensitive_group = parser.add_mutually_exclusive_group()
+    sensitive_group.add_argument(
+        "--sensitive-information",
+        dest="sensitive_information",
+        action="store_true",
+        default=None,
+        help="Allow raw sensitive values in rendered output and reports for this run.",
+    )
+    sensitive_group.add_argument(
+        "--no-sensitive-information",
+        dest="sensitive_information",
+        action="store_false",
+        help="Force sensitive-value redaction for this run.",
+    )
     subparsers = parser.add_subparsers(dest="command")
 
     profile_parser = subparsers.add_parser(
