@@ -10,10 +10,7 @@ function initSidebar() {
     const group = button.dataset.group || "All";
     DocsState.navGroupFilter = group;
     updateSidebar();
-
-    if (group !== "All") {
-      navigateToEntry(firstEntryForGroup(group));
-    }
+    DocsElements.sidebarNav?.scrollTo?.({ top: 0 });
   });
 
   DocsElements.menuToggle?.addEventListener("click", () => {

@@ -1,8 +1,6 @@
 const EasterEgg = (() => {
   let toastTimer = null;
   let overdriveTimer = null;
-  let versionPressTimer = null;
-  let menuPressTimer = null;
   let brandTapCount = 0;
   let brandTapTimer = null;
   let heroTapCount = 0;
@@ -202,12 +200,12 @@ const EasterEgg = (() => {
 
     showToast("Achievement unlocked", "Shardstorm Protocol armed. Ricochet spin charging.");
     spawnRibbons(28);
-    await wait(3000);
+    await wait(3400);
     clone.classList.remove("egg-ninja-charge");
     showToast("Ricochet burst", "Ember shard released into the lattice.");
 
-    const minSpeed = 420;
-    const maxSpeed = 760;
+    const minSpeed = 560;
+    const maxSpeed = 980;
     const angle = (Math.random() * Math.PI * 2) || (Math.PI / 3);
     let velocityX = Math.cos(angle) * (minSpeed + (Math.random() * (maxSpeed - minSpeed)));
     let velocityY = Math.sin(angle) * (minSpeed + (Math.random() * (maxSpeed - minSpeed)));
@@ -215,7 +213,7 @@ const EasterEgg = (() => {
     let positionY = startRect.top;
     let spin = 18000;
     let lastFrame = performance.now();
-    const travelUntil = lastFrame + 2700;
+    const travelUntil = lastFrame + 4100;
 
     await new Promise((resolve) => {
       const step = (now) => {
@@ -294,56 +292,44 @@ const EasterEgg = (() => {
     heroStarActive = false;
   }
 
-  function bindVersionLongPress() {
-    if (!DocsElements.topbarVersion) {
+  function bindLongPress(node, delay, callback) {
+    if (!node) {
       return;
     }
 
-    const start = () => {
-      versionPressTimer = window.setTimeout(() => {
-        toggleBlueprintMode();
-      }, 720);
+    let timer = null;
+    const start = (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+      }
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(() => {
+        timer = null;
+        callback();
+      }, delay);
     };
-
     const stop = () => {
-      if (versionPressTimer) {
-        window.clearTimeout(versionPressTimer);
-        versionPressTimer = null;
+      if (timer) {
+        window.clearTimeout(timer);
+        timer = null;
       }
     };
 
-    DocsElements.topbarVersion.addEventListener("mousedown", start);
-    DocsElements.topbarVersion.addEventListener("mouseup", stop);
-    DocsElements.topbarVersion.addEventListener("mouseleave", stop);
-    DocsElements.topbarVersion.addEventListener("touchstart", start, { passive: true });
-    DocsElements.topbarVersion.addEventListener("touchend", stop);
-    DocsElements.topbarVersion.addEventListener("touchcancel", stop);
+    node.addEventListener("pointerdown", start);
+    node.addEventListener("pointerup", stop);
+    node.addEventListener("pointercancel", stop);
+    node.addEventListener("pointerleave", stop);
+    node.addEventListener("dragstart", stop);
+  }
+
+  function bindVersionLongPress() {
+    bindLongPress(DocsElements.topbarVersion, 720, toggleBlueprintMode);
   }
 
   function bindMenuLongPress() {
-    if (!DocsElements.menuToggle) {
-      return;
-    }
-
-    const start = () => {
-      menuPressTimer = window.setTimeout(() => {
-        toggleCleanScreen();
-      }, 780);
-    };
-
-    const stop = () => {
-      if (menuPressTimer) {
-        window.clearTimeout(menuPressTimer);
-        menuPressTimer = null;
-      }
-    };
-
-    DocsElements.menuToggle.addEventListener("mousedown", start);
-    DocsElements.menuToggle.addEventListener("mouseup", stop);
-    DocsElements.menuToggle.addEventListener("mouseleave", stop);
-    DocsElements.menuToggle.addEventListener("touchstart", start, { passive: true });
-    DocsElements.menuToggle.addEventListener("touchend", stop);
-    DocsElements.menuToggle.addEventListener("touchcancel", stop);
+    bindLongPress(DocsElements.menuToggle, 780, toggleCleanScreen);
   }
 
   function bindSearchSecrets() {

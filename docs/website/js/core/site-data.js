@@ -13,9 +13,11 @@ const DocsData = (() => {
 
   const entries = [
     { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v11.2.0 snapshot.", group: "Start Here" },
-    { id: "core-idea", title: "What Silinosic-X Is", page: "index.html", hint: "The actual problem the framework is solving.", group: "Start Here" },
+    { id: "signal-map", title: "Signal Architecture", page: "index.html", hint: "How collection lanes become one case view.", group: "Start Here" },
+    { id: "capabilities", title: "Capability Matrix", page: "index.html", hint: "The investigation lanes and reporting surfaces.", group: "Start Here" },
     { id: "how-it-works", title: "How It Works", page: "index.html", hint: "Execution flow from commands to outputs.", group: "Start Here" },
     { id: "quickstart-30", title: "Quick Start", page: "index.html", hint: "Five-line path from clone to prompt mode.", group: "Start Here" },
+    { id: "operator-preview", title: "Operator Preview", page: "index.html", hint: "Prompt-mode console and confidence signals.", group: "Start Here" },
     { id: "fit-check", title: "Use It / Skip It", page: "index.html", hint: "When Silinosic-X is the right fit and when it is not.", group: "Start Here" },
     { id: "install", title: "Installation", page: "getting-started.html", hint: "Source setup, Python support, and dependencies.", group: "Start Here" },
     { id: "quickstart", title: "First Run", page: "getting-started.html", hint: "Prompt mode, help flow, and common first commands.", group: "Start Here" },

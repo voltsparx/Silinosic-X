@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="css/components/modules.css">
 <link rel="stylesheet" href="css/components/development.css">
 <link rel="stylesheet" href="css/layout/responsive.css">
+<link rel="stylesheet" href="css/core/polish.css">
 <link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
 </head>
 <body data-page="modes.html" data-default-section="prompt-mode">
@@ -30,8 +31,9 @@
   </button>
   <div id="topbar-version">v11.2.0 | Python 3.11+ | Ember</div>
   <div class="topbar-search">
-    <input id="docs-search-input" type="search" placeholder="Search the docs">
-    <div id="docs-search-results" class="topbar-search-results" hidden></div>
+    <input id="docs-search-input" type="search" placeholder="Search the docs" aria-label="Search the docs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results">
+    <span class="search-kbd" aria-hidden="true">/</span>
+    <div id="docs-search-results" class="topbar-search-results" role="listbox" hidden></div>
   </div>
   <div id="topbar-links">
     <a href="cli-reference.html#commands">Commands</a>
@@ -45,7 +47,7 @@
         <a href="https://github.com/voltsparx" target="_blank" rel="noreferrer">github.com/voltsparx</a>
       </div>
     </div>
-    <button id="menu-toggle" type="button">Menu</button>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
   </div>
 </header>
 
@@ -243,6 +245,7 @@ Press Enter to start...</pre>
 <script src="js/features/workflow-visual.js"></script>
 <script src="js/features/easter-eggs.js"></script>
 <script src="js/features/development-feed.js"></script>
+<script src="js/features/ui-enhancements.js"></script>
 <script src="js/bootstrap/app.js"></script>
 </body>
 </html>

@@ -52,7 +52,9 @@ Load CSS in this order:
 5. `css/components/workflow.css`
 6. `css/components/modules.css`
 7. `css/components/development.css`
-8. `css/layout/responsive.css`
+8. `css/components/console.css` (home and workflow pages)
+9. `css/layout/responsive.css`
+10. `css/core/polish.css` (always last: accessibility, motion, mobile topbar)
 
 Load JavaScript in this order:
 
@@ -63,7 +65,8 @@ Load JavaScript in this order:
 5. `js/features/workflow-visual.js`
 6. `js/features/easter-eggs.js`
 7. `js/features/development-feed.js`
-8. `js/bootstrap/app.js`
+8. `js/features/ui-enhancements.js`
+9. `js/bootstrap/app.js`
 
 ## Maintenance Rules
 
@@ -86,5 +89,6 @@ node --check docs/website/js/features/search.js
 node --check docs/website/js/features/workflow-visual.js
 node --check docs/website/js/features/easter-eggs.js
 node --check docs/website/js/features/development-feed.js
+node --check docs/website/js/features/ui-enhancements.js
 node --check docs/website/js/bootstrap/app.js
 ```

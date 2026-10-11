@@ -57,6 +57,8 @@ function navigateToEntry(entry) {
 function setNavOpen(nextState) {
   DocsState.navOpen = Boolean(nextState);
   DocsElements.body.classList.toggle("nav-open", DocsState.navOpen);
+  DocsElements.menuToggle?.setAttribute("aria-expanded", DocsState.navOpen ? "true" : "false");
+  DocsElements.menuToggle && (DocsElements.menuToggle.textContent = DocsState.navOpen ? "Close" : "Menu");
 }
 
 function currentHashId() {
@@ -76,7 +78,7 @@ function renderSidebarTabs() {
   DocsElements.sidebarTabs.innerHTML = filters
     .map((group) => {
       const activeClass = DocsState.navGroupFilter === group ? " is-active" : "";
-      return `<button class="sidebar-tab${activeClass}" type="button" data-group="${escapeHtml(group)}">${escapeHtml(group)}</button>`;
+      return `<button class="sidebar-tab${activeClass}" type="button" aria-pressed="${DocsState.navGroupFilter === group}" data-group="${escapeHtml(group)}">${escapeHtml(group)}</button>`;
     })
     .join("");
 }
@@ -99,9 +101,10 @@ function renderSidebarNav() {
           const currentPageMatch = DocsState.currentPage === entry.page;
           const currentIdMatch = currentSectionId === entry.id;
           const activeClass = currentPageMatch && currentIdMatch ? " is-current" : "";
+          const ariaCurrent = activeClass ? ' aria-current="location"' : "";
           const pageShort = DocsData.pages[entry.page]?.short || entry.page.replace(".html", "");
           return `
-            <a class="sidebar-link${activeClass}" href="${pageLink(entry.page, entry.id)}">
+            <a class="sidebar-link${activeClass}"${ariaCurrent} href="${pageLink(entry.page, entry.id)}">
               <span class="sidebar-link-title">${escapeHtml(entry.title)}</span>
               <span class="sidebar-link-hint">${escapeHtml(entry.hint)}</span>
               <span class="sidebar-link-page">${escapeHtml(pageShort)}</span>

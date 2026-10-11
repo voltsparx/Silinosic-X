@@ -5,4 +5,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactPopover();
   EasterEgg.init();
   initDevelopmentFeed();
+  initUiEnhancements();
 });

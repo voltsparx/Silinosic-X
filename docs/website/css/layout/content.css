@@ -160,3 +160,6 @@
   color: var(--warn);
   font-size: 0.88rem;
 }
+
+#doctor { scroll-margin-top: 112px; }
+#doctor:target { border-color: var(--ember); box-shadow: 0 0 0 3px rgba(255,138,29,0.18), var(--shadow); }

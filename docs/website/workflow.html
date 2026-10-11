@@ -16,7 +16,9 @@
 <link rel="stylesheet" href="css/components/workflow.css">
 <link rel="stylesheet" href="css/components/modules.css">
 <link rel="stylesheet" href="css/components/development.css">
+<link rel="stylesheet" href="css/components/console.css">
 <link rel="stylesheet" href="css/layout/responsive.css">
+<link rel="stylesheet" href="css/core/polish.css">
 <link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
 </head>
 <body data-page="workflow.html" data-default-section="how">
@@ -30,8 +32,9 @@
   </button>
   <div id="topbar-version">v11.2.0 | Python 3.11+ | Ember</div>
   <div class="topbar-search">
-    <input id="docs-search-input" type="search" placeholder="Search the docs">
-    <div id="docs-search-results" class="topbar-search-results" hidden></div>
+    <input id="docs-search-input" type="search" placeholder="Search the docs" aria-label="Search the docs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results">
+    <span class="search-kbd" aria-hidden="true">/</span>
+    <div id="docs-search-results" class="topbar-search-results" role="listbox" hidden></div>
   </div>
   <div id="topbar-links">
     <a href="index.html">Overview</a>
@@ -45,7 +48,7 @@
         <a href="https://github.com/voltsparx" target="_blank" rel="noreferrer">github.com/voltsparx</a>
       </div>
     </div>
-    <button id="menu-toggle" type="button">Menu</button>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
   </div>
 </header>
 
@@ -115,14 +118,28 @@
   </section>
 
   <section id="pipeline" class="page-section section-anchor">
-    <div class="section-head">
+    <div class="console-section-head">
       <div>
-        <div class="section-kicker">Pipeline</div>
-        <h2 class="section-title">The layered execution path in practice</h2>
+        <div class="section-kicker">Execution pipeline / architecture view</div>
+        <h2 class="section-title">A policy-led signal path from intent to artifact.</h2>
+      </div>
+      <p class="console-section-note">Each stage owns one responsibility. Expand a node to inspect the runtime slice without losing the shape of the whole run.</p>
+    </div>
+    <div class="pipeline-overview">
+      <article class="pipeline-readout">
+        <div class="pipeline-readout-top"><span class="console-kicker">run topology</span><span class="pipeline-status">READY / TRACEABLE</span></div>
+        <div class="pipeline-readout-command"><span class="pipeline-prompt">sx&gt;</span><strong>orchestrate target --policy fusion</strong></div>
+        <div class="pipeline-readout-copy">The orchestrator loads policy, dispatches capabilities through the selected engine, filters normalized entities, fuses intelligence, then hands the result to Reporter.</div>
+      </article>
+      <div class="pipeline-metrics" aria-label="Pipeline architecture summary">
+        <div><strong>06</strong><span>runtime slices</span></div>
+        <div><strong>04</strong><span>core workflows</span></div>
+        <div><strong>01</strong><span>case view</span></div>
       </div>
     </div>
-    <div class="pipeline-grid">
-      <div id="workflow-visual-rail" class="workflow-rail" aria-label="Execution pipeline"></div>
+    <div class="pipeline-track-shell">
+      <div class="pipeline-track-head"><span>INPUT → POLICY → SIGNALS → MEANING → OUTPUT</span><span>click any node to inspect</span></div>
+      <div class="pipeline-grid"><div id="workflow-visual-rail" class="workflow-rail workflow-rail-architecture" aria-label="Execution pipeline"></div></div>
     </div>
     <div class="grid-2 section-block">
       <article class="panel">
@@ -212,7 +229,7 @@
 <script src="js/features/workflow-visual.js"></script>
 <script src="js/features/easter-eggs.js"></script>
 <script src="js/features/development-feed.js"></script>
+<script src="js/features/ui-enhancements.js"></script>
 <script src="js/bootstrap/app.js"></script>
 </body>
 </html>
-

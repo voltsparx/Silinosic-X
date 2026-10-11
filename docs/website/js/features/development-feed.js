@@ -10,26 +10,37 @@ async function initDevelopmentFeed() {
     return;
   }
 
-  RawPopup?.bind?.();
+  if (typeof RawPopup !== "undefined") {
+    RawPopup.bind?.();
+  }
 
   const base = githubApi("");
+  const skeleton = '<div class="skeleton" aria-busy="true" aria-label="Loading"><span></span><span></span><span></span></div>';
+  [repoHealth, commitFeed, releaseFeed, tagFeed, chartNode].forEach((node) => {
+    if (node && !node.innerHTML.trim()) node.innerHTML = skeleton;
+  });
+
+  /* Cache GitHub responses for 10 minutes so page hopping does not hit the unauthenticated rate limit */
+  const cachedJson = async (url) => {
+    const key = `sx-gh:${url}`;
+    try {
+      const hit = JSON.parse(window.sessionStorage.getItem(key) || "null");
+      if (hit && Date.now() - hit.t < 600000) return hit.d;
+    } catch (e) { /* storage unavailable */ }
+    const response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!response.ok) throw new Error(`GitHub API request failed (${response.status})`);
+    const data = await response.json();
+    try { window.sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) { /* ignore */ }
+    return data;
+  };
 
   try {
-    const [repoResponse, commitsResponse, releasesResponse, tagsResponse] = await Promise.all([
-      fetch(base),
-      fetch(`${base}/commits?per_page=12`),
-      fetch(`${base}/releases?per_page=3`),
-      fetch(`${base}/tags?per_page=5`)
+    const [repo, commits, releases, tags] = await Promise.all([
+      cachedJson(base),
+      cachedJson(`${base}/commits?per_page=12`),
+      cachedJson(`${base}/releases?per_page=3`),
+      cachedJson(`${base}/tags?per_page=5`)
     ]);
-
-    if (!repoResponse.ok || !commitsResponse.ok || !releasesResponse.ok || !tagsResponse.ok) {
-      throw new Error("GitHub API request failed");
-    }
-
-    const repo = await repoResponse.json();
-    const commits = await commitsResponse.json();
-    const releases = await releasesResponse.json();
-    const tags = await tagsResponse.json();
 
     if (repoHealth) {
       repoHealth.innerHTML = `
@@ -45,7 +56,7 @@ async function initDevelopmentFeed() {
     if (commitFeed) {
       commitFeed.innerHTML = `
         <div class="feed-list">
-          ${commits.map((commit) => {
+          ${(Array.isArray(commits) ? commits : []).map((commit) => {
             const message = (commit.commit?.message || "Commit").split("\n")[0];
             const author = commit.commit?.author?.name || "unknown";
             const date = commit.commit?.author?.date;
@@ -119,7 +130,7 @@ async function initDevelopmentFeed() {
       `;
     }
   } catch (error) {
-    const fallback = '<div class="empty-state">Live GitHub data could not be loaded right now. Use the repository links on this page for raw signals.</div>';
+    const fallback = `<div class="empty-state">Live GitHub data could not be loaded right now (the public API may be rate-limited). Use the <a href="${DocsData.github.repoUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--ember-2); text-decoration: underline;">repository</a> for raw signals, or try again in a few minutes.</div>`;
     repoHealth && (repoHealth.innerHTML = fallback);
     commitFeed && (commitFeed.innerHTML = fallback);
     releaseFeed && (releaseFeed.innerHTML = fallback);
