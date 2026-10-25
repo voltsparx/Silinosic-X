@@ -233,6 +233,68 @@ def _normalize_tag(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.strip().lower()).strip("-")
 
 
+def module_display_name(row: dict[str, Any]) -> str:
+    """Return a capability-led title without exposing its source framework."""
+
+    explicit = str(row.get("display_name") or "").strip()
+    if explicit:
+        return explicit
+    file_path = Path(str(row.get("file") or row.get("path") or "module"))
+    stem = file_path.stem
+    generic_stems = {"__init__", "__main__", "main", "index", "base", "config", "flags", "cli", "api", "utils", "common", "helpers"}
+    if stem in generic_stems and file_path.parent.name:
+        stem = f"{file_path.parent.name}-{stem}" if stem not in {"__init__", "__main__", "main", "index"} else file_path.parent.name
+    stem = re.sub(r"^(?:sfp_|sfl_|sf_|plugin_|module_|collector_|filter_)+", "", stem, flags=re.IGNORECASE)
+    words = re.sub(r"[_./-]+", " ", stem).strip()
+    title = words.title() if words else "Source Capability"
+    capabilities = [str(value).replace("-", " ").title() for value in (row.get("capabilities") or [])[:2] if str(value).strip()]
+    return f"{' & '.join(capabilities) if capabilities else 'General Capability'}: {title}"
+
+
+def module_execution_mode(_row: dict[str, Any]) -> str:
+    """Catalog rows are research context, not executable framework code."""
+
+    return "catalog_context_only"
+
+
+def module_capability_selector(row: dict[str, Any]) -> str:
+    """Create a stable selector based on capabilities and behavior, not source-tool names."""
+
+    file_path = Path(str(row.get("file") or row.get("path") or "module"))
+    stem = file_path.stem
+    if stem in {"__init__", "__main__", "main", "index", "base", "config", "flags", "cli", "api", "utils", "common", "helpers"} and file_path.parent.name:
+        stem = f"{file_path.parent.name}-{stem}" if stem not in {"__init__", "__main__", "main", "index"} else file_path.parent.name
+    capabilities = [_normalize_tag(str(value)) for value in (row.get("capabilities") or [])[:2] if str(value).strip()]
+    return _normalize_id("-".join([*capabilities, stem]))
+
+
+def normalize_catalog_module_names(catalog: dict[str, Any]) -> dict[str, Any]:
+    """Migrate source-derived IDs to capability-led IDs without breaking selectors."""
+
+    rows = catalog.get("modules")
+    if not isinstance(rows, list):
+        return catalog
+    seen: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        legacy_selector = str(row.get("id") or "").strip()
+        base = module_capability_selector(row)
+        candidate = base
+        if candidate in seen:
+            digest = hashlib.sha256(f"{legacy_selector}|{row.get('file', '')}".encode("utf-8")).hexdigest()[:6]
+            candidate = f"{base}-{digest}"
+        seen.add(candidate)
+        aliases = [str(value).strip() for value in (row.get("selector_aliases") or []) if str(value).strip()]
+        if legacy_selector and legacy_selector != candidate and legacy_selector not in aliases:
+            aliases.append(legacy_selector)
+        row["id"] = candidate
+        row["selector_aliases"] = aliases
+        row["display_name"] = module_display_name(row)
+        row["execution_mode"] = module_execution_mode(row)
+    return catalog
+
+
 def _score(text: str, tokens: tuple[str, ...]) -> int:
     return sum(1 for token in tokens if token in text)
 
@@ -654,8 +716,8 @@ def _analyze_source_file(
     )
 
     file_stem = Path(relative_framework_path).with_suffix("").as_posix()
-    return {
-        "id": _normalize_id(f"{framework_name}-{file_stem}"),
+    row = {
+        "id": "",
         "framework": framework_name,
         "path": relative_full_path,
         "file": relative_framework_path,
@@ -679,6 +741,12 @@ def _analyze_source_file(
             "sampled_bytes": sampled_bytes,
         },
     }
+    legacy_selector = _normalize_id(f"{framework_name}-{file_stem}")
+    row["id"] = module_capability_selector(row)
+    row["selector_aliases"] = [legacy_selector]
+    row["display_name"] = module_display_name(row)
+    row["execution_mode"] = module_execution_mode(row)
+    return row
 
 
 def _kind_payload(
@@ -783,6 +851,8 @@ def build_module_catalog(
 
     raw_module_count = len(module_rows)
     module_rows = _curate_module_rows(module_rows, limit=DEFAULT_MODULE_LIMIT)
+    normalized_rows = normalize_catalog_module_names({"modules": module_rows}).get("modules", [])
+    module_rows = normalized_rows if isinstance(normalized_rows, list) else module_rows
 
     kind_counts: Counter[str] = Counter()
     scope_counts: Counter[str] = Counter()
@@ -947,10 +1017,10 @@ def load_module_catalog(path: str | Path = DEFAULT_INDEX_PATH) -> dict[str, Any]
     payload_path = Path(path)
     payload = _load_json_payload(payload_path)
     if payload is not None:
-        return payload
+        return normalize_catalog_module_names(payload)
     package_payload = _load_module_catalog_resource(payload_path)
     if package_payload is not None:
-        return package_payload
+        return normalize_catalog_module_names(package_payload)
     return {}
 
 

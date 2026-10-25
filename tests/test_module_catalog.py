@@ -22,6 +22,9 @@ from modules.catalog import (
     DEFAULT_CATALOG_VERSION,
     build_module_catalog,
     ensure_module_catalog,
+    module_capability_selector,
+    module_display_name,
+    module_execution_mode,
     query_module_catalog,
     select_module_entries,
     summarize_module_catalog,
@@ -62,6 +65,10 @@ class TestModuleCatalog(unittest.TestCase):
             self.assertGreaterEqual(summary["kind_counts"]["filter"], 1)
             self.assertTrue(any("user_lookup.py" in str(item.get("file", "")) for item in plugins))
             self.assertTrue(any("normalize_filter.py" in str(item.get("file", "")) for item in filters))
+            self.assertTrue(all("module-" not in module_display_name(item).lower() for item in plugins))
+            self.assertTrue(all(module_execution_mode(item) == "catalog_context_only" for item in plugins))
+            self.assertTrue(all("source-pack" not in str(item.get("id", "")) for item in plugins))
+            self.assertTrue(all(item.get("id") == module_capability_selector(item) for item in plugins))
             self.assertTrue((output_root / "index.json").exists())
             self.assertTrue((output_root / "plugin-modules.json").exists())
             self.assertTrue((output_root / "filter-modules.json").exists())

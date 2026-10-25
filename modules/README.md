@@ -1,6 +1,14 @@
 # Modules Catalog
 
-Generated curated index for module-like capabilities discovered under `temp/`.
+Generated curated index for source-derived research capabilities discovered under `temp/`.
+
+These are **catalog references**, not directly executable framework modules.
+Their visible names and selectors are capability-led; source-tool names and
+paths are deliberately kept out of the operator-facing catalog.
+They can be attached to a case for research context and reporting; use
+`plugins` and `filters` for extensions that execute during a workflow. The
+default CLI/prompt listing is paginated (50/25 rows respectively), so a short
+listing is not a limit on the number of catalog references.
 
 - Catalog cap: 300 merged/high-signal modules
 
@@ -15,3 +23,4 @@ Refresh from CLI:
 Advanced query examples:
 - `python silinosic-x.py modules --search dns --sort-by power_score --descending`
 - `python silinosic-x.py modules --kind plugin --tag identity --min-score 55`
+- `python silinosic-x.py modules --limit 300 --sort-by power_score --descending`

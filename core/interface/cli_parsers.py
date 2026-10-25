@@ -1130,7 +1130,7 @@ def build_root_parser(
         "--explain",
         dest="explain_flag",
         action="store_true",
-        help="Show plain-language command/plugin/filter explanations and exit.",
+        help="Show plain-language command, plugin, filter, and module-catalog explanations and exit.",
     )
     parser.add_argument(
         "--docker",
@@ -1269,7 +1269,7 @@ def build_root_parser(
     )
     modules_parser = subparsers.add_parser(
         "modules",
-        help="List/sync source-intel module catalog discovered from framework source trees under temp/.",
+        help="List attachable source-intel reference cards; catalog entries do not execute like plugins or filters.",
     )
     _add_modules_args(modules_parser)
     history_parser = subparsers.add_parser(
@@ -1286,7 +1286,7 @@ def build_root_parser(
     _add_quicktest_args(quicktest_parser)
     subparsers.add_parser("help", help="Show command-line usage help.")
     subparsers.add_parser("about", help="Display framework metadata and contact details.")
-    subparsers.add_parser("explain", help="Display plain-language workflow, plugin, and filter explanations.")
+    subparsers.add_parser("explain", help="Display every command, plugin, filter, and module-catalog explanation.")
     subparsers.add_parser("version", help="Display framework version and signature.")
     subparsers.add_parser(
         "capability-pack",

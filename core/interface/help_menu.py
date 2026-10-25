@@ -72,7 +72,9 @@ def show_flag_help() -> None:
     _render_items(
         (
             ("--about:", "Show framework description and exit."),
-            ("--explain:", "Show plain-language command and extension guide and exit."),
+            ("--explain:", "Show every command, plugin, filter, and catalog-reference explanation and exit."),
+            ("--sensitive-information / --no-sensitive-information:", "Allow or force redaction of sensitive values for this run."),
+            ("--docker / --docker-rebuild:", "Run in Docker or rebuild the local image before launch."),
         )
     )
 
@@ -82,6 +84,7 @@ def show_flag_help() -> None:
             ("profile <username...>:", "Scan usernames for profile intelligence."),
             ("surface <domain>:", "Scan a domain for surface exposure signals."),
             ("fusion <username> <domain>:", "Run profile and surface workflows together with unified footprint mapping."),
+            ("investigate <username> [--domain ...]:", "Run the progressive investigation pipeline with optional domain context."),
             ("ocr [paths...] [--url ...]:", "Run OCR image scanning on local or remote images."),
             ("orchestrate <mode> <target>:", "Run policy-driven layered orchestration."),
             ("wizard:", "Run guided workflow questions."),
@@ -96,13 +99,14 @@ def show_flag_help() -> None:
             ("plugins [--scope ...]:", "List available plugins."),
             ("filters [--scope ...]:", "List available filters."),
             ("templates [--json]:", "List bundled info-templates for focused arrangements."),
-            ("modules [query flags]:", "List/sync/query source-intel module catalog."),
+            ("modules [query flags]:", "Browse paginated source-intel reference cards; these attach context but do not execute code."),
             ("frameworks [flags]:", "Inspect local source-profile intel from temp/ study trees."),
             ("history [--limit N]:", "List previously scanned targets."),
             ("live <target> [--port]:", "Open local live dashboard."),
             ("doctor [--json]:", "Run local dependency, OCR, Tor, and Reporter diagnostics."),
             ("anonymity [flags]:", "Check or change Tor/proxy routing."),
             ("keywords:", "Show prompt keyword shortcuts."),
+            ("capability-pack | intel:", "Generate local capability-pack artifacts from framework inventory."),
             ("about | explain | prompt | help:", "Metadata, explainers, interactive mode, help."),
         )
     )
@@ -112,16 +116,17 @@ def show_flag_help() -> None:
         (
             (
                 "--plugin:",
-                "Enable explicit plugins (repeatable/comma-separated selectors).",
+                "Enable executable plugins (repeatable/comma-separated selectors).",
             ),
             (
                 "--filter:",
-                "Enable explicit filters (repeatable/comma-separated selectors).",
+                "Enable executable filters (repeatable/comma-separated selectors).",
             ),
             (
                 "--info-template <id>:",
                 "Apply a curated plugin/filter/module arrangement (consent-only targets).",
             ),
+            ("--module <selector>:", "Attach a named catalog research reference; it is recorded in reports but does not execute."),
             (
                 "--extension-control <mode>:",
                 "auto | manual | hybrid (fail-fast conflict validation)",
@@ -175,6 +180,7 @@ def show_prompt_help() -> None:
             ("surface <domain> --recon-mode <...>:", "Choose passive, active, or hybrid reconnaissance."),
             ("surface <domain> -sS -sV -O --scan-delay 0.25:", "Apply shared scan directives with nmap-style aliases."),
             ("fusion <username> <domain>:", "Run fusion workflow with profile, web, and surface linkage summary."),
+            ("investigate <username> [--domain ...]:", "Run progressive investigation with optional domain context."),
             ("ocr [paths...] [--url ...]:", "Run OCR image scanning with preprocessing and structured extraction."),
             ("orchestrate <mode> <target>:", "Run layered orchestration."),
             ("surface-kit <domain> --preset <name>:", "Use local source recipes to drive a Silinosic-X surface plan."),
@@ -187,6 +193,7 @@ def show_prompt_help() -> None:
     _render_items(
         (
             ("show plugins | show filters | show modules:", "Inventory and module intelligence catalog."),
+            ("show modules [--limit N --offset N]:", "Show named catalog references; 25 rows is the prompt page size, not the usable total."),
             ("show frameworks:", "Inspect local source-profile inventory."),
             ("show templates:", "List bundled info-templates."),
             ("show history [--limit N]:", "List previously scanned targets."),
@@ -199,6 +206,7 @@ def show_prompt_help() -> None:
             ("default-out-print <path>:", "Set persisted default output base directory."),
             ("anonymity [flags]:", "Check or change Tor/proxy routing."),
             ("show keywords:", "Show all prompt shortcut aliases."),
+            ("capability-pack | intel:", "Generate local capability-pack artifacts."),
             ("about | explain | help | clear | exit:", "Metadata, docs, help, clear screen, quit."),
         )
     )
@@ -216,6 +224,7 @@ def show_prompt_help() -> None:
                 "set filters <none|a,b>:",
                 "Set module-compatible filters (strict compatibility checks).",
             ),
+            ("set modules <selector,...>:", "Attach catalog research context by selector; use show modules to find named selectors."),
             ("set template <id>:", "Apply a bundled info-template to plugin/filter defaults."),
             ("select plugins <a,b>:", "Alias for `set plugins` (name-based selectors)."),
             ("select filters <a,b>:", "Alias for `set filters` (name-based selectors)."),
@@ -231,6 +240,8 @@ def show_prompt_help() -> None:
         (
             ("set profile_preset <...>:", "Default profile preset."),
             ("set surface_preset <...>:", "Default surface preset."),
+            ("set scan_range quickrange|fullrange:", "Default profile platform coverage."),
+            ("set sensitive_information on|off:", "Allow or force redaction of sensitive values in this prompt session."),
             ("set extension_control <...>:", "Default control mode for active module."),
             ("set orchestrate_extension_control <...>:", "Default control mode for orchestrate."),
         )
@@ -254,4 +265,3 @@ def show_prompt_help() -> None:
 def show_help() -> None:
     # Backward-compatible wrapper
     show_prompt_help()
-

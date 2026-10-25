@@ -132,7 +132,7 @@ In prompt mode, attachables can be configured as session defaults with commands 
 ```text
 enable plugin threat_conductor
 enable filter contact_canonicalizer
-enable module source-pack-01-module-1
+enable module infrastructure-identity-event-base
 config
 ```
 

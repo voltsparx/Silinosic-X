@@ -46,6 +46,8 @@ def _module_lookup(entries: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
         if not entry_id:
             continue
         keys = set(selector_keys(entry_id))
+        for alias in entry.get("selector_aliases", []) or []:
+            keys.update(selector_keys(str(alias)))
         file_value = str(entry.get("file", "")).strip()
         path_value = str(entry.get("path", "")).strip()
         framework = str(entry.get("framework", "")).strip()
@@ -64,8 +66,8 @@ def _sanitize_entry(entry: dict[str, Any]) -> dict[str, Any]:
     metrics = entry.get("metrics", {}) if isinstance(entry.get("metrics"), dict) else {}
     return {
         "id": str(entry.get("id", "")).strip(),
-        "framework": str(entry.get("framework", "")).strip(),
-        "file": str(entry.get("file", "")).strip(),
+        "display_name": str(entry.get("display_name", "")).strip(),
+        "execution_mode": str(entry.get("execution_mode", "catalog_context_only")).strip(),
         "kind": str(entry.get("kind", "")).strip(),
         "scopes": list(entry.get("scopes", []) or []),
         "capabilities": list(entry.get("capabilities", []) or []),

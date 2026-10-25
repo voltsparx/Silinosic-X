@@ -195,7 +195,7 @@
       </div>
       <pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">--help</span>
 <span class="cmd">silinosic-x</span> <span class="arg">profile alice --html --plugin threat_conductor --filter contact_canonicalizer</span>
-<span class="cmd">silinosic-x</span> <span class="arg">surface example.com --ct --rdap --module source-pack-01-module-1 --html</span>
+<span class="cmd">silinosic-x</span> <span class="arg">surface example.com --ct --rdap --module infrastructure-identity-event-base --html</span>
 <span class="cmd">silinosic-x</span> <span class="arg">fusion alice example.com --profile-preset deep --surface-preset balanced --out-type json,html,sql,docx,pdf</span>
 <span class="cmd">silinosic-x</span> <span class="arg">doctor --json</span>
 <span class="cmd">silinosic-x</span> <span class="arg">prompt</span></pre>
@@ -221,9 +221,9 @@
           </div>
           <pre class="code-body">enable plugin threat_conductor
 enable filter contact_canonicalizer
-enable module source-pack-01-module-1
+enable module infrastructure-identity-event-base
 config
-disable module source-pack-01-module-1</pre>
+disable module infrastructure-identity-event-base</pre>
         </div>
         <ul class="simple-list">
           <li><span class="list-label">Session scope</span>Attachables stay in the prompt session until you change or clear them.</li>
@@ -240,7 +240,7 @@ disable module source-pack-01-module-1</pre>
             <span class="code-dot"></span>
             <span class="code-lang">shell</span>
           </div>
-          <pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">profile alice --plugin threat_conductor,contact_lattice --filter contact_canonicalizer --module source-pack-01-module-1</span></pre>
+<pre class="code-body"><span class="cmd">silinosic-x</span> <span class="arg">profile alice --plugin threat_conductor,contact_lattice --filter contact_canonicalizer --module infrastructure-identity-event-base</span></pre>
         </div>
         <ul class="simple-list">
           <li><span class="list-label">Selectors</span><span class="mono">--plugin</span>, <span class="mono">--filter</span>, and <span class="mono">--module</span> accept repeated values or comma-separated lists.</li>
@@ -276,4 +276,3 @@ disable module source-pack-01-module-1</pre>
 <script src="js/bootstrap/app.js"></script>
 </body>
 </html>
-

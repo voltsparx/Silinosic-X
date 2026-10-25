@@ -35,7 +35,7 @@ Prompt mode now treats plugins, filters, and modules as attachables you can enab
 ```text
 enable plugin threat_conductor
 enable filter contact_canonicalizer
-enable module source-pack-01-module-1
+enable module infrastructure-identity-event-base
 config
 ```
 
@@ -63,7 +63,7 @@ In direct mode, press Enter to continue or `Ctrl+C` to cancel before execution. 
 ```bash
 silinosic-x profile alice --html
 silinosic-x surface example.com --plugin header_hardening_probe --html
-silinosic-x fusion alice example.com --filter signal_lane_fusion --module source-pack-01-module-1 --html
+silinosic-x fusion alice example.com --filter signal_lane_fusion --module infrastructure-identity-event-base --html
 silinosic-x ocr ./images/poster.png --plugin ocr_extractor --filter ocr_signal_classifier --out-type json,html,docx,pdf
 ```
 

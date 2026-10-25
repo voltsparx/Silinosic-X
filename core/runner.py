@@ -35,7 +35,14 @@ from core.interface.banner import show_banner
 from core.collect.anonymity import TOR_HOST, TOR_SOCKS_PORT, install_tor, probe_tor_status, start_tor
 from core.interface.about import build_about_text
 from core.interface.explain import build_explain_text
-from core.interface.cli_config import EXTENSION_CONTROL_MODES, OCR_PRESETS, PROFILE_PRESETS, PROMPT_KEYWORDS, SURFACE_PRESETS
+from core.interface.cli_config import (
+    EXTENSION_CONTROL_MODES,
+    OCR_PRESETS,
+    PROFILE_PRESETS,
+    PROMPT_KEYWORDS,
+    SURFACE_PRESETS,
+    ProfilePreset,
+)
 from core.interface.command_spec import (
     OCR_COMMAND_ALIASES,
     SurfaceScanDirectives,
@@ -82,7 +89,13 @@ from core.foundation.output_config import (
 )
 from core.analyze.narrative import build_nano_brief
 from core.collect.network import get_network_settings
-from modules.catalog import ensure_module_catalog, query_module_catalog, summarize_module_catalog
+from modules.catalog import (
+    ensure_module_catalog,
+    module_display_name,
+    module_execution_mode,
+    query_module_catalog,
+    summarize_module_catalog,
+)
 from core.artifacts.output import (
     append_framework_log,
     display_domain_results,
@@ -702,12 +715,6 @@ def _print_filter_inventory(scope: str | None = None) -> None:
     print()
 
 
-def _sanitize_module_label(*, label: str | None = None) -> str:
-    if label:
-        return label
-    return "module"
-
-
 def _sanitize_modules_payload(payload: dict[str, Any]) -> dict[str, Any]:
     cleaned = dict(payload)
     summary = cleaned.get("summary", {})
@@ -725,18 +732,16 @@ def _sanitize_modules_payload(payload: dict[str, Any]) -> dict[str, Any]:
         cleaned["query"] = query
 
     entries = []
-    offset = 0
-    if isinstance(query, dict):
-        offset = _int_from_value(query.get("offset"), 0)
-    for index, row in enumerate(cleaned.get("entries", []) or []):
+    for row in cleaned.get("entries", []) or []:
         if not isinstance(row, dict):
             continue
         sanitized = dict(row)
-        label = f"module-{offset + index + 1}"
-        sanitized["file"] = label
+        sanitized["display_name"] = module_display_name(sanitized)
+        sanitized["execution_mode"] = module_execution_mode(sanitized)
         sanitized.pop("framework", None)
         sanitized.pop("path", None)
-        sanitized["id"] = label
+        sanitized.pop("file", None)
+        sanitized.pop("selector_aliases", None)
         entries.append(sanitized)
     cleaned["entries"] = entries
     return cleaned
@@ -796,11 +801,12 @@ def _print_modules_inventory(
     returned_count = int(payload.get("returned_count", len(rows)))
     has_more = bool(payload.get("has_more", False))
 
-    print(c(f"\n{symbol('major')} Modules (scope={scope}, kind={kind})", Colors.BLUE))
+    print(c(f"\n{symbol('major')} Module Catalog (scope={scope}, kind={kind})", Colors.BLUE))
     print(c("-" * 36, Colors.BLUE))
-    print(c(f"module_count: {summary.get('module_count', 0)}", Colors.CYAN))
+    print(c(f"catalog_reference_count: {summary.get('module_count', 0)}", Colors.CYAN))
     print(c(f"matched_total: {matched_total}", Colors.CYAN))
     print(c(f"returned_count: {returned_count}", Colors.CYAN))
+    print(c(f"{symbol('tip')} Catalog entries are attachable research context, not directly executable modules. Plugins and filters run code.", Colors.EMBER))
     scope_counts = summary.get("scope_counts", {})
     score_bands = summary.get("score_bands", {})
     language_counts = summary.get("language_counts", {})
@@ -854,7 +860,7 @@ def _print_modules_inventory(
     )
 
     if has_more:
-        print(c(f"{symbol('tip')} more_results=true (increase --offset or --limit to continue).", Colors.EMBER))
+        print(c(f"{symbol('tip')} Showing {returned_count} of {matched_total} matching catalog entries. Use --offset or --limit to continue; this is pagination, not an availability limit.", Colors.EMBER))
 
     if stats_only:
         print(c(f"{symbol('tip')} stats_only=true (entry listing skipped).", Colors.EMBER))
@@ -867,10 +873,11 @@ def _print_modules_inventory(
         print()
         return
 
-    offset_value = _int_from_value(query.get("offset"), 0) if isinstance(query, dict) else 0
-    for index, row in enumerate(rows):
-        label = _sanitize_module_label(label=f"module-{offset_value + index + 1}")
+    for row in rows:
+        label = module_display_name(row)
+        selector = str(row.get("id", "")).strip() or "unavailable"
         print(c(f"{symbol('feature')} {label}", Colors.CYAN))
+        print(c(f"  selector: {selector} | execution: {module_execution_mode(row)}", Colors.GREY))
         print(
             c(
                 f"  scopes: {', '.join(row.get('scopes', []))} "
@@ -1837,7 +1844,7 @@ def _resolve_scan_range(
     *,
     quickrange: bool,
     fullrange: bool,
-    preset: dict[str, Any] | None,
+    preset: ProfilePreset | None,
     source_profile: str,
 ) -> str:
     if fullrange:
@@ -1847,7 +1854,7 @@ def _resolve_scan_range(
     if str(source_profile).strip().lower() == "max":
         return "fullrange"
     preset_range = ""
-    if isinstance(preset, dict):
+    if preset is not None:
         preset_range = str(preset.get("scan_range", "")).strip().lower()
     if preset_range in SCAN_RANGES:
         return preset_range
