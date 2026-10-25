@@ -9,7 +9,7 @@ description = "Multi-engine OSINT orchestration for profile intelligence, domain
 readme = "README.md"
 requires-python = ">=3.11"
 license = "LicenseRef-Proprietary"
-authors = [{ name = "voltsparx", email = "voltsparx@gmail.com" }]
+authors = [{ name = "Niyor Kalita", email = "voltsparx@gmail.com" }]
 keywords = ["osint-framework", "intelligence", "recon", "correlation", "security"]
 classifiers = [
   "Programming Language :: Python :: 3",
