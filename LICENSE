@@ -1,51 +1,35 @@
-------------------------------------------------------------------------------
-SPDX-License-Identifier: LicenseRef-Proprietary
-------------------------------------------------------------------------------
+===============================================
+SPDX-License-Identifier: LicenseRef-Silinosic-X
+===============================================
+Silinosic-X License
 
 Copyright (c) 2026 voltsparx
-All rights reserved.
+Original project: https://github.com/voltsparx/Silinosic-X
+------------------------------------------------------------------------------
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+------------------------------------------------------------------------------
+1. The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
 
-Silinosic-X is proprietary software.
+2. Any distribution of the Software or derivative works, in source or binary
+   form, must retain the following attribution in the README or equivalent
+   documentation:
 
-Permission is granted to use Silinosic-X solely for personal, educational, or
-internal security purposes on systems you own or are explicitly authorized to
-monitor.
+       "Based on Silinosic-X © 2026 voltsparx.
+        Original project: https://github.com/voltsparx/Silinosic-X"
 
-Any other use, including modification, redistribution, commercial use,
-rebranding, sublicensing, or publication of derivative works, requires prior
-written permission from the copyright holder.
-
-You may not:
-
-1. Obscure copyright, license, or attribution notices.
-2. Claim authorship or ownership of Silinosic-X or its derivative works.
-3. Redistribute Silinosic-X, in whole or in part, in source or binary form,
-   without prior written permission.
-4. Use Silinosic-X for unauthorized penetration testing, hacking, stalking,
-   harassment, or any illegal activity.
-
-Attribution must be retained in any permitted use:
-
-    "Silinosic-X © 2026 voltsparx. All rights reserved.
-    Original project: https://github.com/voltsparx/Silinosic-X"
-
-+-------------------------------------------------------------+
- ⚠️ Important: This project is proprietary. Permitted use
-               requires that the original copyright notice
-               remains intact. Removing or altering
-               attribution constitutes plagiarism and will
-               be pursued via DMCA takedown.
-+--------------------------------------------------------------+
+3. You may not claim authorship of the original Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-For permissions beyond personal or internal use, contact:
-
-voltsparx
-Email: voltsparx@gmail.com
-Repository: https://github.com/voltsparx/Silinosic-X
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+------------------------------------------------------------------------------
