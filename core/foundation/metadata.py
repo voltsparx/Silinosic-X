@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 
 
 PROJECT_NAME = "Silinosic-X"
-VERSION = "11.2.0"
+VERSION = "11.2.1"
 VERSION_THEME = "Ember"
 AUTHOR = "voltsparx"
 IRL_NAME = "Niyor Kalita"

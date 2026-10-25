@@ -3,6 +3,13 @@
 All notable changes to Silinosic-X are documented in this file.
 
 ## Unreleased
+[NULL]
+
+## v11.2.1
+- Added some UI/UX changes including.
+- Added Image EXIF data extractor and Geolocation plugins.
+- Added new Sensitive/NSFW filter.
+- Not everything stable yet.
 
 ## v11.2.0
 

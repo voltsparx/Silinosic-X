@@ -1,7 +1,7 @@
 {
   "silinosic_x": {
     "project": "Silinosic-X",
-    "version": "11.2.0",
+    "version": "11.2.1",
     "theme": "Ember",
     "component": "module_catalog"
   },

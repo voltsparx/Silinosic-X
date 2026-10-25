@@ -20,9 +20,9 @@ Silinosic-X is a policy-driven OSINT runtime rather than a single collector.
 - `core/analyze/`, `core/fusion/`, and `core/intelligence/` shape meaning from collected signals.
 - `core/artifacts/` renders JSON, CSV, CLI, HTML Reporter, and logs.
 
-## v11.2.0 focus
+## v11.2.1 focus
 
-The v11.2.0 refresh emphasizes:
+The v11.2.1 refresh emphasizes:
 
 - clearer engine specialization
 - first-class media and OCR lanes
