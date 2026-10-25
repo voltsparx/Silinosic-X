@@ -7,7 +7,7 @@
 # Author     : voltsparx
 # Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
-# License    : See LICENSE file in the project root 
+# License    : See LICENSE file in the project root
 #
 # This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
@@ -24,6 +24,7 @@ PROJECT_NAME = "Silinosic-X"
 VERSION = "11.2.0"
 VERSION_THEME = "Ember"
 AUTHOR = "voltsparx"
+IRL_NAME = "Niyor Kalita"
 AUTHOR_HANDLE = "voltsparx"
 CONTACT_EMAIL = "voltsparx@gmail.com"
 REPOSITORY_URL = f"https://github.com/{AUTHOR_HANDLE}/{PROJECT_NAME}"

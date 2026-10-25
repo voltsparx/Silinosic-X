@@ -1,4 +1,3 @@
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 # SPDX-License-Identifier: Proprietary
 #
 # Silinosic-X Intelligence Framework
@@ -7,11 +6,9 @@
 # Author     : voltsparx
 # Repository : https://github.com/voltsparx/Silinosic-X
 # Contact    : voltsparx@gmail.com
-# License    : See LICENSE file in the project root 
-#
+# License    : See LICENSE file in the project root
 # This file is part of Silinosic-X and is subject to the terms
 # and conditions defined in the LICENSE file.
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 """Main runner orchestration for Silinosic-X."""
 
