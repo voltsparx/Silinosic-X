@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------
-# SPDX-License-Identifier: Proprietary
+# SPDX-License-Identifier: AAL
 # ------------------------------------------------------------------------------
 
 """Portable PDF report generation for Silinosic-X payloads."""

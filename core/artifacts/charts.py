@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# SPDX-License-Identifier: Proprietary
+# SPDX-License-Identifier: AAL
 # ──────────────────────────────────────────────────────────────────────────────
 
 """Shared chart generation helpers for portable report outputs."""

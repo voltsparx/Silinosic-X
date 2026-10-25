@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: Proprietary
+# SPDX-License-Identifier: AAL
 #
 # Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx

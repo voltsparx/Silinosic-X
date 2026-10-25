@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# SPDX-License-Identifier: Proprietary
+# SPDX-License-Identifier: AAL
 # ──────────────────────────────────────────────────────────────────────────────
 
 """SQLite artifact storage for full scan payloads."""

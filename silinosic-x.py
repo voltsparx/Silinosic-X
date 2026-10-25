@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ──────────────────────────────────────────────────────────────
-# SPDX-License-Identifier: Proprietary
+# SPDX-License-Identifier: AAL
 #
 # Silinosic-X Intelligence Framework
 # Copyright (c) 2026 voltsparx
