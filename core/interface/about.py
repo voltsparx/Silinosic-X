@@ -18,7 +18,7 @@
 from __future__ import annotations
 
 from core.foundation.colors import Colors, c
-from core.foundation.metadata import AUTHOR, CONTACT_EMAIL, IRL_NAME, PROJECT_NAME, REPOSITORY_URL, TAGLINE, VERSION, VERSION_THEME
+from core.foundation.metadata import AUTHOR, CONTACT_EMAIL, IRL_NAME, PROJECT_NAME, REPOSITORY_URL, TAGLINE, VERSION, VERSION_THEME, LICENSE
 
 
 def build_about_text() -> str:
@@ -29,6 +29,7 @@ def build_about_text() -> str:
         f"{c('Contact:', Colors.EMBER)} {CONTACT_EMAIL}",
         f"{c('Repository:', Colors.EMBER)} {REPOSITORY_URL}",
         f"{c('Description:', Colors.EMBER)} {TAGLINE}",
+        f"{c('License:', Colors.EMBER)} {LICENSE}"
         f"{c('Capabilities:', Colors.EMBER)} profile intelligence, domain-surface reconnaissance, fusion correlation,",
         "digital footprint mapping, plugin/filter extension pipeline, HTML/JSON/CLI reporting,",
         "Tor/proxy routing controls.",

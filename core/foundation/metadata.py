@@ -21,13 +21,14 @@ from datetime import datetime, timezone
 
 
 PROJECT_NAME = "Silinosic-X"
-VERSION = "11.2.1"
+VERSION = "11.2.2"
 VERSION_THEME = "Ember"
 AUTHOR = "voltsparx"
 IRL_NAME = "Niyor Kalita"
 AUTHOR_HANDLE = "voltsparx"
 CONTACT_EMAIL = "voltsparx@gmail.com"
 REPOSITORY_URL = f"https://github.com/{AUTHOR_HANDLE}/{PROJECT_NAME}"
+LICENSE = "AAL (Attribution Assurance License)"
 TAGLINE = "OSINT orchestration, media intelligence, and Reporter-grade analysis artifacts"
 
 

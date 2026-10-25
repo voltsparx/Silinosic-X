@@ -1,6 +1,6 @@
 # Silinosic-X Website
 
-This folder contains the static documentation website for Silinosic-X v11.2.1.
+This folder contains the static documentation website for Silinosic-X v11.2.2.
 
 ## Purpose
 

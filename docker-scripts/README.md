@@ -1,6 +1,6 @@
 # Docker Runner Scripts
 
-Release: v11.2.1 (Theme: Ember)
+Release: v11.2.2 (Theme: Ember)
 
 These scripts wrap `docker/docker-compose.yml` and provide guided setup for:
 

@@ -1,4 +1,4 @@
-# Silinosic-X v11.2.1
+# Silinosic-X v11.2.2
 
 > Theme: Ember  
 > OSINT orchestration, media intelligence, and Reporter-grade artifacts for profile, surface, fusion, and OCR-led investigations.
@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v11.2.1-F47C20?style=for-the-badge" alt="Version v11.2.1">
+  <img src="https://img.shields.io/badge/version-v11.2.2-F47C20?style=for-the-badge" alt="Version v11.2.2">
   <img src="https://img.shields.io/badge/theme-Ember-E86F1C?style=for-the-badge" alt="Theme Ember">
   <img src="https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Versions">
 </p>
@@ -21,7 +21,7 @@
 
 Silinosic-X is a Python intelligence framework for authorized OSINT work. It combines profile reconnaissance, domain-surface analysis, fusion scoring, public-media reconnaissance, and OCR image scanning into one runtime with plugins, filters, engine policies, and categorized artifacts.
 
-## What v11.2.1 includes
+## What v11.2.2 includes
 
 - Reporter is now the primary reporting layer for HTML and CLI summaries.
 - Media reconnaissance and OCR image scanning are first-class lanes instead of side notes.

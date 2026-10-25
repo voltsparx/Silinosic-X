@@ -1,6 +1,6 @@
-# Silinosic-X Docs v11.2.1
+# Silinosic-X Docs v11.2.2
 
-This directory contains the current documentation set for the v11.2.1 Ember release line.
+This directory contains the current documentation set for the v11.2.2 Ember release line.
 
 ## Start here
 
@@ -13,5 +13,5 @@ This directory contains the current documentation set for the v11.2.1 Ember rele
 
 ## Notes
 
-- Old release-planning and v9-era docs were removed during the v11.2.1 refresh.
+- Old release-planning and v9-era docs were removed during the v11.2.2 refresh.
 - `docs/website/` is the static project website used by GitHub Pages.

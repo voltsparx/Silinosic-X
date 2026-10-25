@@ -12,7 +12,7 @@ const DocsData = (() => {
   };
 
   const entries = [
-    { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v11.2.1 snapshot.", group: "Start Here" },
+    { id: "home", title: "Overview", page: "index.html", hint: "Landing page, project identity, and v11.2.2 snapshot.", group: "Start Here" },
     { id: "signal-map", title: "Signal Architecture", page: "index.html", hint: "How collection lanes become one case view.", group: "Start Here" },
     { id: "capabilities", title: "Capability Matrix", page: "index.html", hint: "The investigation lanes and reporting surfaces.", group: "Start Here" },
     { id: "how-it-works", title: "How It Works", page: "index.html", hint: "Execution flow from commands to outputs.", group: "Start Here" },
