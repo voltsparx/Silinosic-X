@@ -3,12 +3,7 @@ name: Silinosic-X Pages
 on:
   push:
     branches:
-      - main
-      - master
       - gh-pages
-    paths:
-      - "website/**"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 concurrency:
@@ -32,25 +27,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify website directory
-        run: |
-          echo "Repository root:"
-          ls -la
-
-          echo "Website directory:"
-          ls -la website
-
-          test -d website
-          test -f website/index.html
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      - name: Verify website files
+        run: |
+          echo "Files in gh-pages branch:"
+          ls -la
+          test -f index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./website
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
