@@ -1,0 +1,237 @@
+async function initDevelopmentFeed() {
+  const repoHealth = document.getElementById("repo-health");
+  const commitFeed = document.getElementById("commit-feed");
+  const releaseFeed = document.getElementById("release-feed");
+  const tagFeed = document.getElementById("tag-feed");
+  const chartNode = document.getElementById("dev-commit-chart");
+  const rawViewerGrid = document.getElementById("raw-viewer-grid");
+
+  if (!repoHealth && !commitFeed && !releaseFeed && !tagFeed && !chartNode && !rawViewerGrid) {
+    return;
+  }
+
+  if (typeof RawPopup !== "undefined") {
+    RawPopup.bind?.();
+  }
+
+  const base = githubApi("");
+  const skeleton = '<div class="skeleton" aria-busy="true" aria-label="Loading"><span></span><span></span><span></span></div>';
+  [repoHealth, commitFeed, releaseFeed, tagFeed, chartNode].forEach((node) => {
+    if (node && !node.innerHTML.trim()) node.innerHTML = skeleton;
+  });
+
+  /* Cache GitHub responses for 10 minutes so page hopping does not hit the unauthenticated rate limit */
+  const cachedJson = async (url) => {
+    const key = `sx-gh:${url}`;
+    try {
+      const hit = JSON.parse(window.sessionStorage.getItem(key) || "null");
+      if (hit && Date.now() - hit.t < 600000) return hit.d;
+    } catch (e) { /* storage unavailable */ }
+    const response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    if (!response.ok) throw new Error(`GitHub API request failed (${response.status})`);
+    const data = await response.json();
+    try { window.sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: data })); } catch (e) { /* ignore */ }
+    return data;
+  };
+
+  try {
+    const [repo, commits, releases, tags] = await Promise.all([
+      cachedJson(base),
+      cachedJson(`${base}/commits?per_page=12`),
+      cachedJson(`${base}/releases?per_page=3`),
+      cachedJson(`${base}/tags?per_page=5`)
+    ]);
+
+    if (repoHealth) {
+      repoHealth.innerHTML = `
+        <div class="dev-status-grid">
+          <div class="dev-status-item"><span class="dev-status-label">Default Branch</span><span class="dev-status-value">${escapeHtml(repo.default_branch || "main")}</span></div>
+          <div class="dev-status-item"><span class="dev-status-label">Open Issues</span><span class="dev-status-value">${escapeHtml(String(repo.open_issues_count ?? "n/a"))}</span></div>
+          <div class="dev-status-item"><span class="dev-status-label">Stars</span><span class="dev-status-value">${escapeHtml(String(repo.stargazers_count ?? "n/a"))}</span></div>
+          <div class="dev-status-item"><span class="dev-status-label">Watchers</span><span class="dev-status-value">${escapeHtml(String(repo.subscribers_count ?? "n/a"))}</span></div>
+        </div>
+      `;
+    }
+
+    if (commitFeed) {
+      commitFeed.innerHTML = `
+        <div class="feed-list">
+          ${(Array.isArray(commits) ? commits : []).map((commit) => {
+            const message = (commit.commit?.message || "Commit").split("\n")[0];
+            const author = commit.commit?.author?.name || "unknown";
+            const date = commit.commit?.author?.date;
+            return `
+              <article class="feed-item">
+                <a href="${escapeHtml(commit.html_url)}" target="_blank" rel="noreferrer">${escapeHtml(message)}</a>
+                <div class="feed-meta">${escapeHtml(author)} &#183; ${escapeHtml(formatDate(date))} &#183; ${escapeHtml(formatRelativeTime(date))}</div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    if (chartNode) {
+      const chartSeries = buildCommitSeries(commits, 7);
+      chartNode.innerHTML = renderCommitChart(chartSeries, commits);
+    }
+
+    if (releaseFeed) {
+      releaseFeed.innerHTML = releases.length
+        ? `<div class="feed-list">${releases.map((release) => `
+            <article class="feed-item">
+              <a href="${escapeHtml(release.html_url)}" target="_blank" rel="noreferrer">${escapeHtml(release.name || release.tag_name || "Release")}</a>
+              <div class="feed-meta">${escapeHtml(release.tag_name || "untagged")} &#183; ${escapeHtml(release.published_at ? formatDate(release.published_at) : "draft")}</div>
+            </article>
+          `).join("")}</div>`
+        : '<div class="empty-state">No published GitHub releases yet. The project currently signals release state through repository docs and tags.</div>';
+    }
+
+    if (tagFeed) {
+      tagFeed.innerHTML = Array.isArray(tags) && tags.length
+        ? `<div class="feed-list">${tags.map((tag) => `
+            <article class="feed-item">
+              <a href="${escapeHtml(`${DocsData.github.repoUrl}/tree/${tag.name}`)}" target="_blank" rel="noreferrer">${escapeHtml(tag.name)}</a>
+              <div class="feed-meta">Repository tag signal</div>
+            </article>
+          `).join("")}</div>`
+        : '<div class="empty-state">No tag data available right now.</div>';
+    }
+
+    if (rawViewerGrid) {
+      const files = [
+        { title: "README", path: "README.md", copy: "Current v11.2.2 release statement, package naming, and workflow summary." },
+        { title: "Docs Index", path: "docs/README.md", copy: "The new docs tree for architecture, Reporter, media, and development." },
+        { title: "Reporter", path: "docs/reporter.md", copy: "Reporter structure, goals, and artifact framing." },
+        { title: "Media Intelligence", path: "docs/media-intelligence.md", copy: "Public-media and OCR lane overview." },
+        { title: "Runtime Inventory", path: "intel/runtime-inventory.json", copy: "Machine-readable plugin, filter, platform, and module snapshot." },
+        { title: "Package Metadata", path: "pyproject.toml", copy: "Project metadata, dependencies, and packaging entrypoints." }
+      ];
+
+      rawViewerGrid.innerHTML = `
+        <div class="raw-link-grid">
+          ${files.map((file) => `
+            <a
+              class="raw-link-card"
+              data-raw-viewer
+              data-raw-title="${escapeHtml(file.title)}"
+              data-raw-path="${escapeHtml(file.path)}"
+              data-repo-href="${escapeHtml(githubBlob(file.path))}"
+              href="${escapeHtml(githubRaw(file.path))}"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="raw-link-title">${escapeHtml(file.title)}</span>
+              <span class="raw-link-path">${escapeHtml(file.path)}</span>
+              <span class="raw-link-copy">${escapeHtml(file.copy)}</span>
+            </a>
+          `).join("")}
+        </div>
+      `;
+    }
+  } catch (error) {
+    const fallback = `<div class="empty-state">Live GitHub data could not be loaded right now (the public API may be rate-limited). Use the <a href="${DocsData.github.repoUrl}" target="_blank" rel="noopener noreferrer" style="color: var(--ember-2); text-decoration: underline;">repository</a> for raw signals, or try again in a few minutes.</div>`;
+    repoHealth && (repoHealth.innerHTML = fallback);
+    commitFeed && (commitFeed.innerHTML = fallback);
+    releaseFeed && (releaseFeed.innerHTML = fallback);
+    tagFeed && (tagFeed.innerHTML = fallback);
+    chartNode && (chartNode.innerHTML = fallback);
+    rawViewerGrid && (rawViewerGrid.innerHTML = fallback);
+  }
+}
+
+function buildCommitSeries(commits, days) {
+  const byDay = new Map();
+  const orderedDays = [];
+
+  for (let index = days - 1; index >= 0; index -= 1) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - index);
+    const key = date.toISOString().slice(0, 10);
+    orderedDays.push(key);
+    byDay.set(key, 0);
+  }
+
+  for (const commit of commits) {
+    const date = commit.commit?.author?.date;
+    if (!date) {
+      continue;
+    }
+    const key = new Date(date).toISOString().slice(0, 10);
+    if (byDay.has(key)) {
+      byDay.set(key, byDay.get(key) + 1);
+    }
+  }
+
+  return orderedDays.map((key) => {
+    const date = new Date(key);
+    return {
+      key,
+      count: byDay.get(key) || 0,
+      short: date.toLocaleDateString(undefined, { weekday: "short" }),
+      full: date.toLocaleDateString(undefined, { month: "short", day: "numeric" })
+    };
+  });
+}
+
+function renderCommitChart(series, commits) {
+  const width = 720;
+  const height = 260;
+  const padding = { top: 24, right: 20, bottom: 40, left: 34 };
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const maxCount = Math.max(...series.map((item) => item.count), 1);
+  const stepX = series.length > 1 ? plotWidth / (series.length - 1) : plotWidth;
+
+  const points = series.map((item, index) => ({
+    ...item,
+    x: Number((padding.left + stepX * index).toFixed(2)),
+    y: Number((padding.top + plotHeight - ((item.count / maxCount) * plotHeight)).toFixed(2))
+  }));
+
+  const line = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
+  const area = `${line} L ${points[points.length - 1].x} ${padding.top + plotHeight} L ${points[0].x} ${padding.top + plotHeight} Z`;
+  const latestCommit = commits[0]?.commit?.author?.date;
+  const total = series.reduce((sum, item) => sum + item.count, 0);
+
+  return `
+    <div class="dev-chart-shell">
+      <div class="dev-chart-summary">
+        <div>
+          <strong>${compactNumber(total)} commits in the last ${series.length} days</strong>
+          <div class="muted">Latest visible commit: ${escapeHtml(latestCommit ? `${formatDate(latestCommit)} (${formatRelativeTime(latestCommit)})` : "n/a")}</div>
+        </div>
+        <div class="muted">Peak day: ${escapeHtml(series.reduce((best, item) => item.count > best.count ? item : best, series[0]).full)}</div>
+      </div>
+      <div class="dev-chart">
+        <svg class="dev-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="Recent commit trend">
+          ${Array.from({ length: Math.min(maxCount, 4) + 1 }, (_, index) => {
+            const value = Math.round((maxCount / Math.max(Math.min(maxCount, 4), 1)) * index);
+            const y = Number((padding.top + plotHeight - ((value / maxCount) * plotHeight)).toFixed(2));
+            return `
+              <line class="dev-chart-grid" x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}"></line>
+              <text class="dev-chart-axis" x="${padding.left - 12}" y="${y + 4}" text-anchor="end">${value}</text>
+            `;
+          }).join("")}
+          <path class="dev-chart-area" d="${area}"></path>
+          <path class="dev-chart-line" d="${line}"></path>
+          ${points.map((point) => `
+            <g>
+              <circle class="dev-chart-point" cx="${point.x}" cy="${point.y}" r="4.5"></circle>
+              <text class="dev-chart-axis" x="${point.x}" y="${height - 12}" text-anchor="middle">${escapeHtml(point.short)}</text>
+            </g>
+          `).join("")}
+        </svg>
+        <div class="dev-chart-legend">
+          ${series.map((item) => `
+            <div class="dev-chart-chip">
+              <strong>${escapeHtml(item.full)}</strong>
+              <span>${compactNumber(item.count)} commit${item.count === 1 ? "" : "s"}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}

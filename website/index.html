@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview | Silinosic-X</title>
+<meta name="description" content="Silinosic-X is a multi-engine OSINT framework for profile intelligence, domain-surface reconnaissance, and fused correlation reporting.">
+<link rel="canonical" href="https://voltsparx.github.io/Silinosic-X/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Silinosic-X">
+<meta property="og:title" content="Overview | Silinosic-X">
+<meta property="og:description" content="Static project docs for the Silinosic-X OSINT framework.">
+<meta property="og:url" content="https://voltsparx.github.io/Silinosic-X/">
+<meta property="og:image" content="https://raw.githubusercontent.com/voltsparx/Silinosic-X/main/docs/website/web_assets/media/silinosic-x-web.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Overview | Silinosic-X">
+<meta name="twitter:description" content="Multi-engine OSINT orchestration for profile, surface, fusion, and orchestration workflows.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/voltsparx/Silinosic-X/main/docs/website/web_assets/media/silinosic-x-web.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/core/base.css">
+<link rel="stylesheet" href="css/layout/topbar.css">
+<link rel="stylesheet" href="css/layout/sidebar.css">
+<link rel="stylesheet" href="css/layout/content.css">
+<link rel="stylesheet" href="css/components/workflow.css">
+<link rel="stylesheet" href="css/components/modules.css">
+<link rel="stylesheet" href="css/components/development.css">
+<link rel="stylesheet" href="css/components/console.css">
+<link rel="stylesheet" href="css/layout/responsive.css">
+<link rel="stylesheet" href="css/core/polish.css">
+<link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
+</head>
+<body class="home-console" data-page="index.html" data-default-section="home">
+<header id="topbar">
+  <button id="topbar-brand" type="button" aria-label="Silinosic-X brand console trigger">
+    <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X logo">
+    <span id="topbar-brand-text">
+      <span id="topbar-name">Silinosic-X</span>
+      <span id="topbar-tagline">OSINT orchestration and correlation framework</span>
+    </span>
+  </button>
+  <div id="topbar-version">v11.2.2 | Python 3.11+ | Ember</div>
+  <div class="topbar-search">
+    <input id="docs-search-input" type="search" placeholder="Search the docs" aria-label="Search the docs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results">
+    <span class="search-kbd" aria-hidden="true">/</span>
+    <div id="docs-search-results" class="topbar-search-results" role="listbox" hidden></div>
+  </div>
+  <div id="topbar-links">
+    <a href="workflow.html#pipeline">Architecture</a>
+    <a href="cli-reference.html#commands">CLI</a>
+    <a href="development.html#development-home">Development</a>
+    <a href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub</a>
+    <div class="contact-wrap">
+      <button id="contact-toggle" class="contact-toggle" type="button" aria-expanded="false">Contact</button>
+      <div id="contact-popover" class="contact-popover" hidden>
+        <a href="mailto:voltsparx@gmail.com">voltsparx@gmail.com</a>
+        <a href="https://github.com/voltsparx" target="_blank" rel="noreferrer">github.com/voltsparx</a>
+      </div>
+    </div>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  </div>
+</header>
+
+<nav id="sidebar" aria-label="Documentation navigation">
+  <div class="sidebar-panel-head">
+    <div class="sidebar-kicker">Docs Control</div>
+    <h2 class="sidebar-title">Silinosic-X Website</h2>
+    <p class="sidebar-note">A static docs shell built from the repo itself: workflows, commands, runtime design, Reporter outputs, and project signals.</p>
+  </div>
+  <div id="sidebar-tabs" class="sidebar-tabs" role="tablist" aria-label="Documentation groups"></div>
+  <div id="sidebar-nav"></div>
+</nav>
+<button id="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
+
+<main id="main">
+  <section id="home" class="page-section section-anchor">
+    <div class="hero-grid">
+      <article class="hero-card">
+        <div class="console-kicker">Silinosic-X / analyst console / v11.2.2</div>
+        <h1 class="hero-title">Silinosic-X</h1>
+        <p class="hero-subtitle">A multi-engine OSINT framework for turning public signals into structured, correlated intelligence.</p>
+        <p class="hero-copy">Profile intelligence, domain-surface reconnaissance, public-media analysis, OCR, fusion, and Reporter outputs — coordinated through one policy-led operator flow.</p>
+        <div class="badge-row">
+          <span class="badge is-accent">4 workflows</span>
+          <span class="badge">91 platforms</span>
+          <span class="badge">Reporter HTML</span>
+          <span class="badge">OCR + media</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="getting-started.html#install">Start a run</a>
+          <a class="btn btn-secondary" href="workflow.html#pipeline">Trace the pipeline</a>
+          <a class="btn btn-ghost" href="cli-reference.html#commands">CLI reference</a>
+        </div>
+      </article>
+      <article class="hero-card hero-logo-card">
+        <div class="hero-logo-frame">
+          <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X mark">
+        </div>
+        <div>
+          <div class="card-title">Runtime telemetry</div>
+          <p class="hero-logo-note">A local-first framework with explicit policy, normalized entities, scope-aware extensions, and a reporting layer built for humans and automation.</p>
+          <div class="console-readout" aria-label="Runtime telemetry summary">
+            <div class="console-readout-row"><span class="console-readout-label">profile lane</span><span class="console-readout-value">online</span><div class="console-meter"><span style="width: 86%"></span></div></div>
+            <div class="console-readout-row"><span class="console-readout-label">surface lane</span><span class="console-readout-value">online</span><div class="console-meter"><span style="width: 74%"></span></div></div>
+            <div class="console-readout-row"><span class="console-readout-label">fusion engine</span><span class="console-readout-value">ready</span><div class="console-meter"><span style="width: 92%"></span></div></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="console-stats section-block" aria-label="Silinosic-X capability snapshot">
+      <article class="console-stat"><span class="console-stat-value">4</span><span class="console-stat-label">primary workflows</span><span class="console-stat-delta">profile / surface / fusion / orchestrate</span></article>
+      <article class="console-stat"><span class="console-stat-value">91</span><span class="console-stat-label">profile platforms</span><span class="console-stat-delta">wide identity surface</span></article>
+      <article class="console-stat"><span class="console-stat-value">5+</span><span class="console-stat-label">intelligence lanes</span><span class="console-stat-delta">media / OCR / extension ready</span></article>
+      <article class="console-stat"><span class="console-stat-value">0</span><span class="console-stat-label">runtime inventory errors</span><span class="console-stat-delta">snapshot clean</span></article>
+    </div>
+  </section>
+
+  <section id="signal-map" class="page-section section-anchor">
+    <div class="console-section-head">
+      <div><div class="section-kicker">Signal architecture</div><h2 class="section-title">One investigation. Multiple lanes. One case view.</h2></div>
+      <p class="console-section-note">Silinosic-X keeps collection, refinement, correlation, and presentation separate — so operators can follow how a finding became a signal.</p>
+    </div>
+    <div class="signal-map">
+      <div class="signal-map-visual" aria-label="Signal relationship map">
+        <svg viewBox="0 0 520 350" role="img" aria-label="Network diagram linking profile, surface, media, OCR, fusion and Reporter">
+          <defs><linearGradient id="mapLine" x1="0" x2="1"><stop offset="0" stop-color="#ff8a1d"/><stop offset="1" stop-color="#67c8ff"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+          <g fill="none" stroke="url(#mapLine)" stroke-width="1.4" opacity=".7"><path d="M110 80 L250 172 L410 78"/><path d="M110 80 L250 172 L420 270"/><path d="M104 270 L250 172"/><path d="M250 172 L410 78"/><path d="M250 172 L420 270"/></g>
+          <g fill="none" stroke="#67c8ff" stroke-dasharray="3 8" opacity=".45"><path d="M110 80 Q220 20 410 78"/><path d="M104 270 Q290 330 420 270"/></g>
+          <g filter="url(#glow)"><circle cx="110" cy="80" r="30" fill="#152635" stroke="#ff8a1d" stroke-width="2"/><circle cx="104" cy="270" r="30" fill="#152635" stroke="#ff8a1d" stroke-width="2"/><circle cx="250" cy="172" r="42" fill="#1d291e" stroke="#c4f56c" stroke-width="2"/><circle cx="410" cy="78" r="30" fill="#142a37" stroke="#67c8ff" stroke-width="2"/><circle cx="420" cy="270" r="30" fill="#201e34" stroke="#a98cff" stroke-width="2"/></g>
+          <g fill="#f6f8fb" font-family="IBM Plex Mono, monospace" font-size="11" text-anchor="middle"><text x="110" y="76">PROFILE</text><text x="110" y="91" fill="#91a1b7">identity</text><text x="104" y="266">SURFACE</text><text x="104" y="281" fill="#91a1b7">domain</text><text x="250" y="168">FUSION</text><text x="250" y="184" fill="#c4f56c">correlation</text><text x="410" y="74">MEDIA</text><text x="410" y="89" fill="#91a1b7">public</text><text x="420" y="266">REPORTER</text><text x="420" y="281" fill="#91a1b7">artifacts</text></g>
+          <circle cx="250" cy="172" r="51" fill="none" stroke="#c4f56c" stroke-dasharray="2 7" opacity=".8"><animateTransform attributeName="transform" type="rotate" from="0 250 172" to="360 250 172" dur="18s" repeatCount="indefinite"/></circle>
+        </svg>
+        <div class="signal-map-legend"><span><i class="orange"></i> collect</span><span><i class="blue"></i> enrich</span><span><i class="lime"></i> correlate</span></div>
+      </div>
+      <div class="signal-map-copy">
+        <div class="console-kicker">case graph / normalized entities</div>
+        <h3>Evidence stays connected as it moves through the runtime.</h3>
+        <p>Collectors feed stable entities. Plugins add context. Filters reduce noise. Fusion builds relationships and confidence before Reporter turns the result into a readable case surface.</p>
+        <div class="signal-lane-list">
+          <div class="signal-lane"><span class="signal-lane-index">01</span><span class="signal-lane-name">Profile intelligence</span><span class="signal-lane-meta">91 platforms</span></div>
+          <div class="signal-lane"><span class="signal-lane-index">02</span><span class="signal-lane-name">Domain surface</span><span class="signal-lane-meta">CT / RDAP / TLS</span></div>
+          <div class="signal-lane"><span class="signal-lane-index">03</span><span class="signal-lane-name">Media + OCR</span><span class="signal-lane-meta">specialized</span></div>
+          <div class="signal-lane"><span class="signal-lane-index">04</span><span class="signal-lane-name">Fusion + advisor</span><span class="signal-lane-meta">confidence</span></div>
+          <div class="signal-lane"><span class="signal-lane-index">05</span><span class="signal-lane-name">Reporter artifacts</span><span class="signal-lane-meta">HTML / JSON / PDF</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="page-section section-anchor">
+    <div class="console-section-head"><div><div class="section-kicker">Capability matrix</div><h2 class="section-title">Designed for the full investigation loop.</h2></div><p class="console-section-note">The framework balances broad collection with operator-readable outputs and extension points.</p></div>
+    <div class="capability-grid">
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 01</span><span class="capability-status">active</span></div><h3>Profile intelligence</h3><p>Username and public-profile collection with contact, overlap, activity, and link enrichment.</p><div class="capability-track"><span style="width: 92%"></span></div></article>
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 02</span><span class="capability-status">active</span></div><h3>Surface reconnaissance</h3><p>Domain normalization, CT, RDAP, subdomains, security.txt, and transport posture signals.</p><div class="capability-track"><span style="width: 84%"></span></div></article>
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 03</span><span class="capability-status">active</span></div><h3>Fusion + correlation</h3><p>Deduplication, relationship maps, confidence distributions, and risk summaries across lanes.</p><div class="capability-track"><span style="width: 88%"></span></div></article>
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 04</span><span class="capability-status">active</span></div><h3>Plugins + filters</h3><p>Scope-aware extension discovery for enrichment, suppression, prioritization, and scoring.</p><div class="capability-track"><span style="width: 78%"></span></div></article>
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 05</span><span class="capability-status">active</span></div><h3>Media + OCR lanes</h3><p>Public-media analysis and OCR-heavy cases treated as first-class intelligence inputs.</p><div class="capability-track"><span style="width: 68%"></span></div></article>
+      <article class="capability-card"><div class="capability-card-top"><span class="capability-code">CAP / 06</span><span class="capability-status">active</span></div><h3>Structured reporting</h3><p>CLI, JSON, CSV, SQL, DOCX, PDF, Reporter HTML, persistent logs, and history.</p><div class="capability-track"><span style="width: 96%"></span></div></article>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="page-section section-anchor">
+    <div class="console-section-head"><div><div class="section-kicker">Execution flow</div><h2 class="section-title">From operator command to fused report in six stages.</h2></div><p class="console-section-note">Click through the live rail to inspect what each execution slice owns.</p></div>
+    <div class="pipeline-grid"><div id="home-workflow-rail" class="workflow-rail" aria-label="Silinosic-X workflow stages"></div></div>
+  </section>
+
+  <section id="operator-preview" class="page-section section-anchor">
+    <div class="console-section-head"><div><div class="section-kicker">Operator preview</div><h2 class="section-title">A CLI that keeps the human in the loop.</h2></div><p class="console-section-note">Prompt, wizard, flag, and source-study modes converge on the same normalized runtime.</p></div>
+    <div class="operator-grid">
+      <article class="command-console">
+        <div class="command-console-head"><span>silinosic-x / prompt session</span><span data-demo-status>ready</span></div>
+        <div class="command-console-body" aria-live="polite">
+          <div class="command-line"><span class="prompt">sx&gt;</span><strong>profile alice --enrich --reporter</strong></div>
+          <div class="command-line"><span class="prompt">&gt;</span><span>loading 91 platform adapters...</span></div>
+          <div class="command-line"><span class="prompt">&gt;</span><span>plugins: 20 / filters: 17 / workers: 8</span></div>
+          <div class="command-line"><span class="prompt">&gt;</span><span class="success" data-demo-output>reporter artifact ready / 4 lanes fused</span></div>
+          <div class="console-meter" style="margin-top: 1.1rem"><span data-demo-meter style="width: 100%"></span></div>
+        </div>
+        <div class="command-console-footer"><span class="tiny">safe, explicit, inspectable</span><button class="btn btn-secondary" type="button" data-demo-run>Run sample case</button></div>
+      </article>
+      <article class="console-mini-chart">
+        <div class="console-kicker">confidence distribution</div><h3>Signal quality by lane</h3><div class="chart-label"><span>low confidence</span><span>high confidence</span></div>
+        <svg viewBox="0 0 520 220" role="img" aria-label="Rising confidence distribution chart"><defs><linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c4f56c" stop-opacity=".5"/><stop offset="1" stop-color="#c4f56c" stop-opacity="0"/></linearGradient></defs><path class="chart-grid-line" d="M20 40H500M20 90H500M20 140H500M20 190H500"/><path class="chart-fill" d="M20 190 C75 185 72 155 120 162 S168 140 210 146 S260 120 300 130 S350 78 390 95 S450 56 500 66 L500 190Z"/><path class="chart-line" d="M20 190 C75 185 72 155 120 162 S168 140 210 146 S260 120 300 130 S350 78 390 95 S450 56 500 66"/><circle cx="500" cy="66" r="5" fill="#c4f56c"/></svg>
+        <div class="dev-chart-legend"><div class="dev-chart-chip"><strong>0.86</strong><span>mean confidence</span></div><div class="dev-chart-chip"><strong>+24%</strong><span>correlated signals</span></div><div class="dev-chart-chip"><strong>4 lanes</strong><span>fused context</span></div></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="quickstart-30" class="page-section section-anchor">
+    <div class="console-section-head"><div><div class="section-kicker">Quick start</div><h2 class="section-title">Install once. Start thinking in signals.</h2></div></div>
+    <article class="code-block"><div class="code-head"><span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span><span class="code-lang">shell</span></div><pre class="code-body"><span class="cmd">pip install</span> <span class="arg">silinosic-x</span>
+<span class="cmd">silinosic-x</span>
+<span class="cmd">python -c</span> <span class="arg">"import silinosic_x"</span>
+<span class="muted"># then try:</span>
+help
+show plugins
+profile alice
+surface example.com
+fusion alice example.com</pre></article>
+    <div class="section-links"><a class="section-link" href="getting-started.html#install">Installation details</a><a class="section-link" href="cli-reference.html#commands">Command reference</a><a class="section-link" href="download.html#download-home">Docker runner path</a></div>
+  </section>
+
+  <section id="fit-check" class="page-section section-anchor">
+    <div class="section-head"><div><div class="section-kicker">Fit check</div><h2 class="section-title">Built for investigations that need context, not just hits.</h2></div></div>
+    <div class="grid-3"><article class="card"><h3 class="card-title">Use it if</h3><div class="card-copy"><p>You want profile intelligence, domain-surface visibility, plugin/filter enrichment, and fused reporting inside one local Python framework.</p></div></article><article class="card"><h3 class="card-title">Skip it if</h3><div class="card-copy"><p>You only need a tiny single-purpose scanner and do not care about structured artifacts, prompt UX, or cross-lane analysis.</p></div></article><article class="card"><h3 class="card-title">Keep in mind</h3><div class="card-copy"><p>The site sticks to what the current codebase and docs support today, while leaving room for the roadmap to evolve.</p></div></article></div>
+    <div class="callout callout-warn section-block"><div class="callout-title">Authorized use only</div>The repository explicitly frames Silinosic-X for legal and authorized investigations. Use it only on systems and identities you own or have explicit permission to assess.</div>
+  </section>
+</main>
+
+<footer class="footer shell">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-title">Silinosic-X</div>
+      <div>v11.2.2 | Ember | Python 3.11+</div>
+      <div class="tiny" style="margin-top: 0.5rem;">Multi-engine OSINT orchestration for profile, surface, fusion, media, OCR, and Reporter workflows.</div>
+    </div>
+    <div>
+      <div class="footer-title">Start</div>
+      <a class="footer-link" href="getting-started.html#install">Installation</a>
+      <a class="footer-link" href="workflow.html#how">How it works</a>
+      <a class="footer-link" href="modes.html#prompt-mode">Runtime modes</a>
+    </div>
+    <div>
+      <div class="footer-title">Reference</div>
+      <a class="footer-link" href="cli-reference.html#commands">Commands</a>
+      <a class="footer-link" href="reporting.html#outputs">Outputs</a>
+      <a class="footer-link" href="development.html#development-home">Development</a>
+    </div>
+    <div>
+      <div class="footer-title">Project</div>
+      <a class="footer-link" href="project.html#author">Project context</a>
+      <a class="footer-link" href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub repository</a>
+      <a class="footer-link" href="https://raw.githubusercontent.com/voltsparx/Silinosic-X/main/LICENSE" target="_blank" rel="noreferrer">License</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/core/site-data.js"></script>
+<script src="js/core/helpers.js"></script>
+<script src="js/features/sidebar.js"></script>
+<script src="js/features/search.js"></script>
+<script src="js/features/workflow-visual.js"></script>
+<script src="js/features/easter-eggs.js"></script>
+<script src="js/features/development-feed.js"></script>
+<script src="js/features/console-demo.js"></script>
+<script src="js/features/ui-enhancements.js"></script>
+<script src="js/bootstrap/app.js"></script>
+</body>
+</html>
+

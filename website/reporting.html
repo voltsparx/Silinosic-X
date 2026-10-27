@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporting | Silinosic-X</title>
+<meta name="description" content="Output formats, storage layout, history commands, and verification posture for Silinosic-X.">
+<link rel="canonical" href="https://voltsparx.github.io/Silinosic-X/reporting.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/core/base.css">
+<link rel="stylesheet" href="css/layout/topbar.css">
+<link rel="stylesheet" href="css/layout/sidebar.css">
+<link rel="stylesheet" href="css/layout/content.css">
+<link rel="stylesheet" href="css/components/workflow.css">
+<link rel="stylesheet" href="css/components/modules.css">
+<link rel="stylesheet" href="css/components/development.css">
+<link rel="stylesheet" href="css/layout/responsive.css">
+<link rel="stylesheet" href="css/core/polish.css">
+<link rel="icon" href="web_assets/media/silinosic-x-favicon.ico" sizes="any">
+</head>
+<body data-page="reporting.html" data-default-section="outputs">
+<header id="topbar">
+  <button id="topbar-brand" type="button" aria-label="Silinosic-X brand console trigger">
+    <img src="web_assets/media/silinosic-x-web.png" alt="Silinosic-X logo">
+    <span id="topbar-brand-text">
+      <span id="topbar-name">Silinosic-X</span>
+      <span id="topbar-tagline">OSINT orchestration and correlation framework</span>
+    </span>
+  </button>
+  <div id="topbar-version">v11.2.2 | Python 3.11+ | Ember</div>
+  <div class="topbar-search">
+    <input id="docs-search-input" type="search" placeholder="Search the docs" aria-label="Search the docs" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="docs-search-results">
+    <span class="search-kbd" aria-hidden="true">/</span>
+    <div id="docs-search-results" class="topbar-search-results" role="listbox" hidden></div>
+  </div>
+  <div id="topbar-links">
+    <a href="cli-reference.html#commands">CLI</a>
+    <a href="development.html#development-home">Development</a>
+    <a href="https://github.com/voltsparx/Silinosic-X" target="_blank" rel="noreferrer">GitHub</a>
+    <div class="contact-wrap">
+      <button id="contact-toggle" class="contact-toggle" type="button" aria-expanded="false">Contact</button>
+      <div id="contact-popover" class="contact-popover" hidden>
+        <a href="mailto:voltsparx@gmail.com">voltsparx@gmail.com</a>
+        <a href="https://github.com/voltsparx" target="_blank" rel="noreferrer">github.com/voltsparx</a>
+      </div>
+    </div>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="sidebar">Menu</button>
+  </div>
+</header>
+
+<nav id="sidebar" aria-label="Documentation navigation">
+  <div class="sidebar-panel-head">
+    <div class="sidebar-kicker">Reports</div>
+    <h2 class="sidebar-title">Reporter and Artifacts</h2>
+    <p class="sidebar-note">Silinosic-X v11.2.2 centers reporting around Reporter while still keeping machine-friendly exports and runtime inventory snapshots for automation.</p>
+  </div>
+  <div id="sidebar-tabs" class="sidebar-tabs"></div>
+  <div id="sidebar-nav"></div>
+</nav>
+<button id="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
+
+<main id="main">
+  <header class="page-intro">
+    <div class="eyebrow">Artifacts</div>
+    <h1 class="page-title">Silinosic-X treats reporting as a first-class runtime, not an afterthought</h1>
+    <p class="page-copy">Reporter is the v11.2.2 case-view layer for Silinosic-X. It groups identity, surface, vulnerability, extension, media, and scoring signals into one readable HTML report while keeping JSON, CSV, SQL, DOCX, PDF, and logs available for operators and machines.</p>
+  </header>
+
+  <section id="outputs" class="page-section section-anchor">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Output formats</div>
+        <h2 class="section-title">Human view, machine view, and audit trail</h2>
+      </div>
+    </div>
+    <div class="grid-3">
+      <article class="card">
+        <h3 class="card-title">CLI</h3>
+        <div class="card-copy">
+          <p>Immediate operator-friendly output for prompt mode and direct command runs.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">JSON</h3>
+        <div class="card-copy">
+          <p>Structured data for later processing, history listing, and machine pipelines.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">CSV</h3>
+        <div class="card-copy">
+          <p>Convenient tabular export for spreadsheets and analyst triage workflows.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">HTML</h3>
+        <div class="card-copy">
+          <p>The Reporter case view: categorized HTML output with graphs, severity context, raw payload drill-downs, and the closing Reporter Brief.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Logs</h3>
+        <div class="card-copy">
+          <p>Run logs and framework-level logging for debugging or audit context.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">SQL</h3>
+        <div class="card-copy">
+          <p>SQLite case storage for runs, findings, attachments, and OCR-item persistence.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">DOCX / PDF</h3>
+        <div class="card-copy">
+          <p>Portable case documents with overview tables, visuals, attachables, vulnerabilities, and Reporter Brief handoff sections.</p>
+        </div>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Capability-pack intel</h3>
+        <div class="card-copy">
+          <p>Generated runtime snapshots under <span class="mono">intel/</span>, <span class="mono">plugins/_intel/</span>, and related folders help the project inspect itself.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="storage" class="page-section section-anchor">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Storage layout</div>
+        <h2 class="section-title">The artifact tree is configurable, but these directories are the default mental model</h2>
+      </div>
+    </div>
+    <div class="directory-tree">
+      <div class="directory-row"><div class="directory-name mono">output/json/</div><div>JSON result files, typically named with sanitized target plus a timestamp suffix.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/html/</div><div>HTML reports for browser review.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/cli/</div><div>Saved CLI text reports.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/csv/</div><div>CSV exports when requested.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/sql/</div><div>SQLite case stores when <span class="mono">sql</span> output is enabled.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/docx/</div><div>Reporter DOCX case documents for sharing or archival.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/pdf/</div><div>Reporter PDF case documents for portable review.</div></div>
+      <div class="directory-row"><div class="directory-name mono">output/logs/</div><div>Per-run logs and framework log output.</div></div>
+    </div>
+    <div class="callout callout-info section-block">
+      <div class="callout-title">Reporter is presentation, not the source of truth</div>
+      The HTML layer reads from the same structured payloads written to JSON, CSV, SQL, DOCX, and PDF generators. Change output roots or formats with <span class="mono">out-type</span>, <span class="mono">out-print</span>, and <span class="mono">default-out-print</span>.
+    </div>
+  </section>
+
+  <section id="history" class="page-section section-anchor">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">History and inventory</div>
+        <h2 class="section-title">The project exposes commands for looking backward, not only scanning forward</h2>
+      </div>
+    </div>
+    <div class="grid-2">
+      <article class="panel">
+        <h3 class="panel-title">History commands</h3>
+        <ul class="simple-list">
+          <li><span class="list-label">history</span>Lists scanned targets discovered from saved output artifacts.</li>
+          <li><span class="list-label">targets / scans</span>Alias surfaces for artifact-oriented listing behavior.</li>
+          <li><span class="list-label">live</span>Opens a browser-based view on top of stored results.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h3 class="panel-title">Inventory artifacts</h3>
+        <ul class="simple-list">
+          <li><span class="list-label">runtime-inventory</span>The repo ships <span class="mono">intel/runtime-inventory.json</span> with plugin, filter, platform, and module counts.</li>
+          <li><span class="list-label">capability-pack</span>The <span class="mono">capability-pack</span> / <span class="mono">intel</span> command generates structured project self-intel artifacts.</li>
+          <li><span class="list-label">plugin/filter intel</span>Generated views live under <span class="mono">plugins/_intel/</span> and <span class="mono">filters/_intel/</span>.</li>
+          <li><span class="list-label">attachables</span>Reporter now carries selected plugins, selected filters, attached modules, and OCR tooling availability into the saved payload.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="testing" class="page-section section-anchor">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">Verification</div>
+        <h2 class="section-title">The repo leans on tests and static checks to keep the runtime sustainable</h2>
+      </div>
+    </div>
+    <div class="roadmap-strip">
+      <div class="roadmap-pill">pytest</div>
+      <div class="roadmap-pill">ruff</div>
+      <div class="roadmap-pill">mypy</div>
+      <div class="roadmap-pill">compileall smoke</div>
+      <div class="roadmap-pill">package build + twine check</div>
+      <div class="roadmap-pill">entrypoint smoke</div>
+    </div>
+    <article class="code-block section-block">
+      <div class="code-head">
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-lang">shell</span>
+      </div>
+      <pre class="code-body"><span class="cmd">python -m pytest -q</span>
+<span class="cmd">python -m ruff check .</span>
+<span class="cmd">python -m mypy</span>
+<span class="cmd">python -m compileall -q core filters modules plugins platforms wordlists silinosic_x tests silinosic-x.py</span>
+<span class="cmd">python scripts/smoke_suite.py</span>
+<span class="cmd">silinosic-x doctor</span>
+<span class="cmd">silinosic-x --about</span>
+<span class="cmd">python -m silinosic_x --about</span>
+<span class="cmd">python -c "import silinosic_x"</span></pre>
+    </article>
+    <div class="callout callout-warn section-block">
+      <div class="callout-title">Current quality snapshot</div>
+      The v11.2.2 refresh aligns reporting, docs, and website behavior around the current runtime. Verification still centers on pytest, Ruff, mypy, compile smoke, and package-entrypoint checks.
+    </div>
+  </section>
+
+  <section id="ocr-diagnostics" class="page-section section-anchor">
+    <div class="section-head">
+      <div>
+        <div class="section-kicker">OCR diagnostics</div>
+        <h2 class="section-title">Reporter can now tell you which OCR/image backend was actually available</h2>
+      </div>
+    </div>
+    <div class="grid-2">
+      <article class="panel">
+        <h3 class="panel-title">What gets recorded</h3>
+        <ul class="simple-list">
+          <li><span class="list-label">Preferred engine</span>The runtime reports whether it preferred <span class="mono">easyocr</span>, <span class="mono">pytesseract</span>, or no usable OCR engine.</li>
+          <li><span class="list-label">Image tooling</span>Reporter records whether <span class="mono">Pillow</span>, <span class="mono">easyocr</span>, and <span class="mono">pytesseract</span> were importable.</li>
+          <li><span class="list-label">Binary reachability</span>For the Tesseract lane, the payload also records whether a <span class="mono">tesseract</span> binary was actually found.</li>
+        </ul>
+      </article>
+      <article class="code-block">
+        <div class="code-head">
+          <span class="code-dot"></span>
+          <span class="code-dot"></span>
+          <span class="code-dot"></span>
+          <span class="code-lang">json</span>
+        </div>
+        <pre class="code-body">{
+  "ocr_tooling": {
+    "preferred_engine": "none",
+    "pillow": {"available": true},
+    "easyocr": {"available": false},
+    "pytesseract": {
+      "available": true,
+      "tesseract_binary_found": false
+    }
+  }
+}</pre>
+      </article>
+    </div>
+    <div class="callout callout-info section-block">
+      <div class="callout-title">Troubleshooting mental model</div>
+      If OCR results are unexpectedly empty, first check whether Reporter recorded <span class="mono">preferred_engine: none</span>. If it did, the issue is usually missing Python-side OCR packages or a missing <span class="mono">tesseract</span> binary rather than a report-rendering failure. If <span class="mono">pytesseract</span> is available but <span class="mono">tesseract_binary_found</span> is false, install or expose the system binary before expecting usable OCR output. The quickest local check is <span class="mono">silinosic-x doctor</span>.
+    </div>
+  </section>
+</main>
+
+<footer class="footer shell">
+  <div class="footer-grid">
+    <div><div class="footer-title">Silinosic-X</div><div>Outputs, history, and verification docs.</div></div>
+    <div><div class="footer-title">Next</div><a class="footer-link" href="development.html#development-home">Development</a></div>
+    <div><div class="footer-title">Runtime</div><a class="footer-link" href="modes.html#live-dashboard">Live mode</a></div>
+    <div><div class="footer-title">Project</div><a class="footer-link" href="project.html#signals">Roadmap signals</a></div>
+  </div>
+</footer>
+
+<script src="js/core/site-data.js"></script>
+<script src="js/core/helpers.js"></script>
+<script src="js/features/sidebar.js"></script>
+<script src="js/features/search.js"></script>
+<script src="js/features/workflow-visual.js"></script>
+<script src="js/features/easter-eggs.js"></script>
+<script src="js/features/development-feed.js"></script>
+<script src="js/features/ui-enhancements.js"></script>
+<script src="js/bootstrap/app.js"></script>
+</body>
+</html>
+

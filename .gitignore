@@ -1,0 +1,5 @@
+.vscode
+.DS*
+.venv
+tmp/
+temp/
