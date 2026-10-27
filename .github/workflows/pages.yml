@@ -23,6 +23,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,14 +32,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify website directory
+        run: |
+          echo "Repository root:"
+          ls -la
+
+          echo "Website directory:"
+          ls -la website
+
+          test -d website
+          test -f website/index.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # FIX: Changed from 'docs/website' to 'website' to match your path trigger
-          path: website 
+          path: ./website
 
       - name: Deploy to GitHub Pages
         id: deployment
